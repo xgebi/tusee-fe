@@ -1,15 +1,13 @@
 <template>
-  <main></main>
+  <main class="page page-dashboard">This is Dashboard</main>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue/dist/vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'TotpSetupView'
+  name: 'TotpSetupView',
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

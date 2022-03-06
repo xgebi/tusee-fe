@@ -5,6 +5,11 @@ import HomeView from '@/views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
 import TotpView from '@/views/TotpView.vue';
 import TotpSetupView from '@/views/TotpSetupView.vue';
+import BoardsView from '@/views/BoardsView.vue';
+import CalendarView from '@/views/CalendarView.vue';
+import ProfileView from '@/views/ProfileView.vue';
+import SingleBoardView from '@/views/SingleBoardView.vue';
+import TaskView from '@/views/TaskView.vue';
 import { useUserStore } from '@/stores/user';
 import dayjs from 'dayjs';
 
@@ -50,6 +55,30 @@ const router = createRouter({
       path: '/totp',
       name: 'totp',
       component: TotpView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/boards',
+      name: 'boards',
+      component: BoardsView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/board/:id',
+      name: 'board',
+      component: SingleBoardView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/task/:id',
+      name: 'task',
+      component: TaskView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/calendar',
+      name: 'calendar',
+      component: CalendarView,
       beforeEnter: authenticatedGuard,
     },
   ],
