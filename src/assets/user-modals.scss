@@ -1,0 +1,18 @@
+.page {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 1fr auto 1fr;
+
+  & > section {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    padding: 1rem;
+
+    form {
+      display: flex;
+      flex-flow: column;
+      gap: 1rem;
+    }
+  }
+}
