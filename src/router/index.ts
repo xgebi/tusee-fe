@@ -8,6 +8,7 @@ import TotpSetupView from '@/views/TotpSetupView.vue';
 import BoardsView from '@/views/BoardsView.vue';
 import CalendarView from '@/views/CalendarView.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import LoggedOutView from '@/views/LoggedOutView.vue';
 import SingleBoardView from '@/views/SingleBoardView.vue';
 import TaskView from '@/views/TaskView.vue';
 import { useUserStore } from '@/stores/user';
@@ -80,6 +81,17 @@ const router = createRouter({
       name: 'calendar',
       component: CalendarView,
       beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/logged-out',
+      name: 'loggedOut',
+      component: LoggedOutView,
     },
   ],
 });

@@ -1,5 +1,5 @@
 <template>
-  <main class="page page-dashboard">This is Dashboard</main>
+  <main class="page page-dashboard">This is totp view</main>
 </template>
 
 <script lang="ts">
