@@ -8,7 +8,9 @@ class UserRepository {
       resolve({
         username: info.username,
         keys: [],
-        expiryTime: dayjs().add(30, 'minutes'),
+        automaticLogoutTime: dayjs().add(30, 'minutes'),
+        firstLogin: true,
+        mfaEnabled: true,
       } as IUserToken);
     });
   }

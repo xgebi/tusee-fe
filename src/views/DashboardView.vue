@@ -5,10 +5,10 @@
   </main>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue';
 import { useUserStore } from '@/stores/user';
-import MainNavigation from '@/components/MainNavigation.vue';
+import MainNavigation from '@/components/shared/MainNavigation.vue';
 
 export default defineComponent({
   name: 'DashboardView',
@@ -22,5 +22,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

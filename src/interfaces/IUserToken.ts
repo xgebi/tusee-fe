@@ -3,7 +3,9 @@ import type dayjs from 'dayjs';
 interface IUserToken {
   username: string;
   keys: string[];
-  expiryTime: dayjs.Dayjs;
+  firstLogin: boolean;
+  mfaEnabled: boolean;
+  automaticLogoutTime: dayjs.Dayjs;
 }
 
 export default IUserToken;

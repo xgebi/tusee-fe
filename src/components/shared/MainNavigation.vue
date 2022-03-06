@@ -1,7 +1,5 @@
 <template>
-  <nav>
-    This is navigation
-  </nav>
+  <nav>This is navigation</nav>
 </template>
 
 <script>
@@ -17,5 +15,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

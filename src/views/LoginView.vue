@@ -40,11 +40,15 @@ export default defineComponent({
     ...mapStores(useUserStore),
   },
   methods: {
-    async login(e: any) {
+    async login(e: Event) {
       e.preventDefault();
       await this.userStore.login(this.username, this.password);
-      if (this.userStore.token) {
+      if (this.userStore.token?.firstLogin) {
+        await this.$router.push({ name: 'totp-setup' });
+      } else if (!this.userStore.token?.mfaEnabled) {
         await this.$router.push({ name: 'dashboard' });
+      } if (this.userStore.token?.mfaEnabled) {
+        await this.$router.push({ name: 'totp' });
       }
     },
   },
