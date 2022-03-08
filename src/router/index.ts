@@ -16,7 +16,10 @@ import dayjs from 'dayjs';
 
 const authenticatedGuard = () => {
   const userStore = useUserStore();
-  return userStore.token?.automaticLogoutTime.isAfter(dayjs());
+  return (
+    userStore.token?.automaticLogoutTime.isAfter(dayjs()) &&
+    userStore.token?.encryptedToken.length > 0
+  );
 };
 
 const router = createRouter({

@@ -17,8 +17,8 @@ export const useUserStore = defineStore({
         keys: [],
         firstLogin: false,
         mfaEnabled: false,
-        automaticLogoutTime: dayjs(),
-        encryptedToken: '',
+        automaticLogoutTime: dayjs().add(30, 'minute'), // temporary
+        encryptedToken: 'key', // temporary
       },
     } as UserState),
   getters: {
@@ -26,7 +26,6 @@ export const useUserStore = defineStore({
   },
   actions: {
     async login(username: string, password: string) {
-      // TODO get token, keep a copy of token in
       this.token = await UserService.login({ username, password });
     },
     logout() {
