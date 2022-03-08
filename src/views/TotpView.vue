@@ -10,4 +10,6 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+@import '../assets/user-modals.scss';
+</style>

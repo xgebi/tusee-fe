@@ -47,7 +47,7 @@ export default defineComponent({
         await this.$router.push({ name: 'totp-setup' });
       } else if (!this.userStore.token?.mfaEnabled) {
         await this.$router.push({ name: 'dashboard' });
-      } if (this.userStore.token?.mfaEnabled) {
+      } else if (this.userStore.token?.mfaEnabled) {
         await this.$router.push({ name: 'totp' });
       }
     },
