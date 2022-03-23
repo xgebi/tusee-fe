@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '@/views/LoginView.vue';
+import RegistrationView from '@/views/RegistrationView.vue';
 import DashboardView from '@/views/DashboardView.vue';
 import HomeView from '@/views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
@@ -44,6 +45,11 @@ const router = createRouter({
       component: LoginView,
     },
     {
+      path: '/registration',
+      name: 'registration',
+      component: RegistrationView,
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
@@ -83,6 +89,12 @@ const router = createRouter({
       path: '/calendar',
       name: 'calendar',
       component: CalendarView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/printable',
+      name: 'printable',
+      component: ProfileView,
       beforeEnter: authenticatedGuard,
     },
     {

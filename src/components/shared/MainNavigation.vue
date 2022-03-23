@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '../../stores/user';
 
 export default defineComponent({
   name: 'MainNavigation',
@@ -34,33 +34,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss">
-.top-bar {
-  display: flex;
-  flex-flow: row;
-
-  .main-navigation {
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      gap: 1rem;
-
-      li {
-        display: inline-block;
-
-        a {
-          display: inline-block;
-        }
-
-        button {
-          border: 0;
-          background: unset;
-        }
-      }
-    }
-  }
-}
-</style>

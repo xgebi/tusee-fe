@@ -17,8 +17,8 @@ export const useUserStore = defineStore({
         keys: [],
         firstLogin: false,
         mfaEnabled: false,
-        automaticLogoutTime: dayjs().add(30, 'minute'), // temporary
-        encryptedToken: 'key', // temporary
+        automaticLogoutTime: dayjs().add(30, 'minute'), // temporary value
+        encryptedToken: 'key', // temporary value
       },
     } as UserState),
   getters: {
