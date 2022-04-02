@@ -19,7 +19,7 @@ const authenticatedGuard = () => {
   const userStore = useUserStore();
   return (
     userStore.token?.automaticLogoutTime.isAfter(dayjs()) &&
-    userStore.token?.encryptedToken.length > 0
+    userStore.token?.token.length > 0
   );
 };
 

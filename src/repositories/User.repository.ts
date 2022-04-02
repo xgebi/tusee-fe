@@ -8,28 +8,23 @@ import AES from 'crypto-js/aes';
 
 class UserRepository {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
-    return new Promise((resolve, reject) => {
-      resolve({
-        username: info.username,
-        password: info.password,
-        keys: [],
-        automaticLogoutTime: dayjs().add(30, 'minutes'),
-        firstLogin: true,
-        mfaEnabled: true,
-        encryptedToken: 'abc',
-      } as IUserToken);
-    });
+    const response = await Fetch.post('login', info);
+    if (response.ok) {
+      const result = await response.json();
+      return result as IUserToken;
+    }
+    throw new Error();
   }
 
   public static async register(
     info: IRegistrationInfo
   ): Promise<IRegistrationResult> {
     const response = await Fetch.post('register', info);
-    const { data, errors } = await response.json();
     if (response.ok) {
-      return data as IRegistrationResult;
+      const result = await response.json();
+      return result as IRegistrationResult;
     }
-    throw new Error(errors);
+    throw new Error();
   }
 
   public static async confirmTotp(

@@ -1,5 +1,5 @@
 interface ILoginInfo {
-  username: string;
+  email: string;
   password: string;
 }
 

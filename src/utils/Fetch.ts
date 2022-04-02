@@ -23,7 +23,6 @@ class Fetch {
     body: any,
     nonJson = false
   ): Promise<Response> {
-    console.log('abc', `${import.meta.env.VITE_API_URL}${url}`);
     return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
       method: 'POST',
       headers: this.composeHeaders(),

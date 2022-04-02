@@ -2,13 +2,16 @@ import type dayjs from 'dayjs';
 import type IKey from '@/interfaces/IKey';
 
 interface IUserToken {
-  username: string;
+  email: string;
   password: string;
   keys: IKey[];
   firstLogin: boolean;
-  mfaEnabled: boolean;
+  usesTotp: boolean;
   automaticLogoutTime: dayjs.Dayjs;
-  encryptedToken: string;
+  token: string;
+  displayName: string;
+  totpSecret: string;
+  userUuid: string;
 }
 
 export default IUserToken;

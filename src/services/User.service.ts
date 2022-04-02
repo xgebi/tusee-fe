@@ -9,7 +9,7 @@ import type IRegistrationResult from '@/interfaces/IRegistrationResult';
 
 class UserService {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
-    return UserRepository.login(info);
+    return await UserRepository.login(info);
   }
 
   public static async register(
@@ -17,7 +17,7 @@ class UserService {
   ): Promise<IRegistrationResult> {
     info.key = AES.encrypt(uuidv4().toString(), info.password).toString();
     info.displayName = AES.encrypt(info.displayName, info.key).toString();
-    return UserRepository.register(info);
+    return await UserRepository.register(info);
   }
 
   public static async confirmTotp(
