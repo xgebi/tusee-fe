@@ -26,6 +26,10 @@ class UserService {
   ): Promise<boolean> {
     return await UserRepository.confirmTotp(token, totpCode);
   }
+
+  public static async skipTotp(): Promise<boolean> {
+    return await UserRepository.skipTotp();
+  }
 }
 
 export default UserService;

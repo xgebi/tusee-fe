@@ -2,7 +2,8 @@
   <main class="page page-totp-setup">
     <section>
       <form v-on:submit="confirmTotp">
-        <img src="" alt="" />
+        <canvas id="canvas" ref="canvas"></canvas>
+        <p>Totp secret: {{ userStore.token.totpSecret }}</p>
         <label for="confirm-code">Confirm code</label>
         <input
           type="text"
@@ -11,6 +12,7 @@
           v-model="confirmCode"
         />
         <button @click="confirmTotp">Confirm</button>
+        <button @click="skip">Skip</button>
       </form>
     </section>
   </main>
@@ -19,6 +21,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useUserStore } from '@/stores/user';
+import QRCode from 'qrcode';
 
 type TotpSetupState = {
   confirmCode: string;
@@ -39,13 +42,24 @@ export default defineComponent({
     async confirmTotp(e: Event) {
       e.preventDefault();
       await this.userStore.confirmTotp(this.confirmCode);
-      if (
-        this.userStore.token?.mfaEnabled &&
-        !this.userStore.token?.firstLogin
-      ) {
+      if (this.userStore.token?.usesTotp && !this.userStore.token?.firstLogin) {
         this.$router.push({ name: 'dashboard' });
       }
     },
+    async skip(e: Event) {
+      e.preventDefault();
+      await this.userStore.skipTotp();
+      this.$router.push({ name: 'dashboard' });
+    },
+  },
+  mounted() {
+    QRCode.toCanvas(
+      this.$refs.canvas,
+      `otpauth://totp/${window.location.hostname}?secret=${this.userStore.token.totpSecret}&issuer=tusee&digits=1`,
+      function (error: Error) {
+        if (error) console.error(error);
+      }
+    );
   },
 });
 </script>

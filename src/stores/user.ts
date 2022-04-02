@@ -65,5 +65,11 @@ export const useUserStore = defineStore({
         this.token.firstLogin = false;
       }
     },
+    async skipTotp() {
+      if (await UserService.skipTotp()) {
+        this.token.usesTotp = false;
+        this.token.firstLogin = false;
+      }
+    },
   },
 });

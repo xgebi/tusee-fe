@@ -7,9 +7,7 @@ class Fetch {
   private static composeHeaders(): Headers {
     const userStore = useUserStore();
     return {
-      Authorization: userStore.token?.encryptedToken
-        ? userStore.token?.encryptedToken
-        : '',
+      Authorization: userStore.token?.token ? userStore.token?.token : '',
     };
   }
   public static async get(url: string): Promise<Response> {

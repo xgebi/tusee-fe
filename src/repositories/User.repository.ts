@@ -35,6 +35,12 @@ class UserRepository {
       resolve(true);
     });
   }
+
+  public static async skipTotp(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      resolve(true);
+    });
+  }
 }
 
 export default UserRepository;
