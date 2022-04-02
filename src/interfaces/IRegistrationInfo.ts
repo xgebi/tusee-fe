@@ -1,6 +1,8 @@
 interface IRegistrationInfo {
-  username: string;
+  email: string;
   password: string;
+  displayName: string;
+  key: string;
 }
 
 export default IRegistrationInfo;

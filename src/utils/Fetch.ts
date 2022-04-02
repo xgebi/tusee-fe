@@ -13,7 +13,7 @@ class Fetch {
     };
   }
   public static async get(url: string): Promise<Response> {
-    return fetch(`${process.env.VUE_APP_API_URL}${url}`, {
+    return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
       method: 'GET',
       headers: this.composeHeaders(),
     });
@@ -23,7 +23,8 @@ class Fetch {
     body: any,
     nonJson = false
   ): Promise<Response> {
-    return fetch(`${process.env.VUE_APP_API_URL}${url}`, {
+    console.log('abc', `${import.meta.env.VITE_API_URL}${url}`);
+    return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
       method: 'POST',
       headers: this.composeHeaders(),
       body: nonJson ? body : JSON.stringify(body),
@@ -35,7 +36,7 @@ class Fetch {
     body: any,
     nonJson = false
   ): Promise<Response> {
-    return fetch(`${process.env.VUE_APP_API_URL}${url}`, {
+    return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
       method: 'PUT',
       headers: this.composeHeaders(),
       body: nonJson ? body : JSON.stringify(body),
@@ -43,7 +44,7 @@ class Fetch {
   }
 
   public static async delete(url: string): Promise<Response> {
-    return fetch(`${process.env.VUE_APP_API_URL}${url}`, {
+    return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
       method: 'DELETE',
       headers: this.composeHeaders(),
     });

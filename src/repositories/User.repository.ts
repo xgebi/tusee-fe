@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import type IRegistrationInfo from '@/interfaces/IRegistrationInfo';
 import type IRegistrationResult from '@/interfaces/IRegistrationResult';
 import Fetch from '@/utils/Fetch';
+import AES from 'crypto-js/aes';
 
 class UserRepository {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
@@ -23,7 +24,7 @@ class UserRepository {
   public static async register(
     info: IRegistrationInfo
   ): Promise<IRegistrationResult> {
-    const response = await Fetch.post('/register', info);
+    const response = await Fetch.post('register', info);
     const { data, errors } = await response.json();
     if (response.ok) {
       return data as IRegistrationResult;

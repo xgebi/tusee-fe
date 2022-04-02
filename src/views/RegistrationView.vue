@@ -2,13 +2,15 @@
   <main class="page page-login">
     <section>
       <form
-        v-on:submit="login"
+        v-on:submit="register"
         v-if="!registrationSuccessful || !registrationAttempted"
       >
         <label for="username">Username:</label>
         <input type="text" id="username" v-model="username" />
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" />
+        <label for="display-name">Display Name:</label>
+        <input type="text" id="display-name" v-model="displayName" />
         <button>Register</button>
       </form>
       <div v-if="registrationSuccessful && registrationAttempted">
@@ -27,6 +29,7 @@ import UserService from '@/services/User.service';
 type RegistrationViewState = {
   username: string;
   password: string;
+  displayName: string;
   error: null | string;
   registrationSuccessful: boolean;
   registrationAttempted: boolean;
@@ -42,6 +45,7 @@ export default defineComponent({
     return {
       username: '',
       password: '',
+      displayName: '',
       error: null,
       registrationSuccessful: false,
       registrationAttempted: false,
@@ -51,19 +55,22 @@ export default defineComponent({
     ...mapStores(useUserStore),
   },
   methods: {
-    async login(e: Event) {
+    async register(e: Event) {
       e.preventDefault();
       this.registrationAttempted = true;
       try {
         const registration = await UserService.register({
-          username: this.username,
+          email: this.username,
           password: this.password,
+          displayName: this.displayName,
+          key: '',
         });
         if (!registration.registrationSuccessful) {
           throw new Error(registration.error);
         }
         this.registrationSuccessful = registration.registrationSuccessful;
       } catch (e) {
+        console.log(e);
         this.registrationSuccessful = false;
       }
     },
