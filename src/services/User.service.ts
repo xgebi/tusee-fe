@@ -7,6 +7,7 @@ import type IUserToken from '@/interfaces/IUserToken';
 import type IRegistrationInfo from '@/interfaces/IRegistrationInfo';
 import type IRegistrationResult from '@/interfaces/IRegistrationResult';
 import type IKey from '@/interfaces/IKey';
+import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 
 class UserService {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
@@ -27,14 +28,14 @@ class UserService {
     });
   }
 
-  public static async setupTotp(totpCode: string): Promise<IKey[]> {
+  public static async setupTotp(totpCode: string): Promise<ITotpSetupResponse> {
     return await UserRepository.setupTotp({
       skip: false,
       totpCode: totpCode,
     });
   }
 
-  public static async skipTotp(): Promise<IKey[]> {
+  public static async skipTotp(): Promise<ITotpSetupResponse> {
     return await UserRepository.setupTotp({
       skip: true,
       totpCode: '',

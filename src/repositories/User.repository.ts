@@ -6,6 +6,7 @@ import Fetch from '@/utils/Fetch';
 import type ITotpSetup from '@/interfaces/ITotpSetup';
 import type IKey from '@/interfaces/IKey';
 import type ITotpConfirmation from '@/interfaces/ITotpConfirmation';
+import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 
 class UserRepository {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
@@ -39,11 +40,11 @@ class UserRepository {
     throw new Error();
   }
 
-  public static async setupTotp(body: ITotpSetup): Promise<IKey[]> {
+  public static async setupTotp(body: ITotpSetup): Promise<ITotpSetupResponse> {
     const response = await Fetch.post('setup-totp', body);
     if (response.ok) {
       const result = await response.json();
-      return result as IKey[];
+      return result as ITotpSetupResponse;
     }
     throw new Error();
   }

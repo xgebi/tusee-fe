@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import UserService from '@/services/User.service';
 import type IUserToken from '@/interfaces/IUserToken';
 import dayjs from 'dayjs';
+import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 
 export type UserState = {
   token: IUserToken;
@@ -60,7 +61,14 @@ export const useUserStore = defineStore({
       };
     },
     async confirmTotp(code: string) {
-      if (await UserService.confirmTotp(code, this.token.token)) {
+      if (await UserService.confirmTotp(code)) {
+        this.token.usesTotp = true;
+        this.token.firstLogin = false;
+      }
+    },
+    async setupTotp(code: string) {
+      const result: ITotpSetupResponse = await UserService.setupTotp(code);
+      if (result.totpVerified) {
         this.token.usesTotp = true;
         this.token.firstLogin = false;
       }

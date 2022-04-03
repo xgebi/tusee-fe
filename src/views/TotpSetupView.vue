@@ -41,7 +41,7 @@ export default defineComponent({
   methods: {
     async confirmTotp(e: Event) {
       e.preventDefault();
-      await this.userStore.confirmTotp(this.confirmCode);
+      await this.userStore.setupTotp(this.confirmCode);
       if (this.userStore.token?.usesTotp && !this.userStore.token?.firstLogin) {
         this.$router.push({ name: 'dashboard' });
       }
