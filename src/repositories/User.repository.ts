@@ -1,10 +1,11 @@
 import type ILoginInfo from '../interfaces/ILoginInfo';
 import type IUserToken from '../interfaces/IUserToken';
-import dayjs from 'dayjs';
 import type IRegistrationInfo from '@/interfaces/IRegistrationInfo';
 import type IRegistrationResult from '@/interfaces/IRegistrationResult';
 import Fetch from '@/utils/Fetch';
-import AES from 'crypto-js/aes';
+import type ITotpSetup from '@/interfaces/ITotpSetup';
+import type IKey from '@/interfaces/IKey';
+import type ITotpConfirmation from '@/interfaces/ITotpConfirmation';
 
 class UserRepository {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
@@ -28,18 +29,23 @@ class UserRepository {
   }
 
   public static async confirmTotp(
-    token: string,
-    totpCode: string
-  ): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      resolve(true);
-    });
+    totpCode: ITotpConfirmation
+  ): Promise<IKey[]> {
+    const response = await Fetch.post('verify-totp', totpCode);
+    if (response.ok) {
+      const result = await response.json();
+      return result as IKey[];
+    }
+    throw new Error();
   }
 
-  public static async skipTotp(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      resolve(true);
-    });
+  public static async setupTotp(body: ITotpSetup): Promise<IKey[]> {
+    const response = await Fetch.post('setup-totp', body);
+    if (response.ok) {
+      const result = await response.json();
+      return result as IKey[];
+    }
+    throw new Error();
   }
 }
 

@@ -6,6 +6,7 @@ import UserRepository from '@/repositories/User.repository';
 import type IUserToken from '@/interfaces/IUserToken';
 import type IRegistrationInfo from '@/interfaces/IRegistrationInfo';
 import type IRegistrationResult from '@/interfaces/IRegistrationResult';
+import type IKey from '@/interfaces/IKey';
 
 class UserService {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
@@ -20,15 +21,24 @@ class UserService {
     return await UserRepository.register(info);
   }
 
-  public static async confirmTotp(
-    token: string,
-    totpCode: string
-  ): Promise<boolean> {
-    return await UserRepository.confirmTotp(token, totpCode);
+  public static async confirmTotp(totpCode: string): Promise<IKey[]> {
+    return await UserRepository.confirmTotp({
+      totpCode,
+    });
   }
 
-  public static async skipTotp(): Promise<boolean> {
-    return await UserRepository.skipTotp();
+  public static async setupTotp(totpCode: string): Promise<IKey[]> {
+    return await UserRepository.setupTotp({
+      skip: false,
+      totpCode: totpCode,
+    });
+  }
+
+  public static async skipTotp(): Promise<IKey[]> {
+    return await UserRepository.setupTotp({
+      skip: true,
+      totpCode: '',
+    });
   }
 }
 
