@@ -2,8 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '@/views/LoginView.vue';
 import RegistrationView from '@/views/RegistrationView.vue';
 import DashboardView from '@/views/DashboardView.vue';
+import StandAloneTasksView from '@/views/StandAloneTasksView.vue';
+import EventsView from '@/views/EventsView.vue';
+import EventView from '@/views/EventView.vue';
 import HomeView from '@/views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
+import PrintableView from '@/views/PrintableView.vue';
 import TotpView from '@/views/TotpView.vue';
 import TotpSetupView from '@/views/TotpSetupView.vue';
 import BoardsView from '@/views/BoardsView.vue';
@@ -56,6 +60,18 @@ const router = createRouter({
       beforeEnter: authenticatedGuard,
     },
     {
+      path: '/tasks',
+      name: 'tasks',
+      component: StandAloneTasksView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/events',
+      name: 'events',
+      component: EventsView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
       path: '/totp-setup',
       name: 'totp-setup',
       component: TotpSetupView,
@@ -86,6 +102,12 @@ const router = createRouter({
       beforeEnter: authenticatedGuard,
     },
     {
+      path: '/event/:id',
+      name: 'event',
+      component: EventView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
       path: '/calendar',
       name: 'calendar',
       component: CalendarView,
@@ -94,8 +116,8 @@ const router = createRouter({
     {
       path: '/printable',
       name: 'printable',
-      component: ProfileView,
-      beforeEnter: authenticatedGuard,
+      component: PrintableView,
+      // beforeEnter: authenticatedGuard,
     },
     {
       path: '/profile',
