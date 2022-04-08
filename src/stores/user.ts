@@ -45,6 +45,7 @@ export const useUserStore = defineStore({
       };
       console.log(token);
       this.token = token;
+      localStorage.setItem('token', returned.token);
     },
     logout() {
       this.token = {
@@ -77,6 +78,25 @@ export const useUserStore = defineStore({
       if (await UserService.skipTotp()) {
         this.token.usesTotp = false;
         this.token.firstLogin = false;
+      }
+    },
+    async authorizeFromToken() {
+      const token = localStorage.getItem('token') ?? '';
+      if (token.length > 0) {
+        const returned: any = await UserService.authorizeFromToken(token);
+        const token: IUserToken = {
+          automaticLogoutTime: dayjs(returned.expiry_date),
+          displayName: returned.display_name,
+          email: returned.email,
+          firstLogin: returned.first_login,
+          keys: returned.keys,
+          password: this.token.password,
+          token: returned.token,
+          totpSecret: returned.totp_secret,
+          userUuid: returned.user_uuid,
+          usesTotp: returned.uses_totp,
+        };
+        this.token = token;
       }
     },
   },

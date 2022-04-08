@@ -19,8 +19,11 @@ import TaskView from '@/views/TaskView.vue';
 import { useUserStore } from '@/stores/user';
 import dayjs from 'dayjs';
 
-const authenticatedGuard = () => {
+const authenticatedGuard = async () => {
   const userStore = useUserStore();
+  if (userStore.token?.token.length > 0) {
+    await userStore.authorizeFromToken();
+  }
   return (
     userStore.token?.automaticLogoutTime.isAfter(dayjs()) &&
     userStore.token?.token.length > 0
@@ -117,7 +120,7 @@ const router = createRouter({
       path: '/printable',
       name: 'printable',
       component: PrintableView,
-      // beforeEnter: authenticatedGuard,
+      beforeEnter: authenticatedGuard,
     },
     {
       path: '/profile',

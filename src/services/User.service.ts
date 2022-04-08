@@ -41,6 +41,10 @@ class UserService {
       totpCode: '',
     });
   }
+
+  public static async authorizeFromToken(token: string): Promise<IUserToken> {
+    return await UserRepository.authorizeFromToken(token);
+  }
 }
 
 export default UserService;

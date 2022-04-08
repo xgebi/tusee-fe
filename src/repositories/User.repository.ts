@@ -48,6 +48,15 @@ class UserRepository {
     }
     throw new Error();
   }
+
+  public static async authorizeFromToken(token: string): Promise<IUserToken> {
+    const response = await Fetch.post('authorize-token', { token });
+    if (response.ok) {
+      const result = await response.json();
+      return result as IUserToken;
+    }
+    throw new Error();
+  }
 }
 
 export default UserRepository;
