@@ -50,10 +50,11 @@ class UserRepository {
   }
 
   public static async authorizeFromToken(token: string): Promise<IUserToken> {
-    const response = await Fetch.post('authorize-token', { token });
+    const response = await Fetch.get('authorize-token');
     if (response.ok) {
       const result = await response.json();
-      return result as IUserToken;
+      console.log('repo', result);
+      return result.user as IUserToken;
     }
     throw new Error();
   }

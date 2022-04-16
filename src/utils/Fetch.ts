@@ -7,7 +7,9 @@ class Fetch {
   private static composeHeaders(): Headers {
     const userStore = useUserStore();
     return {
-      Authorization: userStore.token?.token ? userStore.token?.token : '',
+      Authorization: userStore.token?.token
+        ? userStore.token?.token
+        : localStorage.getItem('token') ?? '',
     };
   }
   public static async get(url: string): Promise<Response> {

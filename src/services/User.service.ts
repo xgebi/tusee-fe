@@ -8,10 +8,16 @@ import type IRegistrationInfo from '@/interfaces/IRegistrationInfo';
 import type IRegistrationResult from '@/interfaces/IRegistrationResult';
 import type IKey from '@/interfaces/IKey';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
+import { useUserStore } from '@/stores/user';
 
 class UserService {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
-    return await UserRepository.login(info);
+    const result_login = await UserRepository.login(info);
+    const user = useUserStore();
+    for (const key of result_login.keys) {
+      key.key = AES.decrypt(key.key, user.token.password).toString();
+    }
+    return result_login;
   }
 
   public static async register(
