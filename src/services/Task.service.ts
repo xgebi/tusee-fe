@@ -23,9 +23,11 @@ class TaskService {
     } else {
       key = user.token.keys.filter((item) => !item.board);
     }
-    task.title = AES.encrypt(task.title, key[0].key).toString();
-    task.description = AES.encrypt(task.description, key[0].key).toString();
-    return task;
+    return {
+      ...task,
+      title: AES.encrypt(task.title, key[0].key).toString(),
+      description: AES.encrypt(task.description, key[0].key).toString(),
+    };
   }
 
   static decryptTask(task: ITask): ITask {
@@ -36,9 +38,11 @@ class TaskService {
     } else {
       key = user.token.keys.filter((item) => !item.board);
     }
-    task.title = AES.decrypt(task.title, key[0].key).toString();
-    task.description = AES.decrypt(task.description, key[0].key).toString();
-    return task;
+    return {
+      ...task,
+      title: AES.decrypt(task.title, key[0].key).toString(),
+      description: AES.decrypt(task.description, key[0].key).toString(),
+    };
   }
 }
 export default TaskService;
