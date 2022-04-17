@@ -21,6 +21,13 @@ class TaskService {
     return this.decryptTask(response_task);
   }
 
+  public static async updateTask(task: ITask): Promise<ITask> {
+    const response_task: ITask = await TaskRepository.updateTask(
+      this.encryptTask(task)
+    );
+    return this.decryptTask(response_task);
+  }
+
   static encryptTask(task: ITask): ITask {
     const user = useUserStore();
     let key;

@@ -40,3 +40,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.top-bar {
+  grid-column: 1 / 4;
+}
+</style>

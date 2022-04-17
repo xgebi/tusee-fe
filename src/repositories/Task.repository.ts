@@ -37,6 +37,16 @@ class TaskRepository {
     }
     throw new Error();
   }
+
+  public static async updateTask(task: ITask): Promise<ITask> {
+    const response = await Fetch.put('task', task);
+    if (response.ok) {
+      const result = await response.json();
+      console.log(result);
+      return result as ITask;
+    }
+    throw new Error();
+  }
 }
 
 export default TaskRepository;

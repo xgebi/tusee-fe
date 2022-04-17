@@ -10,5 +10,6 @@ import { RouterView } from 'vue-router';
 body {
   margin: 0;
   padding: 0;
+  font-family: Cabin, 'sans-serif';
 }
 </style>
