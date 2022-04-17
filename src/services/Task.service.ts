@@ -1,11 +1,17 @@
 import TaskRepository from '@/repositories/Task.repository';
 import type ITask from '@/interfaces/ITask';
+import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/aes';
 import { useUserStore } from '@/stores/user';
 
 class TaskService {
-  public static async getStandAloneTasks(): Promise<any> {
-    return await TaskRepository.getStandAloneTasks();
+  public static async getStandAloneTasks(): Promise<ITask[]> {
+    const tasks: ITask[] = await TaskRepository.getStandAloneTasks();
+    const resultingTasks: ITask[] = [];
+    for (const task of tasks) {
+      resultingTasks.push(this.decryptTask(task));
+    }
+    return resultingTasks;
   }
 
   public static async createTask(task: ITask): Promise<ITask> {
@@ -23,11 +29,12 @@ class TaskService {
     } else {
       key = user.token.keys.filter((item) => !item.board);
     }
-    return {
+    const result = {
       ...task,
       title: AES.encrypt(task.title, key[0].key).toString(),
       description: AES.encrypt(task.description, key[0].key).toString(),
     };
+    return result;
   }
 
   static decryptTask(task: ITask): ITask {
@@ -40,8 +47,10 @@ class TaskService {
     }
     return {
       ...task,
-      title: AES.decrypt(task.title, key[0].key).toString(),
-      description: AES.decrypt(task.description, key[0].key).toString(),
+      title: AES.decrypt(task.title, key[0].key).toString(CryptoJS.enc.Utf8),
+      description: AES.decrypt(task.description, key[0].key).toString(
+        CryptoJS.enc.Utf8
+      ),
     };
   }
 }
