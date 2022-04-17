@@ -1,3 +1,5 @@
+import type TaskStatuses from '@/const/TaskStatuses';
+
 interface ITask {
   title: string;
   description: string;
@@ -8,6 +10,7 @@ interface ITask {
   board?: string;
   updated?: Date;
   created?: Date;
+  task_status: TaskStatuses;
 }
 
 export default ITask;
