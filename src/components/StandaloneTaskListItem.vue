@@ -15,7 +15,9 @@
       />
       Done
     </label>
-    <a class="edit">Edit</a>
+    <router-link :to="{ path: `/task/${task.task_uuid}` }" class="edit"
+      >Edit</router-link
+    >
     <button class="delete">Delete</button>
   </div>
 </template>

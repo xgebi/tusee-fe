@@ -9,7 +9,7 @@
       v-on:created="createNewTask"
     ></TaskEdit>
     <ul v-if="!state.loading">
-      <li v-for="(task, i) in tasks" :key="i">
+      <li v-for="(task, i) in taskStore.getStandaloneTasks" :key="i">
         <StandaloneTaskListItem :task="task"></StandaloneTaskListItem>
       </li>
     </ul>
@@ -25,9 +25,11 @@ import type ITask from '@/interfaces/ITask';
 import TaskEdit from '@/components/shared/TaskEdit.vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import StandaloneTaskListItem from '@/components/StandaloneTaskListItem.vue';
+import { useTaskStore } from '@/stores/tasks';
+
+const taskStore = useTaskStore();
 
 const newTaskFormVisible: Ref<boolean> = ref(false);
-const tasks: Ref<ITask[]> = ref([]);
 const state = reactive({
   loading: true,
 });
@@ -39,17 +41,15 @@ const newTask: ITask = reactive({
   task_status: TaskStatuses.READY,
 });
 onBeforeMount(async () => {
-  const tasksFetched = await TaskService.getStandAloneTasks();
-  console.log('tasksFetched', tasksFetched);
-  tasks.value = tasksFetched;
+  await taskStore.fetchStandAloneTasks();
   state.loading = false;
 });
 
 const toggleNewTaskForm = () =>
   (newTaskFormVisible.value = !newTaskFormVisible.value);
 
-const createNewTask = async (e: ITask) => {
-  tasks.value.push(e);
+const createNewTask = async (task: ITask) => {
+  taskStore.appendStandAloneTasks(task);
 };
 </script>
 
