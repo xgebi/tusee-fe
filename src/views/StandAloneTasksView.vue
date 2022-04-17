@@ -2,12 +2,7 @@
   <main class="page page-standalone-tasks">
     <MainNavigation></MainNavigation>
     <h1>Standalone Tasks</h1>
-    <button @click="toggleNewTaskForm">Create new task</button>
-    <TaskEdit
-      v-if="newTaskFormVisible"
-      :new-task="true"
-      v-on:created="createNewTask"
-    ></TaskEdit>
+    <TaskEdit :new-task="true" v-on:created="createNewTask"></TaskEdit>
     <ul v-if="!state.loading">
       <li v-for="(task, i) in taskStore.getStandaloneTasks" :key="i">
         <StandaloneTaskListItem :task="task"></StandaloneTaskListItem>
@@ -29,7 +24,6 @@ import { useTaskStore } from '@/stores/tasks';
 
 const taskStore = useTaskStore();
 
-const newTaskFormVisible: Ref<boolean> = ref(false);
 const state = reactive({
   loading: true,
 });
@@ -44,9 +38,6 @@ onBeforeMount(async () => {
   await taskStore.fetchStandAloneTasks();
   state.loading = false;
 });
-
-const toggleNewTaskForm = () =>
-  (newTaskFormVisible.value = !newTaskFormVisible.value);
 
 const createNewTask = async (task: ITask) => {
   taskStore.appendStandAloneTasks(task);

@@ -61,6 +61,10 @@ export const useUserStore = defineStore({
         userUuid: '',
       };
     },
+    updateToken(token: string) {
+      this.token.token = token;
+      this.token.automaticLogoutTime = dayjs().add(30, 'minute');
+    },
     async confirmTotp(code: string) {
       if (await UserService.confirmTotp(code)) {
         this.token.usesTotp = true;

@@ -1,38 +1,43 @@
 <template>
   <section>
-    <form @submit="createNewTask">
-      <div>
-        <label for="task-title">Title</label>
-        <input id="task-title" v-model="task.title" />
-      </div>
-      <div>
-        <label for="task-description">Description</label>
-        <input id="task-description" v-model="task.description" />
-      </div>
-      <div>
-        <label for="task-deadline">Title</label>
-        <input
-          id="task-deadline"
-          type="datetime-local"
-          v-model="task.deadline"
-        />
-      </div>
-      <div>
-        <label for="task-start-time">Title</label>
-        <input
-          id="task-start-time"
-          type="datetime-local"
-          v-model="task.startTime"
-        />
-      </div>
-      <button @click="createNewTask">Create</button>
-    </form>
+    <button @click="openDialog">Create new task</button>
+    <dialog @close="createNewTask" :open="dialogOpened">
+      <form method="dialog">
+        <div>
+          <label for="task-title">Title</label>
+          <input id="task-title" v-model="task.title" />
+        </div>
+        <div>
+          <label for="task-description">Description</label>
+          <input id="task-description" v-model="task.description" />
+        </div>
+        <div>
+          <label for="task-deadline">Title</label>
+          <input
+            id="task-deadline"
+            type="datetime-local"
+            v-model="task.deadline"
+          />
+        </div>
+        <div>
+          <label for="task-start-time">Title</label>
+          <input
+            id="task-start-time"
+            type="datetime-local"
+            v-model="task.startTime"
+          />
+        </div>
+        <!--        <input type="submit" value="Create" />-->
+        <button value="cancel">Cancel</button>
+        <button id="confirmBtn" value="create">Create task</button>
+      </form>
+    </dialog>
   </section>
 </template>
 
 <script setup lang="ts">
 import type ITask from '@/interfaces/ITask';
-import { reactive } from 'vue';
+import { reactive, Ref, ref } from 'vue';
 import TaskService from '@/services/Task.service';
 import TaskStatuses from '@/const/TaskStatuses';
 
@@ -59,14 +64,26 @@ if (props.newTask && !props.task) {
   task = reactive(props.task as ITask);
 }
 
+const dialogOpened: Ref<boolean> = ref(false);
+const openDialog = () => {
+  dialogOpened.value = !dialogOpened.value;
+};
+
 const createNewTask = async (e: Event) => {
   e.preventDefault();
-  const createdTask = await TaskService.createTask(task);
-  if (props.newTask) {
-    emit('created', createdTask);
-  } else {
-    emit('updated', createdTask);
+  dialogOpened.value = !dialogOpened.value;
+  if (e.target?.returnValue === 'create') {
+    const createdTask = await TaskService.createTask(task);
+    if (props.newTask) {
+      emit('created', createdTask);
+    } else {
+      emit('updated', createdTask);
+    }
   }
 };
 </script>
-<style scoped></style>
+<style scoped>
+dialog::backdrop {
+  background: rgba(255, 0, 0, 0.25);
+}
+</style>

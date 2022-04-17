@@ -10,6 +10,7 @@ import type IRegistrationResult from '@/interfaces/IRegistrationResult';
 import type IKey from '@/interfaces/IKey';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 import { useUserStore } from '@/stores/user';
+import KeyService from '@/services/Key.service';
 
 class UserService {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
@@ -28,7 +29,7 @@ class UserService {
   public static async register(
     info: IRegistrationInfo
   ): Promise<IRegistrationResult> {
-    const rawKey = uuidv4().toString();
+    const rawKey = KeyService.generateKey();
     info.key = AES.encrypt(rawKey, info.password).toString();
     info.displayName = AES.encrypt(info.displayName, rawKey).toString();
     return await UserRepository.register(info);

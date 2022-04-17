@@ -1,14 +1,17 @@
 import type dayjs from 'dayjs';
 import Fetch from '@/utils/Fetch';
 import type ITask from '@/interfaces/ITask';
+import { useUserStore } from '@/stores/user';
 
 class TaskRepository {
-  public static async getStandAloneTasks(): Promise<any> {
+  public static async getStandAloneTasks(): Promise<ITask[]> {
     const response = await Fetch.get('standalone-tasks');
     if (response.ok) {
       const result = await response.json();
       console.log(result);
-      return result as any;
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.tasks as ITask[];
     }
     throw new Error();
   }
@@ -33,7 +36,9 @@ class TaskRepository {
     if (response.ok) {
       const result = await response.json();
       console.log(result);
-      return result as ITask;
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.task as ITask;
     }
     throw new Error();
   }
@@ -43,7 +48,9 @@ class TaskRepository {
     if (response.ok) {
       const result = await response.json();
       console.log(result);
-      return result as ITask;
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.task as ITask;
     }
     throw new Error();
   }
