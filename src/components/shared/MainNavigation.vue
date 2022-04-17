@@ -1,7 +1,7 @@
 <template>
   <section class="top-bar">
     <p>Tusee</p>
-    <button>New task</button>
+    <TaskEdit :new-task="true" v-on:created="createNewTask"></TaskEdit>
     <button>New event</button>
     <nav class="main-navigation">
       <ul>
@@ -21,24 +21,21 @@
   </section>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { useRouter } from 'vue-router';
+import TaskEdit from '@/components/shared/TaskEdit.vue';
 
-export default defineComponent({
-  name: 'MainNavigation',
-  setup() {
-    const userStore = useUserStore();
-    return { userStore };
-  },
-  methods: {
-    logOut(e: Event) {
-      e.preventDefault();
-      this.userStore.logout();
-      this.$router.push({ name: 'loggedOut' });
-    },
-  },
-});
+const router = useRouter();
+
+const userStore = useUserStore();
+
+const logOut = (e: Event) => {
+  e.preventDefault();
+  userStore.logout();
+  router.push({ name: 'loggedOut' });
+};
 </script>
 
 <style scoped>
