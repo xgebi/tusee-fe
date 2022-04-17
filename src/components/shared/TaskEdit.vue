@@ -40,6 +40,9 @@ import type ITask from '@/interfaces/ITask';
 import { reactive, Ref, ref } from 'vue';
 import TaskService from '@/services/Task.service';
 import TaskStatuses from '@/const/TaskStatuses';
+import { useTaskStore } from '@/stores/tasks';
+
+const taskStore = useTaskStore();
 
 const props = defineProps<{
   newTask?: boolean;
@@ -73,12 +76,7 @@ const createNewTask = async (e: Event) => {
   e.preventDefault();
   dialogOpened.value = !dialogOpened.value;
   if (e.target?.returnValue === 'create') {
-    const createdTask = await TaskService.createTask(task);
-    if (props.newTask) {
-      emit('created', createdTask);
-    } else {
-      emit('updated', createdTask);
-    }
+    await taskStore.appendStandAloneTasks(task);
   }
 };
 </script>
