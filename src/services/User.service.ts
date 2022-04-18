@@ -15,7 +15,6 @@ import KeyService from '@/services/Key.service';
 class UserService {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
     const result_login = await UserRepository.login(info);
-    const user = useUserStore();
     this.decryptKeys(info.password, result_login.keys);
     return result_login;
   }
@@ -36,9 +35,13 @@ class UserService {
   }
 
   public static async confirmTotp(totpCode: string): Promise<IKey[]> {
-    return await UserRepository.confirmTotp({
+    const result = await UserRepository.confirmTotp({
       totpCode,
     });
+    const user = useUserStore();
+    user.updateToken(result.token);
+    this.decryptKeys(user.token.password, result.keys);
+    return result.keys;
   }
 
   public static async setupTotp(totpCode: string): Promise<ITotpSetupResponse> {
@@ -47,15 +50,20 @@ class UserService {
       totpCode: totpCode,
     });
     const user = useUserStore();
+    user.updateToken(result.token);
     this.decryptKeys(user.token.password, result.keys);
     return result;
   }
 
   public static async skipTotp(): Promise<ITotpSetupResponse> {
-    return await UserRepository.setupTotp({
+    const result = await UserRepository.setupTotp({
       skip: true,
       totpCode: '',
     });
+    const user = useUserStore();
+    user.updateToken(result.token);
+    this.decryptKeys(user.token.password, result.keys);
+    return result;
   }
 }
 

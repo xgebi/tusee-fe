@@ -4,9 +4,9 @@ import type IRegistrationInfo from '@/interfaces/IRegistrationInfo';
 import type IRegistrationResult from '@/interfaces/IRegistrationResult';
 import Fetch from '@/utils/Fetch';
 import type ITotpSetup from '@/interfaces/ITotpSetup';
-import type IKey from '@/interfaces/IKey';
 import type ITotpConfirmation from '@/interfaces/ITotpConfirmation';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
+import type ITotpConfirmationResponse from '@/interfaces/ITotpConfirmationResponse';
 
 class UserRepository {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
@@ -31,11 +31,11 @@ class UserRepository {
 
   public static async confirmTotp(
     totpCode: ITotpConfirmation
-  ): Promise<IKey[]> {
+  ): Promise<ITotpConfirmationResponse> {
     const response = await Fetch.post('verify-totp', totpCode);
     if (response.ok) {
       const result = await response.json();
-      return result as IKey[];
+      return result as ITotpConfirmationResponse;
     }
     throw new Error();
   }

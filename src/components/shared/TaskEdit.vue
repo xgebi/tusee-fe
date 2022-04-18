@@ -1,7 +1,7 @@
 <template>
   <section>
     <button @click="openDialog">Create new task</button>
-    <dialog @close="createNewTask" :open="dialogOpened">
+    <dialog @close="createNewTask" ref="dialog">
       <form method="dialog">
         <div>
           <label for="task-title">Title</label>
@@ -41,6 +41,7 @@ import { reactive, Ref, ref } from 'vue';
 import TaskService from '@/services/Task.service';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';
+const dialog = ref(null);
 
 const taskStore = useTaskStore();
 
@@ -69,12 +70,12 @@ if (props.newTask && !props.task) {
 
 const dialogOpened: Ref<boolean> = ref(false);
 const openDialog = () => {
-  dialogOpened.value = !dialogOpened.value;
+  dialog.value.showModal();
 };
 
 const createNewTask = async (e: Event) => {
   e.preventDefault();
-  dialogOpened.value = !dialogOpened.value;
+  dialog.value.close();
   if (e.target?.returnValue === 'create') {
     await taskStore.appendStandAloneTasks(task);
   }
@@ -82,6 +83,6 @@ const createNewTask = async (e: Event) => {
 </script>
 <style scoped>
 dialog::backdrop {
-  background: rgba(255, 0, 0, 0.25);
+  background: rgba(101, 82, 82, 0.25);
 }
 </style>

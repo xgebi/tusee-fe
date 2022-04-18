@@ -1,7 +1,7 @@
 <template>
   <section class="top-bar">
     <p>Tusee</p>
-    <TaskEdit :new-task="true" v-on:created="createNewTask"></TaskEdit>
+    <TaskEdit :new-task="true"></TaskEdit>
     <button>New event</button>
     <nav class="main-navigation">
       <ul>

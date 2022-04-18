@@ -66,9 +66,11 @@ export const useUserStore = defineStore({
       this.token.automaticLogoutTime = dayjs().add(30, 'minute');
     },
     async confirmTotp(code: string) {
-      if (await UserService.confirmTotp(code)) {
+      const result = await UserService.confirmTotp(code);
+      if (result.length > 0) {
         this.token.usesTotp = true;
         this.token.firstLogin = false;
+        this.token.keys = result;
       }
     },
     async setupTotp(code: string) {
@@ -79,9 +81,11 @@ export const useUserStore = defineStore({
       }
     },
     async skipTotp() {
-      if (await UserService.skipTotp()) {
+      const result = await UserService.skipTotp();
+      if (result.keys.length > 0) {
         this.token.usesTotp = false;
         this.token.firstLogin = false;
+        this.token.keys = result.keys;
       }
     },
   },
