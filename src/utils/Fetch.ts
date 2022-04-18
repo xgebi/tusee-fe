@@ -42,10 +42,18 @@ class Fetch {
     });
   }
 
-  public static async delete(url: string): Promise<Response> {
+  public static async delete(
+    url: string,
+    body: string | object | Array<any>,
+    nonJson = false
+  ): Promise<Response> {
+    const processedBody: string = nonJson
+      ? (body as string)
+      : JSON.stringify(body);
     return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
       method: 'DELETE',
       headers: this.composeHeaders(),
+      body: processedBody,
     });
   }
 }

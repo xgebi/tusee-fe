@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type ITask from '@/interfaces/ITask';
 import TaskService from '@/services/Task.service';
+import _ from 'lodash';
 
 export type TaskState = {
   standaloneTasks: ITask[];
@@ -29,6 +30,19 @@ export const useTaskStore = defineStore({
     },
     async appendStandAloneTasks(task: ITask) {
       this.standaloneTasks.push(await TaskService.createTask(task));
+    },
+    async deleteStandAloneTasks(task: ITask) {
+      const deletedTask = await TaskService.deleteTask(task);
+      _.remove(this.standaloneTasks, (task: ITask) => {
+        return task.task_uuid === deletedTask;
+      });
+    },
+    async updateTask(task: ITask) {
+      const updatedTask = await TaskService.updateTask(task);
+      const foundTask = this.standaloneTasks.findIndex(
+        (task) => task.task_uuid === updatedTask.task_uuid
+      );
+      this.standaloneTasks[foundTask] = updatedTask;
     },
   },
 });

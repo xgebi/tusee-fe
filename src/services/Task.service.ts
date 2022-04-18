@@ -3,6 +3,7 @@ import type ITask from '@/interfaces/ITask';
 import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/aes';
 import { useUserStore } from '@/stores/user';
+import dayjs from 'dayjs';
 
 class TaskService {
   public static async getStandAloneTasks(): Promise<ITask[]> {
@@ -11,6 +12,15 @@ class TaskService {
     for (const task of tasks) {
       resultingTasks.push(this.decryptTask(task));
     }
+    resultingTasks.sort((a, b) => {
+      if (a.created && b.created && a.created < b.created) {
+        return 1;
+      }
+      if (a.created && b.created && a.created > b.created) {
+        return -1;
+      }
+      return 0;
+    });
     return resultingTasks;
   }
 
@@ -26,6 +36,11 @@ class TaskService {
       this.encryptTask(task)
     );
     return this.decryptTask(response_task);
+  }
+
+  public static async deleteTask(task: ITask): Promise<string> {
+    const response_task: string = await TaskRepository.deleteTask(task);
+    return response_task;
   }
 
   static encryptTask(task: ITask): ITask {

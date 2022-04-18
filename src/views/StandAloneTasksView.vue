@@ -40,7 +40,7 @@ onBeforeMount(async () => {
 });
 
 const createNewTask = async (task: ITask) => {
-  taskStore.appendStandAloneTasks(task);
+  await taskStore.appendStandAloneTasks(task);
 };
 </script>
 

@@ -54,6 +54,19 @@ class TaskRepository {
     }
     throw new Error();
   }
+
+  public static async deleteTask(task: ITask): Promise<string> {
+    const response = await Fetch.delete('task', {
+      task_uuid: task['task_uuid'],
+    });
+    if (response.ok) {
+      const result = await response.json();
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.task as string;
+    }
+    throw new Error();
+  }
 }
 
 export default TaskRepository;
