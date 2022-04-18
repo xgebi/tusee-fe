@@ -1,30 +1,31 @@
 <template>
   <main class="page page-login">
-    <section>
+    <section v-if="settingsStore.getRegistrationEnabled">
       <form
         v-on:submit="register"
-        v-if="!registrationSuccessful || !registrationAttempted"
+        v-if="!state.registrationSuccessful || !state.registrationAttempted"
       >
         <label for="username">Username:</label>
-        <input type="text" id="username" v-model="username" />
+        <input type="text" id="username" v-model="state.username" />
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" />
+        <input type="password" id="password" v-model="state.password" />
         <label for="display-name">Display Name:</label>
-        <input type="text" id="display-name" v-model="displayName" />
+        <input type="text" id="display-name" v-model="state.displayName" />
         <button>Register</button>
       </form>
-      <div v-if="registrationSuccessful && registrationAttempted">
+      <div v-if="state.registrationSuccessful && state.registrationAttempted">
         <RouterLink :to="{ name: 'login' }">Continue to login</RouterLink>
       </div>
     </section>
+    <section v-else>Registration disabled</section>
   </main>
 </template>
 
-<script lang="ts">
-import { useUserStore } from '@/stores/user';
-import { mapStores } from 'pinia';
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { reactive } from 'vue';
 import UserService from '@/services/User.service';
+import { useSettingsStore } from '@/stores/settings';
+import { useRouter } from 'vue-router';
 
 type RegistrationViewState = {
   username: string;
@@ -34,48 +35,38 @@ type RegistrationViewState = {
   registrationSuccessful: boolean;
   registrationAttempted: boolean;
 };
-
-export default defineComponent({
-  name: 'RegistrationView',
-  setup() {
-    const userStore = useUserStore();
-    return { userStore };
-  },
-  data() {
-    return {
-      username: '',
-      password: '',
-      displayName: '',
-      error: null,
-      registrationSuccessful: false,
-      registrationAttempted: false,
-    } as RegistrationViewState;
-  },
-  computed: {
-    ...mapStores(useUserStore),
-  },
-  methods: {
-    async register(e: Event) {
-      e.preventDefault();
-      this.registrationAttempted = true;
-      try {
-        const registration = await UserService.register({
-          email: this.username,
-          password: this.password,
-          displayName: this.displayName,
-          key: '',
-        });
-        if (!registration.registrationSuccessful) {
-          throw new Error(registration.error);
-        }
-        this.registrationSuccessful = registration.registrationSuccessful;
-      } catch (e) {
-        console.log(e);
-        this.registrationSuccessful = false;
-      }
-    },
-  },
+const state: RegistrationViewState = reactive({
+  username: '',
+  password: '',
+  displayName: '',
+  error: null,
+  registrationSuccessful: false,
+  registrationAttempted: false,
 });
+
+const router = useRouter();
+const settingsStore = useSettingsStore();
+await settingsStore.fetchSettings();
+
+const register = async (e: Event) => {
+  e.preventDefault();
+  state.registrationAttempted = true;
+  try {
+    const registration = await UserService.register({
+      email: state.username,
+      password: state.password,
+      displayName: state.displayName,
+      key: '',
+    });
+    if (!registration.registrationSuccessful) {
+      throw new Error(registration.error);
+    }
+    state.registrationSuccessful = registration.registrationSuccessful;
+  } catch (e) {
+    console.log(e);
+    state.registrationSuccessful = false;
+  }
+};
 </script>
 
 <style scoped lang="scss">

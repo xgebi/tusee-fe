@@ -42,7 +42,10 @@ export default defineComponent({
     async confirmTotp(e: Event) {
       e.preventDefault();
       await this.userStore.setupTotp(this.confirmCode);
-      if (this.userStore.token?.usesTotp && !this.userStore.token?.firstLogin) {
+      if (
+        this.userStore.getToken.usesTotp &&
+        !this.userStore.getToken.firstLogin
+      ) {
         await this.$router.push({ name: 'dashboard' });
       }
     },
@@ -55,7 +58,7 @@ export default defineComponent({
   mounted() {
     QRCode.toCanvas(
       this.$refs.canvas,
-      `otpauth://totp/${window.location.hostname}?secret=${this.userStore.token.totpSecret}&issuer=tusee&digits=1`,
+      `otpauth://totp/${window.location.hostname}?secret=${this.userStore.getToken.totpSecret}&issuer=tusee&digits=1`,
       function (error: Error) {
         if (error) console.error(error);
       }

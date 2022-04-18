@@ -26,7 +26,11 @@ export const useUserStore = defineStore({
       },
     } as UserState),
   getters: {
-    getToken: (state) => state.token,
+    getToken: (state): IUserToken => state.token,
+    getJwtToken: (state): string => state.token.token,
+    getAuthenticated: (state): boolean =>
+      state.token.automaticLogoutTime.isAfter(dayjs()) &&
+      state.token.token.length > 0,
   },
   actions: {
     async login(email: string, password: string) {
