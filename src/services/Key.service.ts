@@ -27,7 +27,7 @@ class KeyService {
 
     let password = '';
     while (length > password.length) {
-      password += getKey[Math.floor(Math.random() * getKey.length)];
+      password += getKey[Math.floor(Math.random() * getKey.length)]();
     }
 
     return password;

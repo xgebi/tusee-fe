@@ -43,13 +43,13 @@ export default defineComponent({
       e.preventDefault();
       await this.userStore.setupTotp(this.confirmCode);
       if (this.userStore.token?.usesTotp && !this.userStore.token?.firstLogin) {
-        this.$router.push({ name: 'dashboard' });
+        await this.$router.push({ name: 'dashboard' });
       }
     },
     async skip(e: Event) {
       e.preventDefault();
       await this.userStore.skipTotp();
-      this.$router.push({ name: 'dashboard' });
+      await this.$router.push({ name: 'dashboard' });
     },
   },
   mounted() {

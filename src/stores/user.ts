@@ -37,13 +37,12 @@ export const useUserStore = defineStore({
         email: returned.email,
         firstLogin: returned.first_login,
         keys: returned.keys,
-        password: this.token.password,
+        password: password,
         token: returned.token,
         totpSecret: returned.totp_secret,
         userUuid: returned.user_uuid,
         usesTotp: returned.uses_totp,
       };
-      console.log(token);
       this.token = token;
       localStorage.setItem('token', returned.token);
     },
