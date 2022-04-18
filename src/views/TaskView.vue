@@ -1,32 +1,78 @@
 <template>
   <main class="page page-dashboard">
     <MainNavigation></MainNavigation>
-    <TaskEdit
-      :new-task="false"
-      :task="taskStore.getSelectedTask"
-      v-on:created="createdTask"
-      v-on:updated="updatedTask"
-    ></TaskEdit>
+    <form @submit="formSubmitted">
+      <div>
+        <label for="title">Title</label>
+        <input type="text" v-model="task.title" id="title" />
+      </div>
+      <div>
+        <label for="Description">Title</label>
+        <textarea v-model="task.description" id="Description"></textarea>
+      </div>
+      <label class="task-done" :for="'task-done-' + task.task_uuid">
+        <input
+          type="checkbox"
+          :checked="task.task_status === TaskStatuses.DONE"
+        />
+        Done
+      </label>
+      <div>Updated: {{ task.updated }}</div>
+      <div>Created: {{ task.created }}</div>
+      <div>
+        <button>Save</button>
+      </div>
+    </form>
   </main>
 </template>
 
 <script setup lang="ts">
 import MainNavigation from '@/components/shared/MainNavigation.vue';
-import TaskEdit from '@/components/shared/TaskEdit.vue';
 import type ITask from '@/interfaces/ITask';
 import { useRoute } from 'vue-router';
 import { useTaskStore } from '@/stores/tasks';
+import { reactive } from 'vue';
+import TaskStatuses from '@/const/TaskStatuses';
+import { useUserStore } from '@/stores/user';
+import TaskService from '@/services/Task.service';
 
 const router = useRoute();
 const taskStore = useTaskStore();
-taskStore.selectStandAloneTask(router.params.id as string);
+const userStore = useUserStore;
+let task: ITask = reactive({
+  title: '',
+  description: '',
+  deadline: undefined,
+  startTime: undefined,
+  task_uuid: '',
+  creator: '',
+  board: '',
+  updated: undefined,
+  created: undefined,
+  task_status: TaskStatuses.READY,
+});
+if (router.params.id.toString().toLowerCase() !== 'new') {
+  taskStore.selectStandAloneTask(router.params.id as string);
+  task = reactive({ ...(taskStore.getSelectedTask as ITask) });
+}
 
-const createdTask = (e: ITask) => {
-  console.log(e);
+const formSubmitted = (e: Event) => {
+  e.preventDefault();
+  if (router.params.id.toString().toLowerCase() !== 'new') {
+    updateTask();
+  } else {
+    createTask();
+  }
 };
 
-const updatedTask = (e: ITask) => {
-  console.log(e);
+const createTask = async () => {
+  console.log('create');
+  task = reactive({ ...(await TaskService.createTask(task)) });
+};
+
+const updateTask = async () => {
+  console.log('update');
+  task = reactive({ ...(await TaskService.updateTask(task)) });
 };
 </script>
 

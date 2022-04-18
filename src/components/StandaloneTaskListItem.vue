@@ -34,6 +34,7 @@ const props = defineProps<{
 }>();
 let task = reactive(props.task as ITask);
 const completeTask = async (e: Event) => {
+  // TODO make this more reusable
   e.preventDefault();
   if (task.task_status === TaskStatuses.DONE) {
     task.task_status = TaskStatuses.IN_PROGRESS;
