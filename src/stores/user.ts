@@ -30,6 +30,7 @@ export const useUserStore = defineStore({
   },
   actions: {
     async login(email: string, password: string) {
+      // TODO harmonize JSON
       const returned: any = await UserService.login({ email, password });
       const token: IUserToken = {
         automaticLogoutTime: dayjs(returned.expiry_date),

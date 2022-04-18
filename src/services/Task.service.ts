@@ -13,10 +13,13 @@ class TaskService {
       resultingTasks.push(this.decryptTask(task));
     }
     resultingTasks.sort((a, b) => {
-      if (a.created && b.created && a.created < b.created) {
+      const aDayjs = dayjs(a.created);
+      const bDayjs = dayjs(b.created);
+
+      if (bDayjs.isBefore(aDayjs)) {
         return 1;
       }
-      if (a.created && b.created && a.created > b.created) {
+      if (aDayjs.isBefore(bDayjs)) {
         return -1;
       }
       return 0;
