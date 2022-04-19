@@ -2,10 +2,10 @@
   <div class="standalone-task-list-item">
     <h2>{{ props.task.title }}</h2>
     <p class="time-task" v-if="props.task.startTime">
-      {{ formatDate(props.task.startTime) }}
+      Start time: {{ formatDate(props.task.startTime) }}
     </p>
     <p class="time-task" v-if="props.task.deadline">
-      {{ formatDate(props.task.deadline) }}
+      Deadline: {{ formatDate(props.task.deadline) }}
     </p>
     <label class="task-done" :for="'task-done-' + props.task.task_uuid">
       <input
