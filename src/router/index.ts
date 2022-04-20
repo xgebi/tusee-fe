@@ -21,10 +21,10 @@ import dayjs from 'dayjs';
 
 const authenticatedGuard = async () => {
   const userStore = useUserStore();
-  if (userStore.getJwtToken.length === 0) {
+  if (userStore.getJwtToken.length === 0 || !userStore.getAuthenticated) {
     return { name: 'login' };
   }
-  return userStore.getAuthenticated;
+  return true;
 };
 
 const router = createRouter({

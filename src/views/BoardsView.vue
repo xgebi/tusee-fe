@@ -1,24 +1,16 @@
 <template>
   <main class="page page-dashboard">
     <MainNavigation></MainNavigation>
-    This is Boards view
+    <section v-for="board in boards" :key="board.boardUuid"></section>
   </main>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from 'vue';
 import MainNavigation from '@/components/shared/MainNavigation.vue';
 import BoardsService from '@/services/Boards.service';
 
-export default defineComponent({
-  name: 'BoardsView',
-  components: {
-    MainNavigation,
-  },
-  async created() {
-    await BoardsService.getBoardsInfo();
-  },
-});
+const boards = await BoardsService.getAvailableBoards();
 </script>
 
 <style scoped></style>
