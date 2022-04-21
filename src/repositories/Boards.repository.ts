@@ -2,6 +2,8 @@ import Fetch from '@/utils/Fetch';
 import type IAvailableBoardsResponse from '@/interfaces/IAvailableBoardsResponse';
 import type IBoard from '@/interfaces/IBoard';
 import { useUserStore } from '@/stores/user';
+import type IBoardResponse from '@/interfaces/IBoardResponse';
+import type IBoardDeletedResponse from '@/interfaces/IBoardDeletedResponse';
 
 class BoardsRepository {
   public static async getAvailableBoards() {
@@ -11,6 +13,50 @@ class BoardsRepository {
       const userStore = useUserStore();
       userStore.updateToken(result.token);
       return result.boards as IBoard[];
+    }
+    throw new Error();
+  }
+
+  public static async getBoardInformation(boardUuid: string) {
+    const response = await Fetch.get(`board/${boardUuid}`);
+    if (response.ok) {
+      const result = (await response.json()) as IBoardResponse;
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.board as IBoard;
+    }
+    throw new Error();
+  }
+
+  public static async createNewBoard(board: IBoard) {
+    const response = await Fetch.post(`board`, board);
+    if (response.ok) {
+      const result = (await response.json()) as IBoardResponse;
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.board as IBoard;
+    }
+    throw new Error();
+  }
+
+  public static async updateBoard(board: IBoard) {
+    const response = await Fetch.put(`board`, board);
+    if (response.ok) {
+      const result = (await response.json()) as IBoardResponse;
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.board as IBoard;
+    }
+    throw new Error();
+  }
+
+  public static async deleteBoard(boardUuid: string): Promise<string> {
+    const response = await Fetch.delete(`board`, { boardUuid: boardUuid });
+    if (response.ok) {
+      const result = (await response.json()) as IBoardDeletedResponse;
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.board;
     }
     throw new Error();
   }

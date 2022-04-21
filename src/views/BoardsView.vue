@@ -7,10 +7,13 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, Ref, ref } from 'vue';
+import { Ref, ref } from 'vue';
 import MainNavigation from '@/components/shared/MainNavigation.vue';
 import BoardsService from '@/services/Boards.service';
 import type IBoard from '@/interfaces/IBoard';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const boards: Ref<IBoard[]> = ref([]);
 const loadBoards = async () => {
@@ -19,7 +22,7 @@ const loadBoards = async () => {
 loadBoards();
 
 const createBoard = () => {
-  console.log('create board');
+  router.push({ name: 'board-settings', params: { id: 'new' } });
 };
 </script>
 

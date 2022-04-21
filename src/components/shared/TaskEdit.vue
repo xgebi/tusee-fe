@@ -2,7 +2,7 @@
   <section>
     <button @click="openDialog">Create new task</button>
     <dialog @close="createNewTask" ref="dialog">
-      <form method="dialog">
+      <form method="dialog" @submit="createNewTask">
         <div>
           <label for="task-title">Title</label>
           <input id="task-title" v-model="task.title" />
@@ -78,7 +78,7 @@ const openDialog = () => {
 const createNewTask = async (e: Event) => {
   e.preventDefault();
   dialog.value.close();
-  if (e.target?.returnValue === 'create') {
+  if (e.target?.returnValue === 'create' || e.target.tagName === 'FORM') {
     if (taskDateTimes.deadlineDate) {
       task.deadline = taskDateTimes.deadlineTime
         ? new Date(

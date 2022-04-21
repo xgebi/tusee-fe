@@ -14,6 +14,7 @@ import BoardsView from '@/views/BoardsView.vue';
 import CalendarView from '@/views/CalendarView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import LoggedOutView from '@/views/LoggedOutView.vue';
+import SingleBoardSettingsView from '@/views/SingleBoardSettingsView.vue';
 import SingleBoardView from '@/views/SingleBoardView.vue';
 import TaskView from '@/views/TaskView.vue';
 import { useUserStore } from '@/stores/user';
@@ -87,6 +88,12 @@ const router = createRouter({
       path: '/boards',
       name: 'boards',
       component: BoardsView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/board/:id/settings',
+      name: 'board-settings',
+      component: SingleBoardSettingsView,
       beforeEnter: authenticatedGuard,
     },
     {

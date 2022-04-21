@@ -1,5 +1,4 @@
 import { useUserStore } from '@/stores/user';
-import dayjs from 'dayjs';
 import BoardsRepository from '@/repositories/Boards.repository';
 import type IBoard from '@/interfaces/IBoard';
 import AES from 'crypto-js/aes';
@@ -13,6 +12,23 @@ class BoardsService {
       resultingTasks.push(this.decryptBoard(board));
     }
     return resultingTasks;
+  }
+
+  public static async getBoardInformation(boardUuid: string): Promise<IBoard> {
+    const board: IBoard = await BoardsRepository.getBoardInformation(boardUuid);
+    return this.decryptBoard(board);
+  }
+
+  public static async createNewBoard(board: IBoard) {
+    const newBoard: IBoard = await BoardsRepository.createNewBoard(board);
+  }
+
+  public static async updateBoard(board: IBoard) {
+    const updatedBoard: IBoard = await BoardsRepository.updateBoard(board);
+  }
+
+  public static async deleteBoard(boardUuid: string): Promise<string> {
+    return BoardsRepository.deleteBoard(boardUuid);
   }
 
   public static async getBoardTasks() {}
