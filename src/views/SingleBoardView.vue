@@ -1,20 +1,26 @@
 <template>
-  <main class="page page-dashboard">
+  <main class="page page-single-board">
     <MainNavigation></MainNavigation>
-    This is single board view
+    <button @click="createBoard">Create board</button>
+    <section v-for="board in boards" :key="board.boardUuid"></section>
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { defineComponent, Ref, ref } from 'vue';
 import MainNavigation from '@/components/shared/MainNavigation.vue';
+import BoardsService from '@/services/Boards.service';
+import type IBoard from '@/interfaces/IBoard';
 
-export default defineComponent({
-  name: 'SingleBoardView',
-  components: {
-    MainNavigation,
-  },
-});
+const boards: Ref<IBoard[]> = ref([]);
+const loadBoard = async () => {
+  boards.value = await BoardsService.getAvailableBoards();
+};
+loadBoard();
+
+const createBoard = () => {
+  console.log('create board');
+};
 </script>
 
 <style scoped></style>

@@ -1,14 +1,18 @@
 <template>
   <main class="page page-login">
-    <section v-if="state.error">Error occurred during logging in</section>
     <section>
-      <form v-on:submit="login">
-        <label for="username">Username:</label>
-        <input type="text" id="username" v-model="state.username" />
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="state.password" />
-        <button>Log in</button>
-      </form>
+      <section v-if="userStore.getLoginError">
+        Error occurred during logging in
+      </section>
+      <section>
+        <form v-on:submit="login">
+          <label for="username">Username:</label>
+          <input type="text" id="username" v-model="state.username" />
+          <label for="password">Password:</label>
+          <input type="password" id="password" v-model="state.password" />
+          <button>Log in</button>
+        </form>
+      </section>
     </section>
   </main>
 </template>
@@ -22,12 +26,10 @@ import { useSettingsStore } from '@/stores/settings';
 type LoginViewState = {
   username: string;
   password: string;
-  error: undefined | boolean;
 };
 const state: LoginViewState = reactive({
   username: '',
   password: '',
-  error: undefined,
 });
 
 const router = useRouter();

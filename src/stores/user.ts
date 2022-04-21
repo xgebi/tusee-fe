@@ -6,6 +6,7 @@ import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 
 export type UserState = {
   token: IUserToken;
+  error: boolean;
 };
 
 export const useUserStore = defineStore({
@@ -24,6 +25,7 @@ export const useUserStore = defineStore({
         totpSecret: '',
         userUuid: '',
       },
+      error: false,
     } as UserState),
   getters: {
     getToken: (state): IUserToken => state.token,
@@ -31,25 +33,34 @@ export const useUserStore = defineStore({
     getAuthenticated: (state): boolean =>
       state.token.automaticLogoutTime.isAfter(dayjs()) &&
       state.token.token.length > 0,
+    getLoginError: (state): boolean => {
+      console.log(state.error);
+      return state.error;
+    },
   },
   actions: {
     async login(email: string, password: string) {
       // TODO harmonize JSON
-      const returned: any = await UserService.login({ email, password });
-      const token: IUserToken = {
-        automaticLogoutTime: dayjs(returned.expiry_date),
-        displayName: returned.display_name,
-        email: returned.email,
-        firstLogin: returned.first_login,
-        keys: returned.keys,
-        password: password,
-        token: returned.token,
-        totpSecret: returned.totp_secret,
-        userUuid: returned.user_uuid,
-        usesTotp: returned.uses_totp,
-      };
-      this.token = token;
-      localStorage.setItem('token', returned.token);
+      try {
+        const returned: any = await UserService.login({ email, password });
+        const token: IUserToken = {
+          automaticLogoutTime: dayjs(returned.expiry_date),
+          displayName: returned.display_name,
+          email: returned.email,
+          firstLogin: returned.first_login,
+          keys: returned.keys,
+          password: password,
+          token: returned.token,
+          totpSecret: returned.totp_secret,
+          userUuid: returned.user_uuid,
+          usesTotp: returned.uses_totp,
+        };
+        this.error = false;
+        this.token = token;
+        localStorage.setItem('token', returned.token);
+      } catch (e) {
+        this.error = true;
+      }
     },
     logout() {
       this.token = {
