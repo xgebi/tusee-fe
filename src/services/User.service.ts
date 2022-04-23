@@ -15,14 +15,12 @@ import KeyService from '@/services/Key.service';
 class UserService {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
     const result_login = await UserRepository.login(info);
-    this.decryptKeys(info.password, result_login.keys);
+    result_login.keys = this.decryptKeys(info.password, result_login.keys);
     return result_login;
   }
 
-  private static decryptKeys(password: string, keys: IKey[]) {
-    for (const key of keys) {
-      key.key = AES.decrypt(key.key, password).toString(CryptoJS.enc.Utf8);
-    }
+  private static decryptKeys(password: string, keys: IKey[]): IKey[] {
+    return keys.map((key) => KeyService.decryptKey(key, password));
   }
 
   public static async register(

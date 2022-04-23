@@ -3,6 +3,9 @@ import BoardsRepository from '@/repositories/Boards.repository';
 import type IBoard from '@/interfaces/IBoard';
 import AES from 'crypto-js/aes';
 import CryptoJS from 'crypto-js';
+import type IKey from '@/interfaces/IKey';
+import KeyService from '@/services/Key.service';
+import type ICreateBoardResponse from '@/interfaces/ICreateBoardResponse';
 
 class BoardsService {
   public static async getAvailableBoards() {
@@ -19,12 +22,27 @@ class BoardsService {
     return this.decryptBoard(board);
   }
 
-  public static async createNewBoard(board: IBoard) {
-    const newBoard: IBoard = await BoardsRepository.createNewBoard(board);
+  public static async createNewBoard(board: IBoard): Promise<IBoard> {
+    const userStore = useUserStore();
+    const key: IKey = {
+      tusee_user: '',
+      key_uuid: '',
+      key: KeyService.generateKey(),
+    };
+    const response: ICreateBoardResponse =
+      await BoardsRepository.createNewBoard({
+        board: this.encryptBoard(board, key),
+        key: KeyService.encryptKey(key, userStore.token.password),
+      });
+    userStore.addKey(response.key);
+    return this.decryptBoard(response.board);
   }
 
-  public static async updateBoard(board: IBoard) {
-    const updatedBoard: IBoard = await BoardsRepository.updateBoard(board);
+  public static async updateBoard(board: IBoard): Promise<IBoard> {
+    const updatedBoard: IBoard = await BoardsRepository.updateBoard(
+      this.encryptBoard(board)
+    );
+    return this.decryptBoard(updatedBoard);
   }
 
   public static async deleteBoard(boardUuid: string): Promise<string> {
@@ -35,16 +53,44 @@ class BoardsService {
 
   static decryptBoard(board: IBoard): IBoard {
     const user = useUserStore();
-    const key = user.token.keys.filter(
+    const key: IKey | undefined = user.token.keys.find(
       (item) => board.boardUuid === item.board
     );
-    return {
-      ...board,
-      name: AES.decrypt(board.name, key[0].key).toString(CryptoJS.enc.Utf8),
-      description: AES.decrypt(board.description, key[0].key).toString(
-        CryptoJS.enc.Utf8
-      ),
-    };
+    if (key) {
+      return {
+        ...board,
+        name: AES.decrypt(board.name, key.key).toString(CryptoJS.enc.Utf8),
+        description: AES.decrypt(board.description, key.key).toString(
+          CryptoJS.enc.Utf8
+        ),
+        columns: AES.decrypt(board.columns, key.key).toString(
+          CryptoJS.enc.Utf8
+        ),
+      };
+    }
+    throw new Error('Key was not found');
+  }
+
+  static encryptBoard(
+    board: IBoard,
+    newKey: IKey | undefined = undefined
+  ): IBoard {
+    let key;
+    if (!newKey) {
+      const user = useUserStore();
+      key = user.token.keys.find((item) => board.boardUuid === item.board);
+    } else {
+      key = newKey;
+    }
+    if (key) {
+      return {
+        ...board,
+        name: AES.encrypt(board.name, key.key).toString(),
+        description: AES.encrypt(board.description, key.key).toString(),
+        columns: AES.encrypt(board.columns, key.key).toString(),
+      };
+    }
+    throw new Error('Key was not found');
   }
 }
 

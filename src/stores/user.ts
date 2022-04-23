@@ -3,6 +3,7 @@ import UserService from '@/services/User.service';
 import type IUserToken from '@/interfaces/IUserToken';
 import dayjs from 'dayjs';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
+import type IKey from '@/interfaces/IKey';
 
 export type UserState = {
   token: IUserToken;
@@ -79,6 +80,9 @@ export const useUserStore = defineStore({
     updateToken(token: string) {
       this.token.token = token;
       this.token.automaticLogoutTime = dayjs().add(30, 'minute');
+    },
+    addKey(key: IKey) {
+      this.token.keys.push(key);
     },
     async confirmTotp(code: string) {
       const result = await UserService.confirmTotp(code);

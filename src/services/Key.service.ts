@@ -1,3 +1,7 @@
+import type IKey from '@/interfaces/IKey';
+import AES from 'crypto-js/aes';
+import CryptoJS from 'crypto-js';
+
 class KeyService {
   public static generateKey(length = 20): string {
     const keys = {
@@ -31,6 +35,20 @@ class KeyService {
     }
 
     return password;
+  }
+
+  public static encryptKey(key: IKey, password: string): IKey {
+    return {
+      ...key,
+      key: AES.encrypt(key.key, password).toString(),
+    };
+  }
+
+  public static decryptKey(key: IKey, password: string): IKey {
+    return {
+      ...key,
+      key: AES.decrypt(key.key, password).toString(CryptoJS.enc.Utf8),
+    };
   }
 }
 

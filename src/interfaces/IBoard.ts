@@ -3,7 +3,7 @@ interface IBoard {
   name: string;
   description: string;
   owner: string;
-  created: Date;
+  created?: Date;
   columns: string;
 }
 

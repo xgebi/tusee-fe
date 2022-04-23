@@ -4,6 +4,8 @@ import type IBoard from '@/interfaces/IBoard';
 import { useUserStore } from '@/stores/user';
 import type IBoardResponse from '@/interfaces/IBoardResponse';
 import type IBoardDeletedResponse from '@/interfaces/IBoardDeletedResponse';
+import type ICreateBoardRequest from '@/interfaces/ICreateBoardRequest';
+import type ICreateBoardResponse from '@/interfaces/ICreateBoardResponse';
 
 class BoardsRepository {
   public static async getAvailableBoards() {
@@ -28,13 +30,15 @@ class BoardsRepository {
     throw new Error();
   }
 
-  public static async createNewBoard(board: IBoard) {
-    const response = await Fetch.post(`board`, board);
+  public static async createNewBoard(
+    cbr: ICreateBoardRequest
+  ): Promise<ICreateBoardResponse> {
+    const response = await Fetch.post(`board`, cbr);
     if (response.ok) {
-      const result = (await response.json()) as IBoardResponse;
+      const result = (await response.json()) as ICreateBoardResponse;
       const userStore = useUserStore();
       userStore.updateToken(result.token);
-      return result.board as IBoard;
+      return result as ICreateBoardResponse;
     }
     throw new Error();
   }
