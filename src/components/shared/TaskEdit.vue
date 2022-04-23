@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import type ITask from '@/interfaces/ITask';
-import { reactive, Ref, ref } from 'vue';
+import { reactive, type Ref, ref } from 'vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';
 const dialog = ref(null);
