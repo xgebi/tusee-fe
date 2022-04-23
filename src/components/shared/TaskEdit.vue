@@ -79,6 +79,9 @@ const createNewTask = async (e: Event) => {
   e.preventDefault();
   dialog.value.close();
   if (e.target?.returnValue === 'create' || e.target.tagName === 'FORM') {
+    if (task.title.length === 0) {
+      return;
+    }
     if (taskDateTimes.deadlineDate) {
       task.deadline = taskDateTimes.deadlineTime
         ? new Date(

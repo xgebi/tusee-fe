@@ -6,6 +6,7 @@ import type IBoardResponse from '@/interfaces/IBoardResponse';
 import type IBoardDeletedResponse from '@/interfaces/IBoardDeletedResponse';
 import type ICreateBoardRequest from '@/interfaces/ICreateBoardRequest';
 import type ICreateBoardResponse from '@/interfaces/ICreateBoardResponse';
+import type IBoardViewResponse from '@/interfaces/IBoardViewResponse';
 
 class BoardsRepository {
   public static async getAvailableBoards() {
@@ -26,6 +27,17 @@ class BoardsRepository {
       const userStore = useUserStore();
       userStore.updateToken(result.token);
       return result.board as IBoard;
+    }
+    throw new Error();
+  }
+
+  public static async getBoardView(boardUuid: string) {
+    const response = await Fetch.get(`board-view/${boardUuid}`);
+    if (response.ok) {
+      const result = (await response.json()) as IBoardViewResponse;
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result;
     }
     throw new Error();
   }

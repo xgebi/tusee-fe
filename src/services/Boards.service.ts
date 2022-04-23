@@ -6,6 +6,9 @@ import CryptoJS from 'crypto-js';
 import type IKey from '@/interfaces/IKey';
 import KeyService from '@/services/Key.service';
 import type ICreateBoardResponse from '@/interfaces/ICreateBoardResponse';
+import type IBoardResponse from '@/interfaces/IBoardResponse';
+import type IBoardViewResponse from '@/interfaces/IBoardViewResponse';
+import TaskService from '@/services/Task.service';
 
 class BoardsService {
   public static async getAvailableBoards() {
@@ -20,6 +23,19 @@ class BoardsService {
   public static async getBoardInformation(boardUuid: string): Promise<IBoard> {
     const board: IBoard = await BoardsRepository.getBoardInformation(boardUuid);
     return this.decryptBoard(board);
+  }
+
+  public static async getBoardView(
+    boardUuid: string
+  ): Promise<IBoardViewResponse> {
+    const response: IBoardViewResponse = await BoardsRepository.getBoardView(
+      boardUuid
+    );
+    return {
+      token: '',
+      board: this.decryptBoard(response.board),
+      tasks: response.tasks.map((task) => TaskService.decryptTask(task)),
+    };
   }
 
   public static async createNewBoard(board: IBoard): Promise<IBoard> {
@@ -46,7 +62,10 @@ class BoardsService {
   }
 
   public static async deleteBoard(boardUuid: string): Promise<string> {
-    return BoardsRepository.deleteBoard(boardUuid);
+    const result = await BoardsRepository.deleteBoard(boardUuid);
+    const userStore = useUserStore();
+    userStore.removeKey(result);
+    return result;
   }
 
   public static async getBoardTasks() {}

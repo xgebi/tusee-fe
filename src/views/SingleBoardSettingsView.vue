@@ -21,6 +21,7 @@
     </div>
     <div>
       <h2>Columns</h2>
+      {{ columns }}
       <div
         draggable="true"
         v-for="(column, index) in columns"
@@ -59,15 +60,19 @@
             <option
               v-for="entry in Object.entries(TaskStatuses)"
               v-bind:key="entry[0]"
-              :value="entry[1]"
+              :value="entry[0]"
             >
-              {{ entry[1] }}
+              {{ entry[0] }}
             </option>
           </select>
         </div>
         <button @click="addColumn">Add column</button>
       </div>
       <button @click="saveBoard">Save board</button>
+      <div>
+        <h3>Danger zone</h3>
+        <button @click="deleteBoard">Delete board</button>
+      </div>
     </div>
   </main>
 </template>
@@ -80,9 +85,11 @@ import type IBoard from '@/interfaces/IBoard';
 import { useRoute, useRouter } from 'vue-router';
 import TaskStatuses from '@/const/TaskStatuses';
 import type IColumn from '@/interfaces/IColumn';
+import useBoardColumns from "@/hooks/boardColumns";
 
 const route = useRoute();
 const router = useRouter();
+const { parsedColumns, columnsSetup } = useBoardColumns();
 
 /**
  * Initializing data for component
@@ -101,28 +108,24 @@ let boardData: IBoard = reactive({
   created: undefined,
   columns: baseColumns,
 });
-if (route.params.id !== 'new') {
-  reactive({
-    ...BoardsService.getBoardInformation(route.params.id as string),
-  });
-}
+const fetchBoardInformation = async (id: string) => {
+  if (id !== 'new') {
+    const res = (await BoardsService.getBoardInformation(id));
+    boardData.boardUuid = res.boardUuid;
+    boardData.name = res.name;
+    boardData.description = res.description;
+    boardData.owner = res.owner;
+    boardData.created = res.created;
+    boardData.columns = res.columns;
+    columnsSetup(boardData.columns);
+  }
+};
+fetchBoardInformation(route.params.id as string);
 /**
  * Code related to setting up columns
  */
-let columns: IColumn[] = reactive([]);
-
-function columnsSetup() {
-  columns = [];
-  for (const column of boardData.columns.split(',')) {
-    const columnItems: string[] = column.split(':');
-    columns.push({
-      name: columnItems[1],
-      type: TaskStatuses[columnItems[0]],
-    });
-  }
-}
-
-columnsSetup();
+columnsSetup(boardData.columns);
+let columns: IColumn[] = reactive(parsedColumns);
 
 const deleteColumn = (e: Event) => {
   e.preventDefault();
@@ -169,6 +172,7 @@ const saveBoard = async (e: Event) => {
   boardData.columns = columns
     .map((column) => `${column.name}:${column.type}`)
     .join(',');
+  debugger;
   let result: IBoard;
   if (route.params.id === 'new') {
     result = await BoardsService.createNewBoard(boardData);
@@ -180,8 +184,18 @@ const saveBoard = async (e: Event) => {
     result = await BoardsService.updateBoard(boardData);
   }
   boardData = result;
-  columnsSetup();
+  columnsSetup(boardData.columns);
 };
+/**
+ * Code related to deleting a board
+ */
+const deleteBoard = async (e: Event) => {
+  e.preventDefault();
+  await BoardsService.deleteBoard(boardData.boardUuid);
+  await router.push({
+    name: 'boards',
+  });
+}
 </script>
 
 <style scoped></style>

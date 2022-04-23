@@ -24,9 +24,9 @@ export const useTaskStore = defineStore({
       this.standaloneTasks = await TaskService.getStandAloneTasks();
     },
     selectStandAloneTask(task_uuid: string) {
-      this.selectedTask = this.standaloneTasks.filter(
+      this.selectedTask = this.standaloneTasks.find(
         (task) => task.task_uuid === task_uuid
-      )[0];
+      );
     },
     async appendStandAloneTasks(task: ITask) {
       this.standaloneTasks.push(await TaskService.createTask(task));

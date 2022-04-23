@@ -4,21 +4,34 @@
     <button @click="createBoard">Create board</button>
     <h2></h2>
     <router-link
-          :to="{ name: 'board-settings', params: { id: board.boardUuid } }"
-          >Board settings
-        </router-link>
+      :to="{ path: `/board/${route.params.id}/settings` }"
+      >Board settings
+    </router-link>
+    <section>
+      <div>
+
+      </div>
+    </section>
   </main>
 </template>
 
 <script setup lang="ts">
-import { defineComponent, type Ref, ref } from 'vue';
+import { defineComponent, reactive, type Ref, ref } from 'vue';
 import MainNavigation from '@/components/shared/MainNavigation.vue';
 import BoardsService from '@/services/Boards.service';
 import type IBoard from '@/interfaces/IBoard';
+import { useRoute } from 'vue-router';
+import type ITask from '@/interfaces/ITask';
 
-const boards: Ref<IBoard[]> = ref([]);
+const route = useRoute();
+
+let board: IBoard = reactive({});
+let tasks: ITask[] = reactive([]);
 const loadBoard = async () => {
-  boards.value = await BoardsService.getAvailableBoards();
+  const res = await BoardsService.getBoardView(route.params.id as string);
+  console.log('res', res)
+  board = {...res.board};
+  tasks = {...res.tasks};
 };
 loadBoard();
 

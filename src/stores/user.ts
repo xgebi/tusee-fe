@@ -84,6 +84,10 @@ export const useUserStore = defineStore({
     addKey(key: IKey) {
       this.token.keys.push(key);
     },
+    removeKey(board: string) {
+      const i = this.token.keys.findIndex((lk) => lk.board === board);
+      this.token.keys.splice(i, 1);
+    },
     async confirmTotp(code: string) {
       const result = await UserService.confirmTotp(code);
       if (result.length > 0) {

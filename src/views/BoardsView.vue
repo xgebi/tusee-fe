@@ -6,7 +6,7 @@
     <section v-for="board in boards" :key="board.boardUuid">
       <h2>
         <router-link
-          :to="{ name: 'board', params: { id: board.boardUuid } }"
+          :to="{ path: `/board/${board.boardUuid}` }"
           >{{ board.name }}
         </router-link>
       </h2>
