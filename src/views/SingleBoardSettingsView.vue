@@ -85,7 +85,7 @@ import type IBoard from '@/interfaces/IBoard';
 import { useRoute, useRouter } from 'vue-router';
 import TaskStatuses from '@/const/TaskStatuses';
 import type IColumn from '@/interfaces/IColumn';
-import useBoardColumns from "@/hooks/boardColumns";
+import useBoardColumns from '@/hooks/boardColumns';
 
 const route = useRoute();
 const router = useRouter();
@@ -172,7 +172,6 @@ const saveBoard = async (e: Event) => {
   boardData.columns = columns
     .map((column) => `${column.name}:${column.type}`)
     .join(',');
-  debugger;
   let result: IBoard;
   if (route.params.id === 'new') {
     result = await BoardsService.createNewBoard(boardData);

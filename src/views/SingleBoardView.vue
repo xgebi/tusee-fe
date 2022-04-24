@@ -5,15 +5,14 @@
     <div v-if="boardStore.getSelectedBoard">
       <h2>{{ boardStore.getSelectedBoard.name }}</h2>
       <p>{{ boardStore.getSelectedBoard.description }}</p>
-      <router-link
-        :to="{ path: `/board/${route.params.id}/settings` }"
-        >Board settings
+      <router-link :to="{ path: `/board/${route.params.id}/settings` }">
+        Board settings
       </router-link>
       <section class="board-table">
-        <div class="table-header" v-for="column in boardStore.getSelectedBoard.columns.split(',')">
+        <div class="table-header" v-for="column in boardStore.getSelectedBoard.columns.split(',')" :key="column.split(':')[0]">
           {{ column.split(':')[0] }}
         </div>
-        <div v-for="column in boardStore.getSelectedBoard.columns.split(',')" @dragover="dragOver" :data-name="column.split(':')[0]"
+        <div v-for="column in boardStore.getSelectedBoard.columns.split(',')" @dragover="dragOver" :data-name="column.split(':')[0]" :key="column.split(':')[0]"
           @drop="dropped"
         >
           <article
@@ -22,6 +21,7 @@
             @dragstart="dragStart"
             @dragend="dragStop"
             :data-uuid="task.task_uuid"
+            :key="task.task_uuid"
           >
             Title: {{ task.title }}
           </article>
@@ -38,7 +38,7 @@ import BoardsService from '@/services/Boards.service';
 import type IBoard from '@/interfaces/IBoard';
 import { useRoute } from 'vue-router';
 import type ITask from '@/interfaces/ITask';
-import { useBoardsStore } from "@/stores/boards";
+import { useBoardsStore } from '@/stores/boards';
 
 const route = useRoute();
 const boardStore = useBoardsStore()
@@ -49,6 +49,7 @@ const loadSelectedBoard = async () => {
 loadSelectedBoard();
 
 const dragged: Ref<EventTarget | null>  = ref(null);
+const currentDropZone: Ref<EventTarget | null>  = ref(null);
 
 const dragStart = (e: Event) => {
   console.log(e.target);
@@ -63,12 +64,14 @@ const dragStop = (e: Event) => {
 
 const dragOver = (e: Event) => {
   e.preventDefault();
-  // console.log(e);
+  if (currentDropZone.value != e.target) {
+    currentDropZone.value = e.target;
+  }
 }
 
 const dropped = (e: Event) => {
   console.log('dropped', e.target.dataset, dragged.value.dataset);
-  boardStore.updateBoardTask(dragged.value.dataset.uuid, e.target.dataset.name);
+  boardStore.updateBoardTask(dragged.value?.dataset.uuid, currentDropZone.value?.dataset.name);
 }
 
 const createBoard = () => {

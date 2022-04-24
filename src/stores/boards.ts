@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import type IBoard from '@/interfaces/IBoard';
 import BoardsService from '@/services/Boards.service';
 import type ITask from '@/interfaces/ITask';
+import TaskService from '@/services/Task.service';
 
 export type BoardsState = {
   boards: IBoard[];
@@ -39,18 +40,18 @@ export const useBoardsStore = defineStore({
     setBoards(boards: IBoard[]) {
       this.boards = boards;
     },
-    updateBoardTask(taskId: string, column: string) {
-      debugger;
+    async updateBoardTask(taskId: string, column: string) {
       const i = this.getSelectedBoardTasks.findIndex(
         (bt) => bt.task_uuid === taskId
       );
       const tempTask = this.getSelectedBoardTasks[i];
       if (tempTask) {
-        this.selectedBoardTasks.splice(i, 1, {
+        const replacementTask = {
           ...tempTask,
           task_status: column,
-        });
-        console.log(this.getSelectedBoardTasks);
+        };
+        this.selectedBoardTasks.splice(i, 1, replacementTask);
+        await TaskService.updateTask(replacementTask);
       }
     },
   },
