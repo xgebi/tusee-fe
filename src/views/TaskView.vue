@@ -7,8 +7,21 @@
         <input type="text" v-model="task.title" id="title" />
       </div>
       <div>
-        <label for="Description">Title</label>
+        <label for="Description">Description</label>
         <textarea v-model="task.description" id="Description"></textarea>
+      </div>
+      <div>
+        <label for="task-board">Board</label>
+        <select id="task-board" v-model="task.board">
+          <option :value="undefined"></option>
+          <option
+            v-for="board in boardsStore.getBoards"
+            :key="board.boardUuid"
+            :value="board.boardUuid"
+          >
+            {{ board.name }}
+          </option>
+        </select>
       </div>
       <label class="task-done" :for="'task-done-' + task.task_uuid">
         <input
@@ -35,10 +48,12 @@ import { reactive } from 'vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useUserStore } from '@/stores/user';
 import TaskService from '@/services/Task.service';
+import { useBoardsStore } from "@/stores/boards";
 
 const router = useRoute();
 const taskStore = useTaskStore();
 const userStore = useUserStore;
+const boardsStore = useBoardsStore();
 let task: ITask = reactive({
   title: '',
   description: '',

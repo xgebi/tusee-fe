@@ -10,7 +10,7 @@ interface ITask {
   board?: string;
   updated?: Date;
   created?: Date;
-  task_status: TaskStatuses;
+  task_status: string;
 }
 
 export default ITask;

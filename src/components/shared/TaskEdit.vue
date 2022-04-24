@@ -12,6 +12,19 @@
           <textarea id="task-description" v-model="task.description"></textarea>
         </div>
         <div>
+          <label for="task-board">Board</label>
+          <select id="task-board" v-model="task.board">
+            <option :value="undefined"></option>
+            <option
+              v-for="board in boardsStore.getBoards"
+              :key="board.boardUuid"
+              :value="board.boardUuid"
+            >
+              {{ board.name }}
+            </option>
+          </select>
+        </div>
+        <div>
           <label for="task-deadline">Deadline</label>
           <div id="task-deadline">
             <input type="date" v-model="taskDateTimes.deadlineDate" />
@@ -37,9 +50,12 @@ import type ITask from '@/interfaces/ITask';
 import { reactive, type Ref, ref } from 'vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';
+import { useBoardsStore } from "@/stores/boards";
 const dialog = ref(null);
 
 const taskStore = useTaskStore();
+const boardsStore = useBoardsStore();
+console.log('boards', boardsStore.getBoards);
 
 const props = defineProps<{
   newTask?: boolean;

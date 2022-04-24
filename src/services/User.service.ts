@@ -11,16 +11,27 @@ import type IKey from '@/interfaces/IKey';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 import { useUserStore } from '@/stores/user';
 import KeyService from '@/services/Key.service';
+import type IBoard from '@/interfaces/IBoard';
+import BoardsService from '@/services/Boards.service';
+import { useBoardsStore } from '@/stores/boards';
 
 class UserService {
   public static async login(info: ILoginInfo): Promise<IUserToken> {
     const result_login = await UserRepository.login(info);
     result_login.keys = this.decryptKeys(info.password, result_login.keys);
+    const boardStore = useBoardsStore();
+    boardStore.setBoards(
+      this.decryptBoards(result_login.boards as IBoard[], result_login.keys)
+    );
     return result_login;
   }
 
   private static decryptKeys(password: string, keys: IKey[]): IKey[] {
     return keys.map((key) => KeyService.decryptKey(key, password));
+  }
+
+  private static decryptBoards(boards: IBoard[], keys: IKey[]): IBoard[] {
+    return boards.map((board) => BoardsService.decryptBoard(board, keys));
   }
 
   public static async register(

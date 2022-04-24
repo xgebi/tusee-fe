@@ -7,13 +7,14 @@ import type ITotpSetup from '@/interfaces/ITotpSetup';
 import type ITotpConfirmation from '@/interfaces/ITotpConfirmation';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 import type ITotpConfirmationResponse from '@/interfaces/ITotpConfirmationResponse';
+import type IUserResponse from '@/interfaces/IUserResponse';
 
 class UserRepository {
-  public static async login(info: ILoginInfo): Promise<IUserToken> {
+  public static async login(info: ILoginInfo): Promise<IUserResponse> {
     const response = await Fetch.post('login', info);
     if (response.ok) {
       const result = await response.json();
-      return result as IUserToken;
+      return result as IUserResponse;
     }
     throw new Error();
   }

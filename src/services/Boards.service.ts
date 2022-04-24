@@ -70,11 +70,17 @@ class BoardsService {
 
   public static async getBoardTasks() {}
 
-  static decryptBoard(board: IBoard): IBoard {
-    const user = useUserStore();
-    const key: IKey | undefined = user.token.keys.find(
-      (item) => board.boardUuid === item.board
-    );
+  static decryptBoard(
+    board: IBoard,
+    keys: IKey[] | undefined = undefined
+  ): IBoard {
+    let key: IKey | undefined;
+    if (!keys) {
+      const user = useUserStore();
+      key = user.token.keys.find((item) => board.boardUuid === item.board);
+    } else {
+      key = keys.find((item) => board.boardUuid === item.board);
+    }
     if (key) {
       return {
         ...board,
