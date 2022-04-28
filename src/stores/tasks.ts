@@ -23,12 +23,18 @@ export const useTaskStore = defineStore({
     async fetchStandAloneTasks() {
       this.standaloneTasks = await TaskService.getStandAloneTasks();
     },
-    selectStandAloneTask(task_uuid: string) {
-      this.selectedTask = this.standaloneTasks.find(
+    async selectStandAloneTask(task_uuid: string) {
+      const localTask = this.standaloneTasks.find(
         (task) => task.task_uuid === task_uuid
       );
+      if (localTask) {
+        this.selectedTask = localTask;
+      } else {
+        this.selectedTask = await TaskService.fetchTask(task_uuid);
+        console.log(this.selectedTask);
+      }
     },
-    async appendStandAloneTasks(task: ITask) {
+    async appendStandAloneTask(task: ITask) {
       this.standaloneTasks.push(await TaskService.createTask(task));
     },
     async deleteStandAloneTasks(task: ITask) {

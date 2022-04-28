@@ -27,6 +27,21 @@ class TaskService {
     return resultingTasks;
   }
 
+  public static async getDoneStandAloneTasks(): Promise<ITask[]> {
+    const tasks: ITask[] = await TaskRepository.getDoneStandAloneTasks();
+    const resultingTasks: ITask[] = [];
+    for (const task of tasks) {
+      resultingTasks.push(this.decryptTask(task));
+    }
+    return resultingTasks;
+  }
+
+  public static async fetchTask(task_uuid: string): Promise<ITask> {
+    const task: ITask = await TaskRepository.fetchTask(task_uuid);
+    const decrypted = this.decryptTask(task);
+    return decrypted;
+  }
+
   public static async createTask(task: ITask): Promise<ITask> {
     const response_task: ITask = await TaskRepository.createTask(
       this.encryptTask(task)
@@ -58,7 +73,9 @@ class TaskService {
       ...task,
       title: AES.encrypt(task.title, key[0].key).toString(),
       description: AES.encrypt(task.description, key[0].key).toString(),
+      task_status: AES.encrypt(task.task_status, key[0].key).toString(),
     };
+    console.log(result);
     return result;
   }
 
@@ -74,6 +91,9 @@ class TaskService {
       ...task,
       title: AES.decrypt(task.title, key[0].key).toString(CryptoJS.enc.Utf8),
       description: AES.decrypt(task.description, key[0].key).toString(
+        CryptoJS.enc.Utf8
+      ),
+      task_status: AES.decrypt(task.task_status, key[0].key).toString(
         CryptoJS.enc.Utf8
       ),
     };

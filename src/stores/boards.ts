@@ -40,6 +40,17 @@ export const useBoardsStore = defineStore({
     setBoards(boards: IBoard[]) {
       this.boards = boards;
     },
+    async createBoard(board: IBoard) {
+      const result = await BoardsService.createNewBoard(board);
+      this.boards.push(result);
+      return result;
+    },
+    async updateBoard(board: IBoard) {
+      const result = await BoardsService.updateBoard(board);
+      const i = this.boards.findIndex((b) => b.boardUuid === result.boardUuid);
+      this.boards.splice(i, 1, result);
+      return result;
+    },
     async updateBoardTask(taskId: string, column: string) {
       const i = this.getSelectedBoardTasks.findIndex(
         (bt) => bt.task_uuid === taskId
@@ -53,6 +64,9 @@ export const useBoardsStore = defineStore({
         this.selectedBoardTasks.splice(i, 1, replacementTask);
         await TaskService.updateTask(replacementTask);
       }
+    },
+    async appendTaskToSelectedBoard(task: ITask) {
+      this.selectedBoardTasks.push(await TaskService.createTask(task));
     },
   },
 });

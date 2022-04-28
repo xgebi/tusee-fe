@@ -1,6 +1,7 @@
 <template>
   <main class="page page-dashboard">
     <MainNavigation></MainNavigation>
+    {{ task }}
     <form @submit="formSubmitted">
       <div>
         <label for="title">Title</label>
@@ -48,7 +49,7 @@ import { reactive } from 'vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useUserStore } from '@/stores/user';
 import TaskService from '@/services/Task.service';
-import { useBoardsStore } from "@/stores/boards";
+import { useBoardsStore } from '@/stores/boards';
 
 const router = useRoute();
 const taskStore = useTaskStore();
@@ -66,10 +67,23 @@ let task: ITask = reactive({
   created: undefined,
   task_status: TaskStatuses.READY,
 });
-if (router.params.id.toString().toLowerCase() !== 'new') {
-  taskStore.selectStandAloneTask(router.params.id as string);
-  task = reactive({ ...(taskStore.getSelectedTask as ITask) });
-}
+const setTask = async () => {
+  if (router.params.id.toString().toLowerCase() !== 'new') {
+    await taskStore.selectStandAloneTask(router.params.id as string);
+    const localTask = taskStore.getSelectedTask as ITask;
+    task.title = localTask.title;
+    task.description = localTask.description;
+    task.deadline = localTask.deadline;
+    task.startTime = localTask.startTime;
+    task.task_uuid = localTask.task_uuid;
+    task.creator = localTask.creator;
+    task.board = localTask.board;
+    task.updated = localTask.updated;
+    task.created = localTask.created;
+    task.task_status = localTask.task_status;
+  }
+};
+setTask();
 
 const formSubmitted = (e: Event) => {
   e.preventDefault();

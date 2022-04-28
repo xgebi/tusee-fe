@@ -46,7 +46,11 @@ const state: RegistrationViewState = reactive({
 
 const router = useRouter();
 const settingsStore = useSettingsStore();
-// await settingsStore.fetchSettings();
+const fetchSettings = async () => {
+  await settingsStore.fetchSettings();
+  console.log(settingsStore.getRegistrationEnabled)
+};
+fetchSettings();
 
 const register = async (e: Event) => {
   e.preventDefault();

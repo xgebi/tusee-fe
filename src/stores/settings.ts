@@ -16,9 +16,11 @@ export const useSettingsStore = defineStore({
   },
   actions: {
     async fetchSettings() {
-      this.$state = {
-        ...(await SettingsService.getSettings()),
-      };
+      const settings = await SettingsService.getSettings();
+      console.log(settings);
+      if (settings) {
+        this.registrationEnabled = settings.registrationEnabled;
+      }
     },
   },
 });

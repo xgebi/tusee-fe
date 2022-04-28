@@ -9,6 +9,16 @@
       </li>
     </ul>
     <p v-if="state.loading">Loading tasks</p>
+    <button @click="loadArchived">Load done tasks</button>
+    <section v-if="state.archiveLoaded">
+      <h2>Done tasks</h2>
+      <ul>
+        <li v-for="(task, i) in doneTasks" :key="i">
+          <StandaloneTaskListItem :task="task"></StandaloneTaskListItem>
+        </li>
+      </ul>
+    </section>
+    <p v-if="state.archiveLoading">Loading tasks</p>
   </main>
 </template>
 
@@ -26,14 +36,17 @@ const taskStore = useTaskStore();
 
 const state = reactive({
   loading: true,
+  archiveLoading: false,
+  archiveLoaded: false,
 });
-const newTask: ITask = reactive({
-  title: '',
-  description: '',
-  deadline: undefined,
-  startTime: undefined,
-  task_status: TaskStatuses.READY,
-});
+const doneTasks: ITask[] = reactive([]);
+const loadArchived = async () => {
+  state.archiveLoading = true;
+  doneTasks.splice(0, doneTasks.length)
+  doneTasks.push(...await TaskService.getDoneStandAloneTasks());
+  state.archiveLoading = false;
+  state.archiveLoaded = true;
+};
 onBeforeMount(async () => {
   await taskStore.fetchStandAloneTasks();
   state.loading = false;

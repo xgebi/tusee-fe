@@ -86,9 +86,11 @@ import { useRoute, useRouter } from 'vue-router';
 import TaskStatuses from '@/const/TaskStatuses';
 import type IColumn from '@/interfaces/IColumn';
 import useBoardColumns from '@/hooks/boardColumns';
+import { useBoardsStore } from '@/stores/boards';
 
 const route = useRoute();
 const router = useRouter();
+const boardStore = useBoardsStore();
 const { parsedColumns, columnsSetup } = useBoardColumns();
 
 /**
@@ -110,7 +112,7 @@ let boardData: IBoard = reactive({
 });
 const fetchBoardInformation = async (id: string) => {
   if (id !== 'new') {
-    const res = (await BoardsService.getBoardInformation(id));
+    const res = await BoardsService.getBoardInformation(id);
     boardData.boardUuid = res.boardUuid;
     boardData.name = res.name;
     boardData.description = res.description;
@@ -174,13 +176,13 @@ const saveBoard = async (e: Event) => {
     .join(',');
   let result: IBoard;
   if (route.params.id === 'new') {
-    result = await BoardsService.createNewBoard(boardData);
+    result = await boardStore.createBoard(boardData);
     await router.push({
       name: 'board-settings',
       params: { id: result.boardUuid },
     });
   } else {
-    result = await BoardsService.updateBoard(boardData);
+    result = await boardStore.updateBoard(boardData);
   }
   boardData = result;
   columnsSetup(boardData.columns);

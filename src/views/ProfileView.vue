@@ -1,20 +1,17 @@
 <template>
   <main class="page page-dashboard">
     <MainNavigation></MainNavigation>
-    This is profile view
+    <h1>Profile page</h1>
   </main>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from 'vue';
 import MainNavigation from '@/components/shared/MainNavigation.vue';
+import TaskService from '@/services/Task.service';
+import TaskStatuses from '@/const/TaskStatuses';
 
-export default defineComponent({
-  name: 'ProfileView',
-  components: {
-    MainNavigation,
-  },
-});
+
 </script>
 
 <style scoped></style>

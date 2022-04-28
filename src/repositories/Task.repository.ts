@@ -16,6 +16,30 @@ class TaskRepository {
     throw new Error();
   }
 
+  public static async getDoneStandAloneTasks(): Promise<ITask[]> {
+    const response = await Fetch.get('done-standalone-tasks');
+    if (response.ok) {
+      const result = await response.json();
+      console.log(result);
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.tasks as ITask[];
+    }
+    throw new Error();
+  }
+
+  public static async fetchTask(task_uuid: string): Promise<ITask> {
+    const response = await Fetch.get(`task/${task_uuid}`);
+    if (response.ok) {
+      const result = await response.json();
+      console.log(result);
+      const userStore = useUserStore();
+      userStore.updateToken(result.token);
+      return result.task as ITask;
+    }
+    throw new Error();
+  }
+
   public static async getTasksByBoard(boardId: string) {
     console.log('TBD');
   }

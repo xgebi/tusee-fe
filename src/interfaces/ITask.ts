@@ -11,6 +11,7 @@ interface ITask {
   updated?: Date;
   created?: Date;
   task_status: string;
+  done_date: Date;
 }
 
 export default ITask;

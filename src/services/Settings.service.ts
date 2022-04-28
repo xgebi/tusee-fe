@@ -3,7 +3,18 @@ import SettingsRepository from '@/repositories/Settings.repository';
 
 class SettingsService {
   public static async getSettings(): Promise<ISettings> {
-    return await SettingsRepository.getSettings();
+    const settings = await SettingsRepository.getSettings();
+    return {
+      registrationEnabled: this.toBoolean(
+        settings.find(
+          (setting) => setting.settingsName === 'registrationEnabled'
+        )?.settingsValue
+      ),
+    };
+  }
+
+  private static toBoolean(val: string | undefined): boolean {
+    return val?.toLowerCase() === 'boolean';
   }
 }
 

@@ -50,7 +50,8 @@ import type ITask from '@/interfaces/ITask';
 import { reactive, type Ref, ref } from 'vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';
-import { useBoardsStore } from "@/stores/boards";
+import { useBoardsStore } from '@/stores/boards';
+import TaskService from '@/services/Task.service';
 const dialog = ref(null);
 
 const taskStore = useTaskStore();
@@ -112,7 +113,17 @@ const createNewTask = async (e: Event) => {
           )
         : new Date(`${taskDateTimes.startTimeDate}T23:59:59`);
     }
-    await taskStore.appendStandAloneTasks(task);
+    if (!task.board) {
+      await taskStore.appendStandAloneTask(task);
+    } else if (boardsStore.getSelectedBoard?.boardUuid === task.board) {
+      await boardsStore.appendTaskToSelectedBoard(task);
+    } else {
+      await TaskService.createTask(task);
+    }
+    task.description = '';
+    task.title = '';
+    task.startTime = undefined;
+    task.deadline = undefined;
   }
 };
 </script>

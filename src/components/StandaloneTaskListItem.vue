@@ -40,6 +40,7 @@ const completeTask = async (e: Event) => {
     task.task_status = TaskStatuses.IN_PROGRESS;
   } else {
     task.task_status = TaskStatuses.DONE;
+    task.done_date = new Date();
   }
   await taskStore.updateTask(task);
 };
