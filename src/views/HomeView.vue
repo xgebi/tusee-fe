@@ -4,6 +4,6 @@ import TheWelcome from '@/components/TheWelcome.vue';
 
 <template>
   <main>
-    <TheWelcome />
+    <RouterLink :to="{ name: 'login' }">Continue to login</RouterLink>
   </main>
 </template>

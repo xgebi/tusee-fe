@@ -112,6 +112,6 @@ const createBoard = () => {
   background: lightslategrey;
   padding: 1rem;
   grid-row: 2 / 3;
-  height: 100%;
+  min-height: 50vh;
 }
 </style>

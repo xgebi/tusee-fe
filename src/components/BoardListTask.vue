@@ -29,6 +29,14 @@ const props = defineProps<{
   margin: 0;
 }
 
+.small-drop-zone {
+  height: 1rem;
+}
+
+.small-drop-zone:hover {
+  background: pink;
+}
+
 a,
 a:visited {
 
