@@ -2,18 +2,20 @@ import { useUserStore } from '@/stores/user';
 
 type Headers = {
   Authorization: string;
+  'Content-Type': string;
 };
 class Fetch {
   private static composeHeaders(): Headers {
     const userStore = useUserStore();
     return {
+      'Content-Type': 'application/json',
       Authorization: userStore.getJwtToken
         ? userStore.getJwtToken
         : localStorage.getItem('token') ?? '',
     };
   }
-  public static async get(url: string): Promise<Response> {
-    return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
+  public static async get(url: string, auth = false,): Promise<Response> {
+    return fetch(`${auth ? import.meta.env.VITE_AUTH_API_URL : import.meta.env.VITE_API_URL}${url}`, {
       method: 'GET',
       headers: this.composeHeaders(),
     });
@@ -21,12 +23,13 @@ class Fetch {
   public static async post(
     url: string,
     body: any,
-    nonJson = false
+    nonJson = false,
+    auth = false,
   ): Promise<Response> {
-    return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
+    return fetch(`${auth ? import.meta.env.VITE_AUTH_API_URL : import.meta.env.VITE_API_URL}${url}`, {
       method: 'POST',
       headers: this.composeHeaders(),
-      body: nonJson ? body : JSON.stringify(body),
+      body: !nonJson ? body : JSON.stringify(body),
     });
   }
 
@@ -38,7 +41,7 @@ class Fetch {
     return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
       method: 'PUT',
       headers: this.composeHeaders(),
-      body: nonJson ? body : JSON.stringify(body),
+      body: !nonJson ? body : JSON.stringify(body),
     });
   }
 

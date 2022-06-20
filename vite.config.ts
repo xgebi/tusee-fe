@@ -7,7 +7,21 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 3001,
+    port: 5003,
+    // proxy: {
+    //   '/auth': {
+    //     target: 'http://localhost:5001',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/auth/, ''),
+    //     secure: false,
+    //   },
+    //   '/api': {
+    //     target: 'http://localhost:5000',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, ''),
+    //     secure: false,
+    //   },
+    // },
   },
   plugins: [vue(), vueJsx()],
   resolve: {

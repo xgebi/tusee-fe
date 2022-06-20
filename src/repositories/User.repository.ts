@@ -11,7 +11,7 @@ import type IUserResponse from '@/interfaces/IUserResponse';
 
 class UserRepository {
   public static async login(info: ILoginInfo): Promise<IUserResponse> {
-    const response = await Fetch.post('login', info);
+    const response = await Fetch.post('login', info, true, true);
     if (response.ok) {
       const result = await response.json();
       return result as IUserResponse;
@@ -22,7 +22,7 @@ class UserRepository {
   public static async register(
     info: IRegistrationInfo
   ): Promise<IRegistrationResult> {
-    const response = await Fetch.post('register', info);
+    const response = await Fetch.post('register', info, true, true);
     if (response.ok) {
       const result = await response.json();
       return result as IRegistrationResult;
@@ -33,7 +33,7 @@ class UserRepository {
   public static async confirmTotp(
     totpCode: ITotpConfirmation
   ): Promise<ITotpConfirmationResponse> {
-    const response = await Fetch.post('verify-totp', totpCode);
+    const response = await Fetch.post('totp/verify', totpCode, true, true);
     if (response.ok) {
       const result = await response.json();
       return result as ITotpConfirmationResponse;
@@ -42,7 +42,7 @@ class UserRepository {
   }
 
   public static async setupTotp(body: ITotpSetup): Promise<ITotpSetupResponse> {
-    const response = await Fetch.post('setup-totp', body);
+    const response = await Fetch.post('totp/setup', body, true, true);
     if (response.ok) {
       const result = await response.json();
       return result as ITotpSetupResponse;
@@ -50,8 +50,8 @@ class UserRepository {
     throw new Error();
   }
 
-  public static async authorizeFromToken(token: string): Promise<IUserToken> {
-    const response = await Fetch.get('authorize-token');
+  public static async authenticateFromToken(token: string): Promise<IUserToken> {
+    const response = await Fetch.get('token/authorize', true);
     if (response.ok) {
       const result = await response.json();
       console.log('repo', result);
