@@ -8,20 +8,20 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 export default defineConfig({
   server: {
     port: 5003,
-    // proxy: {
-    //   '/auth': {
-    //     target: 'http://localhost:5001',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/auth/, ''),
-    //     secure: false,
-    //   },
-    //   '/api': {
-    //     target: 'http://localhost:5000',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, ''),
-    //     secure: false,
-    //   },
-    // },
+    proxy: {
+      '/auth': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/auth/, ''),
+        secure: false,
+      },
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false,
+      },
+    },
   },
   plugins: [vue(), vueJsx()],
   resolve: {
