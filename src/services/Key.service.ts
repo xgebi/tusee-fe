@@ -1,8 +1,11 @@
-import type IKey from '@/interfaces/IKey';
+import type { IKey, IReceivedKey } from '@/interfaces/IKey';
 import AES from 'crypto-js/aes';
 import CryptoJS from 'crypto-js';
 
 class KeyService {
+  public static normalizeKeysForFe(key: IReceivedKey): IKey {
+    return { board: key.board, key: key.key, keyUuid: key.key_uuid, tuseeUser: key.tusee_user };
+  }
   public static generateKey(length = 20): string {
     const keys = {
       upperCase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',

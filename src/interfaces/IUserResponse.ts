@@ -1,5 +1,5 @@
 import type dayjs from 'dayjs';
-import type IKey from '@/interfaces/IKey';
+import type { IKey } from '@/interfaces/IKey';
 import type IBoard from '@/interfaces/IBoard';
 
 interface IUserToken {

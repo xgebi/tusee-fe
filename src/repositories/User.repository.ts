@@ -1,5 +1,5 @@
 import type ILoginInfo from '../interfaces/ILoginInfo';
-import type IUserToken from '../interfaces/IUserToken';
+import type { IUserToken, IReceivedUserToken } from '@/interfaces/IUserToken';
 import type IRegistrationInfo from '@/interfaces/IRegistrationInfo';
 import type IRegistrationResult from '@/interfaces/IRegistrationResult';
 import Fetch from '@/utils/Fetch';
@@ -7,14 +7,13 @@ import type ITotpSetup from '@/interfaces/ITotpSetup';
 import type ITotpConfirmation from '@/interfaces/ITotpConfirmation';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 import type ITotpConfirmationResponse from '@/interfaces/ITotpConfirmationResponse';
-import type IUserResponse from '@/interfaces/IUserResponse';
 
 class UserRepository {
-  public static async login(info: ILoginInfo): Promise<IUserResponse> {
+  public static async login(info: ILoginInfo): Promise<IReceivedUserToken> {
     const response = await Fetch.post('login', info, true, true);
     if (response.ok) {
       const result = await response.json();
-      return result as IUserResponse;
+      return result as IReceivedUserToken;
     }
     throw new Error();
   }

@@ -1,7 +1,8 @@
 import type dayjs from 'dayjs';
-import type IKey from '@/interfaces/IKey';
+import type { IKey, IReceivedKey } from '@/interfaces/IKey';
+import type IBoard from '@/interfaces/IBoard';
 
-interface IUserToken {
+export interface IUserToken {
   email: string;
   password: string;
   keys: IKey[];
@@ -12,6 +13,19 @@ interface IUserToken {
   displayName: string;
   totpSecret: string;
   userUuid: string;
+  boards: IBoard[];
 }
 
-export default IUserToken;
+export interface IReceivedUserToken {
+  email: string;
+  password: string;
+  keys: IReceivedKey[];
+  first_login: boolean;
+  uses_totp: boolean;
+  automatic_logout_time: dayjs.Dayjs;
+  token: string;
+  display_name: string;
+  totp_secret: string;
+  user_uuid: string;
+  boards: IBoard[];
+}

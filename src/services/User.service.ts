@@ -1,29 +1,48 @@
-import { v4 as uuidv4 } from 'uuid';
-import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/aes';
-
 import type ILoginInfo from '@/interfaces/ILoginInfo';
 import UserRepository from '@/repositories/User.repository';
-import type IUserToken from '@/interfaces/IUserToken';
+import type { IReceivedUserToken, IUserToken } from '@/interfaces/IUserToken';
 import type IRegistrationInfo from '@/interfaces/IRegistrationInfo';
 import type IRegistrationResult from '@/interfaces/IRegistrationResult';
-import type IKey from '@/interfaces/IKey';
+import type { IKey } from '@/interfaces/IKey';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 import { useUserStore } from '@/stores/user';
 import KeyService from '@/services/Key.service';
 import type IBoard from '@/interfaces/IBoard';
 import BoardsService from '@/services/Boards.service';
 import { useBoardsStore } from '@/stores/boards';
+import dayjs from 'dayjs';
 
 class UserService {
+  static normalizeUserTokenForFe(token: IReceivedUserToken): IUserToken {
+    return {
+      automaticLogoutTime: dayjs(token.automatic_logout_time),
+      displayName: token.display_name,
+      email: token.email,
+      firstLogin: token.first_login,
+      keys: token.keys.map((key) => KeyService.normalizeKeysForFe(key)),
+      password: token.password,
+      token: token.token,
+      totpSecret: token.totp_secret,
+      userUuid: token.user_uuid,
+      usesTotp: token.uses_totp,
+      boards: token.boards, // TODO same for boards as it is with keys
+    };
+  }
+
   public static async login(info: ILoginInfo): Promise<IUserToken> {
-    const result_login = await UserRepository.login(info);
-    result_login.keys = this.decryptKeys(info.password, result_login.keys);
-    const boardStore = useBoardsStore();
-    boardStore.setBoards(
-      this.decryptBoards(result_login.boards as IBoard[], result_login.keys)
-    );
-    return result_login;
+    const resultLogin: IReceivedUserToken = await UserRepository.login(info);
+    const loginResult = this.normalizeUserTokenForFe(resultLogin);
+    if (resultLogin.keys.length > 0) {
+      loginResult.keys = this.decryptKeys(info.password, loginResult.keys);
+    }
+    if (loginResult.boards.length > 0) {
+      const boardStore = useBoardsStore();
+      boardStore.setBoards(
+        this.decryptBoards(loginResult.boards as IBoard[], loginResult.keys)
+      );
+    }
+    return loginResult;
   }
 
   private static decryptKeys(password: string, keys: IKey[]): IKey[] {

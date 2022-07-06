@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import UserService from '@/services/User.service';
-import type IUserToken from '@/interfaces/IUserToken';
+import type { IUserToken } from '@/interfaces/IUserToken';
 import dayjs from 'dayjs';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
-import type IKey from '@/interfaces/IKey';
+import type { IKey } from '@/interfaces/IKey';
 
 export type UserState = {
   token: IUserToken;
@@ -25,6 +25,7 @@ export const useUserStore = defineStore({
         displayName: '',
         totpSecret: '',
         userUuid: '',
+        boards: [],
       },
       error: false,
     } as UserState),
@@ -43,22 +44,9 @@ export const useUserStore = defineStore({
     async login(email: string, password: string) {
       // TODO harmonize JSON
       try {
-        const returned: any = await UserService.login({ email, password });
-        const token: IUserToken = {
-          automaticLogoutTime: dayjs(returned.expiry_date),
-          displayName: returned.display_name,
-          email: returned.email,
-          firstLogin: returned.first_login,
-          keys: returned.keys,
-          password: password,
-          token: returned.token,
-          totpSecret: returned.totp_secret,
-          userUuid: returned.user_uuid,
-          usesTotp: returned.uses_totp,
-        };
+        this.token = await UserService.login({ email, password });
         this.error = false;
-        this.token = token;
-        localStorage.setItem('token', returned.token);
+        localStorage.setItem('token', this.token.token);
       } catch (e) {
         this.error = true;
       }
@@ -75,6 +63,7 @@ export const useUserStore = defineStore({
         displayName: '',
         totpSecret: '',
         userUuid: '',
+        boards: [],
       };
     },
     updateToken(token: string) {
