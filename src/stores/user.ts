@@ -32,9 +32,12 @@ export const useUserStore = defineStore({
   getters: {
     getToken: (state): IUserToken => state.token,
     getJwtToken: (state): string => state.token.token,
-    getAuthenticated: (state): boolean =>
-      state.token.automaticLogoutTime.isAfter(dayjs()) &&
-      state.token.token.length > 0,
+    getAuthenticated: (state): boolean => {
+      console.log(state.token.automaticLogoutTime.isAfter(dayjs()),
+      state.token.token.length > 0);
+      return state.token.automaticLogoutTime.isAfter(dayjs()) &&
+      state.token.token.length > 0;
+    },
     getLoginError: (state): boolean => {
       console.log(state.error);
       return state.error;
@@ -42,9 +45,9 @@ export const useUserStore = defineStore({
   },
   actions: {
     async login(email: string, password: string) {
-      // TODO harmonize JSON
       try {
         this.token = await UserService.login({ email, password });
+        this.token.automaticLogoutTime = dayjs().add(30, 'minute');
         this.error = false;
         localStorage.setItem('token', this.token.token);
       } catch (e) {

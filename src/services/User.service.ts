@@ -36,7 +36,7 @@ class UserService {
     if (resultLogin.keys.length > 0) {
       loginResult.keys = this.decryptKeys(info.password, loginResult.keys);
     }
-    if (loginResult.boards.length > 0) {
+    if (loginResult.boards?.length > 0) {
       const boardStore = useBoardsStore();
       boardStore.setBoards(
         this.decryptBoards(loginResult.boards as IBoard[], loginResult.keys)

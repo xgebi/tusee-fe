@@ -42,13 +42,11 @@ const login = async (e: Event) => {
   e.preventDefault();
   await userStore.login(state.username, state.password);
   if (userStore.getToken.firstLogin) {
-    await router.push({ name: 'totp-setup' });
+    router.push({ name: 'totp-setup' });
   } else if (!userStore.getToken.usesTotp) {
-    await router.push({ name: 'dashboard' });
+    router.push({ name: 'dashboard' });
   } else if (userStore.getToken.usesTotp) {
-    await router.push({ name: 'totp' });
-  } else {
-    state.error = true;
+    router.push({ name: 'totp' });
   }
 };
 </script>
