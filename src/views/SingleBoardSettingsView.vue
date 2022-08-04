@@ -81,7 +81,7 @@
 import { reactive, type Ref, ref } from 'vue';
 import MainNavigation from '@/components/shared/MainNavigation.vue';
 import BoardsService from '@/services/Boards.service';
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard } from '@/interfaces/IBoard';
 import { useRoute, useRouter } from 'vue-router';
 import TaskStatuses from '@/const/TaskStatuses';
 import type IColumn from '@/interfaces/IColumn';

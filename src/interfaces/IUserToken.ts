@@ -1,6 +1,6 @@
 import type dayjs from 'dayjs';
 import type { IKey, IReceivedKey } from '@/interfaces/IKey';
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard, IReceivedBoard } from "@/interfaces/IBoard";
 
 export interface IUserToken {
   email: string;
@@ -27,5 +27,5 @@ export interface IReceivedUserToken {
   display_name: string;
   totp_secret: string;
   user_uuid: string;
-  boards: IBoard[];
+  boards: IReceivedBoard[];
 }

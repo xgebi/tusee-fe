@@ -1,9 +1,9 @@
-import type IKey from '@/interfaces/IKey';
-import type IBoard from '@/interfaces/IBoard';
+import type { IReceivedKey } from '@/interfaces/IKey';
+import type { IBoard } from '@/interfaces/IBoard';
 
 interface ICreateBoardRequest {
   board: IBoard;
-  key: IKey;
+  key: IReceivedKey;
 }
 
 export default ICreateBoardRequest;

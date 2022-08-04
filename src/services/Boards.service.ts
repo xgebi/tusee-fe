@@ -1,9 +1,9 @@
 import { useUserStore } from '@/stores/user';
 import BoardsRepository from '@/repositories/Boards.repository';
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard, IReceivedBoard } from "@/interfaces/IBoard";
 import AES from 'crypto-js/aes';
 import CryptoJS from 'crypto-js';
-import type IKey from '@/interfaces/IKey';
+import type { IKey, IReceivedKey } from "@/interfaces/IKey";
 import KeyService from '@/services/Key.service';
 import type ICreateBoardResponse from '@/interfaces/ICreateBoardResponse';
 import type IBoardResponse from '@/interfaces/IBoardResponse';
@@ -14,14 +14,16 @@ class BoardsService {
   public static async getAvailableBoards() {
     const boards: IBoard[] = await BoardsRepository.getAvailableBoards();
     const resultingTasks: IBoard[] = [];
+    const userStore = useUserStore();
     for (const board of boards) {
-      resultingTasks.push(this.decryptBoard(board));
+      resultingTasks.push(this.decryptBoard(board, userStore.token.keys));
     }
     return resultingTasks;
   }
 
   public static async getBoardInformation(boardUuid: string): Promise<IBoard> {
-    const board: IBoard = await BoardsRepository.getBoardInformation(boardUuid);
+    const receivedBoard: IReceivedBoard = await BoardsRepository.getBoardInformation(boardUuid);
+    const board = this.normalizeBoardForFe(receivedBoard);
     return this.decryptBoard(board);
   }
 
@@ -41,24 +43,32 @@ class BoardsService {
   public static async createNewBoard(board: IBoard): Promise<IBoard> {
     const userStore = useUserStore();
     const key: IKey = {
-      tusee_user: '',
-      key_uuid: '',
+      tuseeUser: '',
+      keyUuid: '',
       key: KeyService.generateKey(),
     };
+    const encryptedKey = KeyService.encryptKey(key, userStore.token.password);
+    const normalizedKey = KeyService.normalizeKeysForBe(encryptedKey);
     const response: ICreateBoardResponse =
       await BoardsRepository.createNewBoard({
         board: this.encryptBoard(board, key),
-        key: KeyService.encryptKey(key, userStore.token.password),
+        key: normalizedKey,
       });
-    userStore.addKey(response.key);
-    return this.decryptBoard(response.board);
+    console.log(KeyService.decryptKey(encryptedKey, userStore.token.password));
+    debugger;
+    userStore.addKey(
+      KeyService.decryptKey(response.key, userStore.token.password)
+    );
+    return this.decryptBoard(this.normalizeBoardForFe(response.board));
   }
 
   public static async updateBoard(board: IBoard): Promise<IBoard> {
-    const updatedBoard: IBoard = await BoardsRepository.updateBoard(
-      this.encryptBoard(board)
-    );
-    return this.decryptBoard(updatedBoard);
+    const receivedUpdatedBoard: IReceivedBoard =
+      await BoardsRepository.updateBoard(
+        this.normalizeBoardForBe(this.encryptBoard(board))
+      );
+    const normalizedUpdatedBoard = this.normalizeBoardForFe(receivedUpdatedBoard);
+    return this.decryptBoard(normalizedUpdatedBoard);
   }
 
   public static async deleteBoard(boardUuid: string): Promise<string> {
@@ -116,6 +126,28 @@ class BoardsService {
       };
     }
     throw new Error('Key was not found');
+  }
+
+  public static normalizeBoardForFe(board: IReceivedBoard): IBoard {
+    return {
+      boardUuid: board.board_uuid,
+      columns: board.columns,
+      created: board.created,
+      description: board.description,
+      name: board.name,
+      owner: board.owner,
+    };
+  }
+
+  public static normalizeBoardForBe(board: IBoard): IReceivedBoard {
+    return {
+      board_uuid: board.boardUuid,
+      columns: board.columns,
+      created: board.created,
+      description: board.description,
+      name: board.name,
+      owner: board.owner,
+    };
   }
 }
 

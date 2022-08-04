@@ -1,4 +1,4 @@
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard } from '@/interfaces/IBoard';
 
 interface IAvailableBoardsResponse {
   token: string;

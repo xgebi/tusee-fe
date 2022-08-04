@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard } from '@/interfaces/IBoard';
 import { formatDate } from '@/utils/date';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';

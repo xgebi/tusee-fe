@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard } from '@/interfaces/IBoard';
 import BoardsService from '@/services/Boards.service';
 import type ITask from '@/interfaces/ITask';
 import TaskService from '@/services/Task.service';

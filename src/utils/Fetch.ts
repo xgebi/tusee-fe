@@ -23,8 +23,8 @@ class Fetch {
   public static async post(
     url: string,
     body: any,
-    nonJson = false,
-    auth = false,
+    nonJson = true,
+    auth = false
   ): Promise<Response> {
     return fetch(`${auth ? import.meta.env.VITE_AUTH_API_URL : import.meta.env.VITE_API_URL}${url}`, {
       method: 'POST',
@@ -36,7 +36,7 @@ class Fetch {
   public static async put(
     url: string,
     body: any,
-    nonJson = false
+    nonJson = true
   ): Promise<Response> {
     return fetch(`${import.meta.env.VITE_API_URL}${url}`, {
       method: 'PUT',
@@ -48,7 +48,7 @@ class Fetch {
   public static async delete(
     url: string,
     body: string | object | Array<any>,
-    nonJson = false
+    nonJson = true
   ): Promise<Response> {
     const processedBody: string = nonJson
       ? (body as string)

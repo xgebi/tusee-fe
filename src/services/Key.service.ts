@@ -4,7 +4,20 @@ import CryptoJS from 'crypto-js';
 
 class KeyService {
   public static normalizeKeysForFe(key: IReceivedKey): IKey {
-    return { board: key.board, key: key.key, keyUuid: key.key_uuid, tuseeUser: key.tusee_user };
+    return {
+      board: key.board,
+      key: key.key,
+      keyUuid: key.key_uuid,
+      tuseeUser: key.tusee_user,
+    };
+  }
+  public static normalizeKeysForBe(key: IKey): IReceivedKey {
+    return {
+      board: key.board,
+      key: key.key,
+      key_uuid: key.keyUuid,
+      tusee_user: key.tuseeUser,
+    };
   }
   public static generateKey(length = 20): string {
     const keys = {

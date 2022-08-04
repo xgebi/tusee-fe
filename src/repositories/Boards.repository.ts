@@ -1,6 +1,6 @@
 import Fetch from '@/utils/Fetch';
 import type IAvailableBoardsResponse from '@/interfaces/IAvailableBoardsResponse';
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard, IReceivedBoard } from "@/interfaces/IBoard";
 import { useUserStore } from '@/stores/user';
 import type IBoardResponse from '@/interfaces/IBoardResponse';
 import type IBoardDeletedResponse from '@/interfaces/IBoardDeletedResponse';
@@ -26,7 +26,7 @@ class BoardsRepository {
       const result = (await response.json()) as IBoardResponse;
       const userStore = useUserStore();
       userStore.updateToken(result.token);
-      return result.board as IBoard;
+      return result.board as IReceivedBoard;
     }
     throw new Error();
   }
@@ -55,13 +55,13 @@ class BoardsRepository {
     throw new Error();
   }
 
-  public static async updateBoard(board: IBoard) {
+  public static async updateBoard(board: IReceivedBoard) {
     const response = await Fetch.put(`board`, board);
     if (response.ok) {
       const result = (await response.json()) as IBoardResponse;
       const userStore = useUserStore();
       userStore.updateToken(result.token);
-      return result.board as IBoard;
+      return result.board as IReceivedBoard;
     }
     throw new Error();
   }

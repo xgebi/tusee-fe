@@ -8,7 +8,7 @@ import type { IKey } from '@/interfaces/IKey';
 import type ITotpSetupResponse from '@/interfaces/ITotpSetupResponse';
 import { useUserStore } from '@/stores/user';
 import KeyService from '@/services/Key.service';
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard } from '@/interfaces/IBoard';
 import BoardsService from '@/services/Boards.service';
 import { useBoardsStore } from '@/stores/boards';
 import dayjs from 'dayjs';
@@ -26,13 +26,19 @@ class UserService {
       totpSecret: token.totp_secret,
       userUuid: token.user_uuid,
       usesTotp: token.uses_totp,
-      boards: token.boards, // TODO same for boards as it is with keys
+      boards: token.boards.map((board) =>
+        BoardsService.normalizeBoardForFe(board)
+      ),
     };
   }
 
   public static async login(info: ILoginInfo): Promise<IUserToken> {
     const resultLogin: IReceivedUserToken = await UserRepository.login(info);
-    const loginResult = this.normalizeUserTokenForFe(resultLogin);
+
+    const loginResult = {
+      ...this.normalizeUserTokenForFe(resultLogin),
+      password: info.password,
+    };
     if (resultLogin.keys.length > 0) {
       loginResult.keys = this.decryptKeys(info.password, loginResult.keys);
     }

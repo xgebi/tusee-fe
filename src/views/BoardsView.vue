@@ -18,7 +18,7 @@
 import { type Ref, ref } from 'vue';
 import MainNavigation from '@/components/shared/MainNavigation.vue';
 import BoardsService from '@/services/Boards.service';
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard } from '@/interfaces/IBoard';
 import { useRouter } from 'vue-router';
 import { useBoardsStore } from "@/stores/boards";
 

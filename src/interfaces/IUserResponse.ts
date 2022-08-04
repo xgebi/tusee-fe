@@ -1,6 +1,6 @@
 import type dayjs from 'dayjs';
 import type { IKey } from '@/interfaces/IKey';
-import type IBoard from '@/interfaces/IBoard';
+import type { IBoard } from '@/interfaces/IBoard';
 
 interface IUserToken {
   email: string;

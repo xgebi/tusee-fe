@@ -1,4 +1,4 @@
-interface IBoard {
+export interface IBoard {
   boardUuid: string;
   name: string;
   description: string;
@@ -7,4 +7,11 @@ interface IBoard {
   columns: string;
 }
 
-export default IBoard;
+export interface IReceivedBoard {
+  board_uuid: string;
+  name: string;
+  description: string;
+  owner: string;
+  created?: Date;
+  columns: string;
+}
