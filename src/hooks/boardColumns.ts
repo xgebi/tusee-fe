@@ -1,4 +1,4 @@
-import TaskStatuses from '@/const/TaskStatuses';
+import type TaskStatuses from '@/const/TaskStatuses';
 import type IColumn from '@/interfaces/IColumn';
 
 export default function useBoardColumns() {
@@ -11,7 +11,7 @@ export default function useBoardColumns() {
       const columnItems: string[] = column.split(':');
       parsedColumns.push({
         name: columnItems[1],
-        type: columnItems[0],
+        type: columnItems[0] as TaskStatuses,
       });
     }
   }

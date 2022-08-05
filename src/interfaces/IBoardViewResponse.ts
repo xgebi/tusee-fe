@@ -1,10 +1,14 @@
-import type { IBoard } from '@/interfaces/IBoard';
-import type ITask from '@/interfaces/ITask';
+import type { IBoard, IReceivedBoard } from '@/interfaces/IBoard';
+import type { ITask, IReceivedTask } from '@/interfaces/ITask';
 
-interface IBoardViewResponse {
+export interface INormalizedBoardViewResponse {
   token: string;
   board: IBoard;
   tasks: ITask[];
 }
 
-export default IBoardViewResponse;
+export interface IBoardViewResponse {
+  token: string;
+  board: IReceivedBoard;
+  tasks: IReceivedTask[];
+}

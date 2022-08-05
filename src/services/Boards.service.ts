@@ -1,13 +1,12 @@
 import { useUserStore } from '@/stores/user';
 import BoardsRepository from '@/repositories/Boards.repository';
-import type { IBoard, IReceivedBoard } from "@/interfaces/IBoard";
+import type { IBoard, IReceivedBoard } from '@/interfaces/IBoard';
 import AES from 'crypto-js/aes';
 import CryptoJS from 'crypto-js';
-import type { IKey, IReceivedKey } from "@/interfaces/IKey";
+import type { IKey, IReceivedKey } from '@/interfaces/IKey';
 import KeyService from '@/services/Key.service';
 import type ICreateBoardResponse from '@/interfaces/ICreateBoardResponse';
-import type IBoardResponse from '@/interfaces/IBoardResponse';
-import type IBoardViewResponse from '@/interfaces/IBoardViewResponse';
+import type { IBoardViewResponse, INormalizedBoardViewResponse } from '@/interfaces/IBoardViewResponse';
 import TaskService from '@/services/Task.service';
 
 class BoardsService {
@@ -22,20 +21,21 @@ class BoardsService {
   }
 
   public static async getBoardInformation(boardUuid: string): Promise<IBoard> {
-    const receivedBoard: IReceivedBoard = await BoardsRepository.getBoardInformation(boardUuid);
+    const receivedBoard: IReceivedBoard =
+      await BoardsRepository.getBoardInformation(boardUuid);
     const board = this.normalizeBoardForFe(receivedBoard);
     return this.decryptBoard(board);
   }
 
   public static async getBoardView(
     boardUuid: string
-  ): Promise<IBoardViewResponse> {
+  ): Promise<INormalizedBoardViewResponse> {
     const response: IBoardViewResponse = await BoardsRepository.getBoardView(
       boardUuid
     );
     return {
       token: '',
-      board: this.decryptBoard(response.board),
+      board: this.decryptBoard(this.normalizeBoardForFe(response.board)),
       tasks: response.tasks.map((task) => TaskService.decryptTask(task)),
     };
   }
@@ -54,8 +54,6 @@ class BoardsService {
         board: this.encryptBoard(board, key),
         key: normalizedKey,
       });
-    console.log(KeyService.decryptKey(encryptedKey, userStore.token.password));
-    debugger;
     userStore.addKey(
       KeyService.decryptKey(response.key, userStore.token.password)
     );
@@ -67,7 +65,8 @@ class BoardsService {
       await BoardsRepository.updateBoard(
         this.normalizeBoardForBe(this.encryptBoard(board))
       );
-    const normalizedUpdatedBoard = this.normalizeBoardForFe(receivedUpdatedBoard);
+    const normalizedUpdatedBoard =
+      this.normalizeBoardForFe(receivedUpdatedBoard);
     return this.decryptBoard(normalizedUpdatedBoard);
   }
 

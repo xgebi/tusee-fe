@@ -177,7 +177,7 @@ const saveBoard = async (e: Event) => {
   let result: IBoard;
   if (route.params.id === 'new') {
     result = await boardStore.createBoard(boardData);
-    await router.push({
+    router.push({
       name: 'board-settings',
       params: { id: result.boardUuid },
     });

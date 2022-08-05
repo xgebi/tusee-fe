@@ -1,6 +1,6 @@
 import Fetch from '@/utils/Fetch';
 import type IAvailableBoardsResponse from '@/interfaces/IAvailableBoardsResponse';
-import type { IBoard, IReceivedBoard } from "@/interfaces/IBoard";
+import type { IBoard, IReceivedBoard } from '@/interfaces/IBoard';
 import { useUserStore } from '@/stores/user';
 import type IBoardResponse from '@/interfaces/IBoardResponse';
 import type IBoardDeletedResponse from '@/interfaces/IBoardDeletedResponse';
