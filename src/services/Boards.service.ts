@@ -24,7 +24,8 @@ class BoardsService {
     const receivedBoard: IReceivedBoard =
       await BoardsRepository.getBoardInformation(boardUuid);
     const board = this.normalizeBoardForFe(receivedBoard);
-    return this.decryptBoard(board);
+    const userStore = useUserStore();
+    return this.decryptBoard(board, userStore.token.keys);
   }
 
   public static async getBoardView(
@@ -33,10 +34,16 @@ class BoardsService {
     const response: IBoardViewResponse = await BoardsRepository.getBoardView(
       boardUuid
     );
+    const userStore = useUserStore();
     return {
       token: '',
-      board: this.decryptBoard(this.normalizeBoardForFe(response.board)),
-      tasks: response.tasks.map((task) => TaskService.decryptTask(task)),
+      board: this.decryptBoard(
+        this.normalizeBoardForFe(response.board),
+        userStore.token.keys
+      ),
+      tasks: response.tasks.map((task) =>
+        TaskService.decryptTask(TaskService.normalizeTaskForFe(task))
+      ),
     };
   }
 
@@ -57,7 +64,7 @@ class BoardsService {
     userStore.addKey(
       KeyService.decryptKey(response.key, userStore.token.password)
     );
-    return this.decryptBoard(this.normalizeBoardForFe(response.board));
+    return this.decryptBoard(this.normalizeBoardForFe(response.board), userStore.token.keys);
   }
 
   public static async updateBoard(board: IBoard): Promise<IBoard> {
@@ -67,7 +74,8 @@ class BoardsService {
       );
     const normalizedUpdatedBoard =
       this.normalizeBoardForFe(receivedUpdatedBoard);
-    return this.decryptBoard(normalizedUpdatedBoard);
+    const userStore = useUserStore();
+    return this.decryptBoard(normalizedUpdatedBoard, userStore.token.keys);
   }
 
   public static async deleteBoard(boardUuid: string): Promise<string> {
