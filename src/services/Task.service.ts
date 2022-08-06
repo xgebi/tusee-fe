@@ -62,9 +62,7 @@ class TaskService {
   }
 
   public static async deleteTask(task: ITask): Promise<string> {
-    return await TaskRepository.deleteTask(
-      this.normalizeTaskForBe(this.encryptTask(task))
-    );
+    return await TaskRepository.deleteTask(task.taskUuid as string);
   }
 
   static encryptTask(task: ITask): ITask {

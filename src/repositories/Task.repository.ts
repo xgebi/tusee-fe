@@ -79,10 +79,8 @@ class TaskRepository {
     throw new Error();
   }
 
-  public static async deleteTask(task: IReceivedTask): Promise<string> {
-    const response = await Fetch.delete('task', {
-      task_uuid: task['task_uuid'],
-    });
+  public static async deleteTask(taskUuid: string): Promise<string> {
+    const response = await Fetch.delete(`task/${taskUuid}`);
     if (response.ok) {
       const result = await response.json();
       const userStore = useUserStore();

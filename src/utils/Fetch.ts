@@ -47,7 +47,7 @@ class Fetch {
 
   public static async delete(
     url: string,
-    body: string | object | Array<any>,
+    body: string | object | Array<any> | null = null,
     nonJson = true
   ): Promise<Response> {
     const processedBody: string = nonJson
