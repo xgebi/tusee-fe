@@ -1,5 +1,5 @@
 import TaskRepository from '@/repositories/Task.repository';
-import type ITask from '@/interfaces/ITask';
+import type { IReceivedTask, ITask } from '@/interfaces/ITask';
 import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/aes';
 import { useUserStore } from '@/stores/user';
@@ -7,10 +7,11 @@ import dayjs from 'dayjs';
 
 class TaskService {
   public static async getStandAloneTasks(): Promise<ITask[]> {
-    const tasks: ITask[] = await TaskRepository.getStandAloneTasks();
+    const tasks: IReceivedTask[] = await TaskRepository.getStandAloneTasks();
     const resultingTasks: ITask[] = [];
     for (const task of tasks) {
-      resultingTasks.push(this.decryptTask(task));
+      const normTask = this.normalizeTaskForFe(task);
+      resultingTasks.push(this.decryptTask(normTask));
     }
     resultingTasks.sort((a, b) => {
       const aDayjs = dayjs(a.created);
@@ -28,37 +29,42 @@ class TaskService {
   }
 
   public static async getDoneStandAloneTasks(): Promise<ITask[]> {
-    const tasks: ITask[] = await TaskRepository.getDoneStandAloneTasks();
+    const tasks: IReceivedTask[] = await TaskRepository.getDoneStandAloneTasks();
     const resultingTasks: ITask[] = [];
     for (const task of tasks) {
-      resultingTasks.push(this.decryptTask(task));
+      const normTask = this.normalizeTaskForFe(task);
+      resultingTasks.push(this.decryptTask(normTask));
     }
     return resultingTasks;
   }
 
   public static async fetchTask(task_uuid: string): Promise<ITask> {
-    const task: ITask = await TaskRepository.fetchTask(task_uuid);
-    const decrypted = this.decryptTask(task);
-    return decrypted;
+    const task: IReceivedTask = await TaskRepository.fetchTask(task_uuid);
+    const normTask = this.normalizeTaskForFe(task);
+    return this.decryptTask(normTask);
   }
 
   public static async createTask(task: ITask): Promise<ITask> {
-    const response_task: ITask = await TaskRepository.createTask(
-      this.encryptTask(task)
+    const encryptedTask = this.encryptTask(task);
+    const requestTask = this.normalizeTaskForBe(encryptedTask);
+    const responseTask: IReceivedTask = await TaskRepository.createTask(
+      requestTask
     );
-    return this.decryptTask(response_task);
+    const normedResponse = this.normalizeTaskForFe(responseTask);
+    return this.decryptTask(normedResponse);
   }
 
   public static async updateTask(task: ITask): Promise<ITask> {
-    const response_task: ITask = await TaskRepository.updateTask(
-      this.encryptTask(task)
+    const response_task: IReceivedTask = await TaskRepository.updateTask(
+      this.normalizeTaskForBe(this.encryptTask(task))
     );
-    return this.decryptTask(response_task);
+    return this.decryptTask(this.normalizeTaskForFe(response_task));
   }
 
   public static async deleteTask(task: ITask): Promise<string> {
-    const response_task: string = await TaskRepository.deleteTask(task);
-    return response_task;
+    return await TaskRepository.deleteTask(
+      this.normalizeTaskForBe(this.encryptTask(task))
+    );
   }
 
   static encryptTask(task: ITask): ITask {
@@ -69,14 +75,12 @@ class TaskService {
     } else {
       key = user.token.keys.filter((item) => !item.board);
     }
-    const result = {
+    return {
       ...task,
       title: AES.encrypt(task.title, key[0].key).toString(),
       description: AES.encrypt(task.description, key[0].key).toString(),
-      task_status: AES.encrypt(task.task_status, key[0].key).toString(),
+      taskStatus: AES.encrypt(task.taskStatus, key[0].key).toString(),
     };
-    console.log(result);
-    return result;
   }
 
   static decryptTask(task: ITask): ITask {
@@ -93,10 +97,43 @@ class TaskService {
       description: AES.decrypt(task.description, key[0].key).toString(
         CryptoJS.enc.Utf8
       ),
-      task_status: AES.decrypt(task.task_status, key[0].key).toString(
+      taskStatus: AES.decrypt(task.taskStatus, key[0].key).toString(
         CryptoJS.enc.Utf8
       ),
     };
+  }
+
+  static normalizeTaskForFe(task: IReceivedTask): ITask {
+    return {
+      board: task.board,
+      created: task.created,
+      creator: task.creator,
+      deadline: task.deadline,
+      description: task.description,
+      doneDate: task.done_date,
+      startTime: task.start_time,
+      taskStatus: task.task_status,
+      taskUuid: task.task_uuid,
+      title: task.title,
+      updated: task.updated,
+    }
+  }
+
+  static normalizeTaskForBe(task: ITask): IReceivedTask {
+    return {
+      board: task.board,
+      created: task.created,
+      creator: task.creator,
+      deadline: task.deadline,
+      description: task.description,
+      done_date: task.doneDate,
+      start_time: task.startTime,
+      task_status: task.taskStatus,
+      task_uuid: task.taskUuid,
+      title: task.title,
+      updated: task.updated,
+
+    }
   }
 }
 export default TaskService;

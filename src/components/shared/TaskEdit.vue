@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import type ITask from '@/interfaces/ITask';
+import type { ITask } from '@/interfaces/ITask';
 import { reactive, type Ref, ref } from 'vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';
@@ -75,7 +75,7 @@ if (props.newTask && !props.task) {
     title: '',
     startTime: undefined,
     deadline: undefined,
-    task_status: TaskStatuses.READY,
+    taskStatus: TaskStatuses.READY,
   } as ITask);
 } else {
   task = reactive(props.task as ITask);
