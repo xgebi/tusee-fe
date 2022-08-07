@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type ITask from '@/interfaces/ITask';
+import type { ITask } from '@/interfaces/ITask';
 import { formatDate } from '@/utils/date';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';
@@ -36,11 +36,12 @@ const completeTask = async (e: Event) => {
   // TODO make this more reusable
   e.preventDefault();
   const task = _.cloneDeep(props.task);
-  if (task.task_status === TaskStatuses.DONE) {
-    task.task_status = TaskStatuses.IN_PROGRESS;
+  if (task.taskStatus === TaskStatuses.DONE) {
+    task.taskStatus = TaskStatuses.IN_PROGRESS;
+    task.active = true;
   } else {
-    task.task_status = TaskStatuses.DONE;
-    task.done_date = new Date();
+    task.taskStatus = TaskStatuses.DONE;
+    task.active = false;
   }
   await taskStore.updateTask(task);
 };

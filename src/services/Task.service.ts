@@ -108,13 +108,13 @@ class TaskService {
       creator: task.creator,
       deadline: task.deadline,
       description: task.description,
-      doneDate: task.done_date,
+      active: task.active,
       startTime: task.start_time,
       taskStatus: task.task_status,
       taskUuid: task.task_uuid,
       title: task.title,
       updated: task.updated,
-    }
+    };
   }
 
   static normalizeTaskForBe(task: ITask): IReceivedTask {
@@ -124,14 +124,13 @@ class TaskService {
       creator: task.creator,
       deadline: task.deadline,
       description: task.description,
-      done_date: task.doneDate,
+      active: task.active,
       start_time: task.startTime,
       task_status: task.taskStatus,
       task_uuid: task.taskUuid,
       title: task.title,
       updated: task.updated,
-
-    }
+    };
   }
 }
 export default TaskService;

@@ -11,7 +11,7 @@ export interface ITask {
   updated?: Date;
   created?: Date;
   taskStatus: string;
-  doneDate: Date;
+  active: boolean;
 }
 
 export interface IReceivedTask {
@@ -25,5 +25,5 @@ export interface IReceivedTask {
   updated?: Date;
   created?: Date;
   task_status: string;
-  done_date: Date;
+  active: boolean;
 }
