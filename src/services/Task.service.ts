@@ -91,11 +91,11 @@ class TaskService {
     }
     return {
       ...task,
-      title: AES.decrypt(task.title, key[0].key).toString(CryptoJS.enc.Utf8),
-      description: AES.decrypt(task.description, key[0].key).toString(
+      title: AES.decrypt(task.title.toString(), key[0].key).toString(CryptoJS.enc.Utf8),
+      description: AES.decrypt(task.description.toString(), key[0].key).toString(
         CryptoJS.enc.Utf8
       ),
-      taskStatus: AES.decrypt(task.taskStatus, key[0].key).toString(
+      taskStatus: AES.decrypt(task.taskStatus.toString(), key[0].key).toString(
         CryptoJS.enc.Utf8
       ),
     };
