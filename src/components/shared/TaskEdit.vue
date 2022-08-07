@@ -52,6 +52,7 @@ import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';
 import { useBoardsStore } from '@/stores/boards';
 import TaskService from '@/services/Task.service';
+
 const dialog = ref(null);
 
 const taskStore = useTaskStore();
@@ -115,10 +116,13 @@ const createNewTask = async (e: Event) => {
     }
     if (!task.board) {
       await taskStore.appendStandAloneTask(task);
-    } else if (boardsStore.getSelectedBoard?.boardUuid === task.board) {
-      await boardsStore.appendTaskToSelectedBoard(task);
     } else {
-      await TaskService.createTask(task);
+      task.taskStatus = TaskStatuses.READY; // TODO is this needed?
+      if (boardsStore.getSelectedBoard?.boardUuid === task.board) {
+        await boardsStore.appendTaskToSelectedBoard(task);
+      } else {
+        await TaskService.createTask(task);
+      }
     }
     task.description = '';
     task.title = '';

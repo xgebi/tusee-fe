@@ -27,14 +27,14 @@
 
           <BoardListTask
             v-for="task in boardStore.getSelectedBoardTasks.filter(
-              (t) => t.task_status === column.split(':')[0]
+              (t) => t.taskStatus === column.split(':')[0]
             )"
             draggable="true"
             @dragstart="dragStart"
             @dragend="dragStop"
-            :data-uuid="task.task_uuid"
+            :data-uuid="task.taskUuid"
             :task="task"
-            :key="task.task_uuid"
+            :key="task.taskUuid"
           ></BoardListTask>
         </div>
       </section>
@@ -48,7 +48,7 @@ import MainNavigation from '@/components/shared/MainNavigation.vue';
 import BoardsService from '@/services/Boards.service';
 import type { IBoard } from '@/interfaces/IBoard';
 import { useRoute } from 'vue-router';
-import type ITask from '@/interfaces/ITask';
+import type { ITask } from '@/interfaces/ITask';
 import { useBoardsStore } from '@/stores/boards';
 import BoardListTask from '@/components/BoardListTask.vue';
 

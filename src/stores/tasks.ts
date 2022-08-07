@@ -35,7 +35,10 @@ export const useTaskStore = defineStore({
       }
     },
     async appendStandAloneTask(task: ITask) {
-      this.standaloneTasks.push(await TaskService.createTask(task));
+      this.standaloneTasks = [
+        ...this.standaloneTasks,
+        await TaskService.createTask(task),
+      ];
     },
     async deleteStandAloneTasks(task: ITask) {
       const deletedTask = await TaskService.deleteTask(task);
