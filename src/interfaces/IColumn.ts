@@ -1,4 +1,4 @@
-import TaskStatuses from '@/const/TaskStatuses';
+import type TaskStatuses from '@/const/TaskStatuses';
 
 interface IColumn {
   name: string;

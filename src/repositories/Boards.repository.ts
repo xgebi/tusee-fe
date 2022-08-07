@@ -6,7 +6,7 @@ import type IBoardResponse from '@/interfaces/IBoardResponse';
 import type IBoardDeletedResponse from '@/interfaces/IBoardDeletedResponse';
 import type ICreateBoardRequest from '@/interfaces/ICreateBoardRequest';
 import type ICreateBoardResponse from '@/interfaces/ICreateBoardResponse';
-import type IBoardViewResponse from '@/interfaces/IBoardViewResponse';
+import type { IBoardViewResponse } from '@/interfaces/IBoardViewResponse';
 
 class BoardsRepository {
   public static async getAvailableBoards() {
