@@ -7,15 +7,15 @@
     <p class="time-task" v-if="props.task.deadline">
       Deadline: {{ formatDate(props.task.deadline) }}
     </p>
-    <label class="task-done" :for="'task-done-' + props.task.task_uuid">
+    <label class="task-done" :for="'task-done-' + props.task.taskUuid">
       <input
         type="checkbox"
         @change="completeTask"
-        :checked="props.task.task_status === TaskStatuses.DONE"
+        :checked="props.task.taskStatus === TaskStatuses.DONE"
       />
       Done
     </label>
-    <router-link :to="{ path: `/task/${props.task.task_uuid}` }" class="edit"
+    <router-link :to="{ path: `/task/${props.task.taskUuid}` }" class="edit"
       >Edit</router-link
     >
     <button class="delete" @click="deleteTask">Delete</button>
