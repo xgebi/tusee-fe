@@ -65,10 +65,10 @@ class TaskService {
     return await TaskRepository.deleteTask(task.taskUuid as string);
   }
 
-  public static importMultipleTasks(tasks: ITask[]): Promise<boolean> {
+  public static async importMultipleTasks(tasks: ITask[]) {
     const processedTasks = tasks.map((task) =>
       this.normalizeTaskForBe(this.encryptTask(task)));
-    return TaskRepository.importMultipleTasks(processedTasks);
+    await TaskRepository.importMultipleTasks(processedTasks);
   }
 
   static encryptTask(task: ITask): ITask {

@@ -92,12 +92,11 @@ class TaskRepository {
 
   public static async importMultipleTasks(
     tasks: IReceivedTask[]
-  ): Promise<boolean> {
+  ) {
     const response = await Fetch.post(`task/import`, tasks);
-    if (response.ok) {
-      return true;
+    if (!response.ok) {
+      throw new Error();
     }
-    throw new Error();
   }
 }
 

@@ -10,7 +10,16 @@
         <button @click="downloadData">Download decrypted data</button>
       </div>
       <div>
-        <input type="file" @change="fileToImportChanged" />
+        <section>
+          <label for="import-file">Import file</label>
+          <input id="import-file" type="file" @change="fileToImportChanged" />
+        </section>
+
+        <section>
+          <label for="password">Password</label>
+          <input id="password" type="password" v-model="password" />
+        </section>
+
         <button @click="importFile">Upload data</button>
       </div>
     </section>
@@ -24,6 +33,8 @@ import TaskService from '@/services/Task.service';
 import BoardsService from '@/services/Boards.service';
 import { ref } from 'vue';
 import type { IExportImport } from '@/interfaces/IExportImport';
+import type { ITask } from '@/interfaces/ITask';
+import KeyService from '@/services/Key.service';
 
 const userStore = useUserStore();
 const fileToImport = ref<IExportImport>({
@@ -31,6 +42,8 @@ const fileToImport = ref<IExportImport>({
   boards: [],
   standAloneTasks: [],
 });
+
+const password = ref<string>('');
 
 const downloadData = async () => {
   // Get standalone tasks
@@ -65,8 +78,17 @@ const fileToImportChanged = (e: Event) => {
   reader.readAsBinaryString(e.target.files[0]);
 };
 
-const importFile = () => {
-  console.log(fileToImport.value);
+const importFile = async () => {
+  // standalone tasks
+  await TaskService.importMultipleTasks(fileToImport.value.standAloneTasks);
+  // boards
+  await BoardsService.importMultipleBoards(fileToImport.value.boards);
+  // board tasks
+  for (const board of fileToImport.value.boards) {
+    await TaskService.importMultipleTasks(board.tasks as ITask[]);
+  }
+  // keys
+  await KeyService.importMultipleKeys(fileToImport.value.keys, password.value);
 };
 </script>
 
