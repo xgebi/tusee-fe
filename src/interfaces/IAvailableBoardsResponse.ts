@@ -1,8 +1,8 @@
-import type { IBoard } from '@/interfaces/IBoard';
+import type { IReceivedBoard } from '@/interfaces/IBoard';
 
 interface IAvailableBoardsResponse {
   token: string;
-  boards: IBoard[];
+  boards: IReceivedBoard[];
 }
 
 export default IAvailableBoardsResponse;

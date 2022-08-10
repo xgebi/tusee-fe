@@ -89,6 +89,16 @@ class TaskRepository {
     }
     throw new Error();
   }
+
+  public static async importMultipleTasks(
+    tasks: IReceivedTask[]
+  ): Promise<boolean> {
+    const response = await Fetch.post(`task/import`, tasks);
+    if (response.ok) {
+      return true;
+    }
+    throw new Error();
+  }
 }
 
 export default TaskRepository;

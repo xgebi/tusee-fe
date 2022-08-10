@@ -1,3 +1,5 @@
+import type { ITask } from '@/interfaces/ITask';
+
 export interface IBoard {
   boardUuid: string;
   name: string;
@@ -5,6 +7,7 @@ export interface IBoard {
   owner: string;
   created?: Date;
   columns: string;
+  tasks?: ITask[];
 }
 
 export interface IReceivedBoard {

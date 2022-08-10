@@ -1,10 +1,10 @@
 <template>
   <section class="top-bar">
-    <p>Tusee</p>
+    <p class="top-bar__logo">Tusee</p>
     <TaskEdit :new-task="true"></TaskEdit>
     <button>New event</button>
-    <nav class="main-navigation">
-      <ul>
+    <nav class="top-bar__main-navigation">
+      <ul class="top-bar__main-navigation__list">
         <li>
           <router-link :to="{ name: 'dashboard' }">Dashboard</router-link>
         </li>
@@ -37,9 +37,3 @@ const logOut = (e: Event) => {
   router.push({ name: 'loggedOut' });
 };
 </script>
-
-<style scoped>
-.top-bar {
-  grid-column: 1 / 4;
-}
-</style>

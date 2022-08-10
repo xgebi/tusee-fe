@@ -65,6 +65,12 @@ class TaskService {
     return await TaskRepository.deleteTask(task.taskUuid as string);
   }
 
+  public static importMultipleTasks(tasks: ITask[]): Promise<boolean> {
+    const processedTasks = tasks.map((task) =>
+      this.normalizeTaskForBe(this.encryptTask(task)));
+    return TaskRepository.importMultipleTasks(processedTasks);
+  }
+
   static encryptTask(task: ITask): ITask {
     const user = useUserStore();
     let key;

@@ -12,6 +12,7 @@ import type { IBoard } from '@/interfaces/IBoard';
 import BoardsService from '@/services/Boards.service';
 import { useBoardsStore } from '@/stores/boards';
 import dayjs from 'dayjs';
+import CryptoJS from 'crypto-js';
 
 class UserService {
   static normalizeUserTokenForFe(token: IReceivedUserToken): IUserToken {
@@ -34,7 +35,6 @@ class UserService {
 
   public static async login(info: ILoginInfo): Promise<IUserToken> {
     const resultLogin: IReceivedUserToken = await UserRepository.login(info);
-
     const loginResult = {
       ...this.normalizeUserTokenForFe(resultLogin),
       password: info.password,
@@ -48,7 +48,22 @@ class UserService {
         this.decryptBoards(loginResult.boards as IBoard[], loginResult.keys)
       );
     }
+    loginResult.displayName = this.decryptAdditionalInformation(
+      loginResult.displayName,
+      loginResult.keys
+    );
     return loginResult;
+  }
+
+  private static decryptAdditionalInformation(
+    toDecrypt: string,
+    keys: IKey[]
+  ): string {
+    const key = keys.filter((key) => !key.board);
+    if (key.length > 0) {
+      return AES.decrypt(toDecrypt, key[0].key).toString(CryptoJS.enc.Utf8);
+    }
+    return '';
   }
 
   private static decryptKeys(password: string, keys: IKey[]): IKey[] {

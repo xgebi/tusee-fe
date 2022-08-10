@@ -15,7 +15,7 @@ class BoardsRepository {
       const result = (await response.json()) as IAvailableBoardsResponse;
       const userStore = useUserStore();
       userStore.updateToken(result.token);
-      return result.boards as IBoard[];
+      return result.boards as IReceivedBoard[];
     }
     throw new Error();
   }
@@ -73,6 +73,16 @@ class BoardsRepository {
       const userStore = useUserStore();
       userStore.updateToken(result.token);
       return result.board;
+    }
+    throw new Error();
+  }
+
+  public static async importMultipleBoards(
+    boards: IReceivedBoard[]
+  ): Promise<boolean> {
+    const response = await Fetch.delete(`boards/import`, boards);
+    if (response.ok) {
+      return true;
     }
     throw new Error();
   }

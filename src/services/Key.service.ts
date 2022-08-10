@@ -1,8 +1,16 @@
 import type { IKey, IReceivedKey } from '@/interfaces/IKey';
 import AES from 'crypto-js/aes';
 import CryptoJS from 'crypto-js';
+import { KeyRepository } from '@/repositories/Key.repository';
 
 class KeyService {
+  public static importMultipleKeys(keys: IKey[], password: string): Promise<boolean> {
+    const processedKeys = keys.map((key) =>
+      this.normalizeKeysForBe(this.encryptKey(key, password))
+    );
+    return KeyRepository.importMultipleKeys(processedKeys);
+  }
+
   public static normalizeKeysForFe(key: IReceivedKey): IKey {
     return {
       board: key.board,

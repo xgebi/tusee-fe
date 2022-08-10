@@ -1,13 +1,17 @@
-.top-bar__nav {
-
+.page {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 3rem minmax(calc(100vh - 3rem), auto);
 }
 
 .top-bar {
+  grid-column: 1 / 4;
+  grid-row: 1 / 2;
   display: flex;
   flex-flow: row;
 
-  .main-navigation {
-    ul {
+  &__main-navigation {
+    &__list {
       list-style: none;
       padding: 0;
       margin: 0;
@@ -27,5 +31,16 @@
         }
       }
     }
+  }
+}
+
+.task-view {
+  grid-column: 2 / 3;
+
+  &__input,
+  &__textarea,
+  &__select {
+    display: flex;
+    flex-direction: column;
   }
 }

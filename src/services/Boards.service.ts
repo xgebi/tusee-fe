@@ -3,7 +3,7 @@ import BoardsRepository from '@/repositories/Boards.repository';
 import type { IBoard, IReceivedBoard } from '@/interfaces/IBoard';
 import AES from 'crypto-js/aes';
 import CryptoJS from 'crypto-js';
-import type { IKey, IReceivedKey } from '@/interfaces/IKey';
+import type { IKey } from '@/interfaces/IKey';
 import KeyService from '@/services/Key.service';
 import type ICreateBoardResponse from '@/interfaces/ICreateBoardResponse';
 import type { IBoardViewResponse, INormalizedBoardViewResponse } from '@/interfaces/IBoardViewResponse';
@@ -11,10 +11,11 @@ import TaskService from '@/services/Task.service';
 
 class BoardsService {
   public static async getAvailableBoards() {
-    const boards: IBoard[] = await BoardsRepository.getAvailableBoards();
+    const boards: IReceivedBoard[] = await BoardsRepository.getAvailableBoards();
+    const normalizedBoards: IBoard[] = boards.map((board) => this.normalizeBoardForFe(board));
     const resultingTasks: IBoard[] = [];
     const userStore = useUserStore();
-    for (const board of boards) {
+    for (const board of normalizedBoards) {
       resultingTasks.push(this.decryptBoard(board, userStore.token.keys));
     }
     return resultingTasks;
@@ -85,7 +86,12 @@ class BoardsService {
     return result;
   }
 
-  public static async getBoardTasks() {}
+  public static importMultipleBoards(boards: IBoard[]): Promise<boolean> {
+    const processedBoards = boards.map((task) =>
+      this.normalizeBoardForBe(this.encryptBoard(task))
+    );
+    return BoardsRepository.importMultipleBoards(processedBoards);
+  }
 
   static decryptBoard(
     board: IBoard,

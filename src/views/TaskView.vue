@@ -1,17 +1,16 @@
 <template>
   <main class="page page-dashboard">
     <MainNavigation></MainNavigation>
-    {{ task }}
-    <form @submit="formSubmitted">
-      <div>
+    <form @submit="formSubmitted" class="task-view">
+      <div class="task-view__input">
         <label for="title">Title</label>
         <input type="text" v-model="task.title" id="title" />
       </div>
-      <div>
+      <div class="task-view__textarea">
         <label for="Description">Description</label>
         <textarea v-model="task.description" id="Description"></textarea>
       </div>
-      <div>
+      <div class="task-view__select">
         <label for="task-board">Board</label>
         <select id="task-board" v-model="task.board">
           <option :value="undefined"></option>
@@ -24,16 +23,16 @@
           </option>
         </select>
       </div>
-      <label class="task-done" :for="'task-done-' + task.task_uuid">
+      <label class="task-view__box" :for="'task-done-' + task.task_uuid">
         <input
           type="checkbox"
           :checked="task.task_status === TaskStatuses.DONE"
         />
         Done
       </label>
-      <div>Updated: {{ task.updated }}</div>
-      <div>Created: {{ task.created }}</div>
-      <div>
+      <div class="task-view__info">Updated: {{ task.updated }}</div>
+      <div class="task-view__info">Created: {{ task.created }}</div>
+      <div class="task-view__button">
         <button>Save</button>
       </div>
     </form>
@@ -42,7 +41,7 @@
 
 <script setup lang="ts">
 import MainNavigation from '@/components/shared/MainNavigation.vue';
-import type ITask from '@/interfaces/ITask';
+import type { ITask } from '@/interfaces/ITask';
 import { useRoute } from 'vue-router';
 import { useTaskStore } from '@/stores/tasks';
 import { reactive } from 'vue';
@@ -60,12 +59,13 @@ let task: ITask = reactive({
   description: '',
   deadline: undefined,
   startTime: undefined,
-  task_uuid: '',
+  taskUuid: '',
   creator: '',
   board: '',
   updated: undefined,
   created: undefined,
-  task_status: TaskStatuses.READY,
+  taskStatus: TaskStatuses.READY,
+  active: true,
 });
 const setTask = async () => {
   if (router.params.id.toString().toLowerCase() !== 'new') {
