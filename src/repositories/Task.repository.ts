@@ -28,8 +28,8 @@ class TaskRepository {
     throw new Error();
   }
 
-  public static async fetchTask(task_uuid: string): Promise<IReceivedTask> {
-    const response = await Fetch.get(`task/${task_uuid}`);
+  public static async fetchTask(taskUuid: string): Promise<IReceivedTask> {
+    const response = await Fetch.get(`task/${taskUuid}`);
     if (response.ok) {
       const result = await response.json();
       console.log(result);

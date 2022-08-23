@@ -26,7 +26,7 @@
 import MainNavigation from '@/components/shared/MainNavigation.vue';
 import { onBeforeMount, reactive, ref, type Ref } from 'vue';
 import TaskService from '@/services/Task.service';
-import type ITask from '@/interfaces/ITask';
+import type { ITask } from '@/interfaces/ITask';
 import TaskEdit from '@/components/shared/TaskEdit.vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import StandaloneTaskListItem from '@/components/StandaloneTaskListItem.vue';
@@ -61,6 +61,7 @@ const createNewTask = async (task: ITask) => {
 .page-standalone-tasks {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 3rem;
 }
 
 .page-standalone-tasks *:not(.top-bar) {

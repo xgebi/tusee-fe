@@ -38,8 +38,8 @@ class TaskService {
     return resultingTasks;
   }
 
-  public static async fetchTask(task_uuid: string): Promise<ITask> {
-    const task: IReceivedTask = await TaskRepository.fetchTask(task_uuid);
+  public static async fetchTask(taskUuid: string): Promise<ITask> {
+    const task: IReceivedTask = await TaskRepository.fetchTask(taskUuid);
     const normTask = this.normalizeTaskForFe(task);
     return this.decryptTask(normTask);
   }

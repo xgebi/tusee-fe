@@ -23,10 +23,10 @@
           </option>
         </select>
       </div>
-      <label class="task-view__box" :for="'task-done-' + task.task_uuid">
+      <label class="task-view__box" :for="'task-done-' + task.taskUuid">
         <input
           type="checkbox"
-          :checked="task.task_status === TaskStatuses.DONE"
+          :checked="task.taskStatus === TaskStatuses.DONE"
         />
         Done
       </label>
