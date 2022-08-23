@@ -73,6 +73,9 @@ export const useUserStore = defineStore({
       this.token.token = token;
       this.token.automaticLogoutTime = dayjs().add(30, 'minute');
     },
+    importKeys(keys: IKey[]) {
+      this.token.keys = keys;
+    },
     addKey(key: IKey) {
       this.token.keys.push(key);
     },

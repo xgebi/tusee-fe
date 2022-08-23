@@ -1,8 +1,7 @@
 <template>
   <main class="page page-single-board">
     <MainNavigation></MainNavigation>
-    <button @click="createBoard">Create board</button>
-    <div v-if="boardStore.getSelectedBoard">
+    <template v-if="boardStore.getSelectedBoard">
       <h2>{{ boardStore.getSelectedBoard.name }}</h2>
       <p>{{ boardStore.getSelectedBoard.description }}</p>
       <router-link :to="{ path: `/board/${route.params.id}/settings` }">
@@ -38,7 +37,7 @@
           ></BoardListTask>
         </div>
       </section>
-    </div>
+    </template>
   </main>
 </template>
 
@@ -96,7 +95,16 @@ const createBoard = () => {
 </script>
 
 <style scoped>
-.board-table {
+.page-single-board {
+  grid-template-rows: 3rem auto;
+}
+
+.page-single-board > *:not(.top-bar) {
+  grid-column: 2 / 3;
+}
+
+.page-single-board .board-table {
+  grid-column: 1 / 4;
   display: grid;
   grid-template-rows: 40px auto;
   column-gap: 1rem;

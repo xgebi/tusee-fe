@@ -79,6 +79,7 @@ const fileToImportChanged = (e: Event) => {
 };
 
 const importFile = async () => {
+  userStore.importKeys(fileToImport.value.keys);
   // standalone tasks
   await TaskService.importMultipleTasks(fileToImport.value.standAloneTasks);
   // boards

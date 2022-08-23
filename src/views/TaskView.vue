@@ -75,12 +75,12 @@ const setTask = async () => {
     task.description = localTask.description;
     task.deadline = localTask.deadline;
     task.startTime = localTask.startTime;
-    task.task_uuid = localTask.task_uuid;
+    task.taskUuid = localTask.taskUuid;
     task.creator = localTask.creator;
     task.board = localTask.board;
     task.updated = localTask.updated;
     task.created = localTask.created;
-    task.task_status = localTask.task_status;
+    task.taskStatus = localTask.taskStatus;
   }
 };
 setTask();

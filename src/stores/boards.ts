@@ -62,7 +62,7 @@ export const useBoardsStore = defineStore({
       if (tempTask) {
         const replacementTask = {
           ...tempTask,
-          task_status: column,
+          taskStatus: column,
         };
         this.selectedBoardTasks.splice(i, 1, replacementTask);
         await TaskService.updateTask(replacementTask);
