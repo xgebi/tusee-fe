@@ -104,12 +104,12 @@ const createBoard = () => {
 }
 
 .page-single-board .board-table {
-  grid-column: 1 / 4;
+  grid-column: 2 / 3;
   display: grid;
   grid-template-rows: 40px auto;
   column-gap: 1rem;
   row-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, 10rem);
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
 }
 
 .table-header {
@@ -121,5 +121,8 @@ const createBoard = () => {
   padding: 1rem;
   grid-row: 2 / 3;
   min-height: 50vh;
+  display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 </style>
