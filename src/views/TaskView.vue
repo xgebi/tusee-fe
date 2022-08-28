@@ -2,6 +2,14 @@
   <main class="page page-dashboard">
     <MainNavigation></MainNavigation>
     <form @submit="formSubmitted" class="task-view">
+      <div>
+        <router-link v-if="task.board" :to="{ path: `/board/${task.board}` }">
+          Back to board
+        </router-link>
+        <router-link v-else :to="{ name: 'tasks' }">
+          Back to standalone tasks
+        </router-link>
+      </div>
       <div class="task-view__input">
         <label for="title">Title</label>
         <input type="text" v-model="task.title" id="title" />
