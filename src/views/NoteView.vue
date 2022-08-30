@@ -58,7 +58,7 @@ const formSubmitted = (e: Event) => {
 };
 
 const updateNote = async () => {
-  note.value = await NoteService.fetchNote(router.params.id as string);
+  note.value = await NoteService.updateNote(note.value);
 };
 
 </script>

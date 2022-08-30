@@ -97,7 +97,7 @@ class NoteService {
   static normalizeNoteForBe(note: INote): IReceivedNote {
     return {
       note: note.note,
-      note_uuid: note.userUuid,
+      note_uuid: note.noteUuid,
       title: note.title,
       user_uuid: note.userUuid,
       updated: note.updated,
