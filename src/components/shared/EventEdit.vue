@@ -77,7 +77,6 @@ if (props.newTask && !props.task) {
     startTime: undefined,
     deadline: undefined,
     taskStatus: TaskStatuses.READY,
-    board: boardsStore.selectedBoard?.boardUuid,
   } as ITask);
 } else {
   task = reactive(props.task as ITask);
@@ -127,7 +126,6 @@ const createNewTask = async (e: Event) => {
     }
     task.description = '';
     task.title = '';
-    task.board = boardsStore.selectedBoard?.boardUuid;
     task.startTime = undefined;
     task.deadline = undefined;
   }

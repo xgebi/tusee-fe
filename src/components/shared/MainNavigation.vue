@@ -2,6 +2,7 @@
   <section class="top-bar">
     <p class="top-bar__logo">Tusee</p>
     <TaskEdit :new-task="true"></TaskEdit>
+    <NoteEdit :new-note="true"></NoteEdit>
     <button>New event</button>
     <nav class="top-bar__main-navigation">
       <ul class="top-bar__main-navigation__list">
@@ -27,6 +28,7 @@ import { defineComponent } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import TaskEdit from '@/components/shared/TaskEdit.vue';
+import NoteEdit from '@/components/shared/NoteEdit.vue';
 
 const router = useRouter();
 

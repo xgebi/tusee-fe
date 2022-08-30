@@ -33,7 +33,9 @@ class NoteService {
   public static async fetchNote(noteUuid: string): Promise<INote> {
     const note: IReceivedNote = await NoteRepository.fetchNote(noteUuid);
     const normNote = this.normalizeNoteForFe(note);
-    return this.decryptNote(normNote);
+    const deN = this.decryptNote(normNote);
+    console.log(deN);
+    return deN;
   }
 
   public static async createNote(task: INote): Promise<INote> {
@@ -46,7 +48,7 @@ class NoteService {
     return this.decryptNote(normedResponse);
   }
 
-  public static async updateTask(note: INote): Promise<INote> {
+  public static async updateNote(note: INote): Promise<INote> {
     const responseNote: IReceivedNote = await NoteRepository.updateNote(
       this.normalizeNoteForBe(this.encryptNote(note))
     );
@@ -73,9 +75,11 @@ class NoteService {
     return {
       ...note,
       title: AES.decrypt(note.title.toString(), key[0].key).toString(CryptoJS.enc.Utf8),
-      note: AES.decrypt(note.note.toString(), key[0].key).toString(
-        CryptoJS.enc.Utf8
-      ),
+      note: note.note
+        ? AES.decrypt(note.note.toString(), key[0].key).toString(
+            CryptoJS.enc.Utf8
+          )
+        : '',
     };
   }
 
@@ -84,7 +88,9 @@ class NoteService {
       note: note.note,
       noteUuid: note.note_uuid,
       title: note.title,
-      userUuid: note.user_uuid
+      userUuid: note.user_uuid,
+      updated: note.updated,
+      created: note.created,
     };
   }
 
@@ -93,7 +99,9 @@ class NoteService {
       note: note.note,
       note_uuid: note.userUuid,
       title: note.title,
-      user_uuid: note.userUuid
+      user_uuid: note.userUuid,
+      updated: note.updated,
+      created: note.created,
     };
   }
 }

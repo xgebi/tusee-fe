@@ -1,7 +1,16 @@
 <template>
   <main class="page page-notes-list">
     <MainNavigation></MainNavigation>
-    {{ list }}
+    <NoteEdit :new-note="true"></NoteEdit>
+    <h1>Boards</h1>
+    <ul>
+      <li v-for="note in list" :key="note.noteUuid">
+        <router-link
+          :to="{ path: `/note/${note.noteUuid}` }"
+          >{{ note.title }}
+        </router-link>
+      </li>
+    </ul>
   </main>
 </template>
 
@@ -10,6 +19,7 @@ import MainNavigation from '@/components/shared/MainNavigation.vue';
 import NoteService from '@/services/Note.service';
 import { ref } from 'vue';
 import type { INote } from '@/interfaces/INote';
+import NoteEdit from '@/components/shared/NoteEdit.vue';
 
 const list = ref<INote[]>([]);
 
