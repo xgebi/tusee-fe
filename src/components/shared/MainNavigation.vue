@@ -13,6 +13,7 @@
         </li>
         <li><router-link :to="{ name: 'events' }">Events</router-link></li>
         <li><router-link :to="{ name: 'boards' }">Boards</router-link></li>
+        <li><router-link :to="{ name: 'notes' }">Notes</router-link></li>
         <li><router-link :to="{ name: 'calendar' }">Calendar</router-link></li>
         <li><router-link :to="{ name: 'profile' }">Profile</router-link></li>
         <li><button @click="logOut">Log out</button></li>

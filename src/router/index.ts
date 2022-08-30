@@ -17,6 +17,8 @@ import LoggedOutView from '@/views/LoggedOutView.vue';
 import SingleBoardSettingsView from '@/views/SingleBoardSettingsView.vue';
 import SingleBoardView from '@/views/SingleBoardView.vue';
 import TaskView from '@/views/TaskView.vue';
+import NotesListView from '@/views/NotesListView.vue';
+import NoteView from '@/views/NoteView.vue';
 import { useUserStore } from '@/stores/user';
 import dayjs from 'dayjs';
 
@@ -124,6 +126,18 @@ const router = createRouter({
       path: '/printable',
       name: 'printable',
       component: PrintableView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/notes',
+      name: 'notes',
+      component: NotesListView,
+      beforeEnter: authenticatedGuard,
+    },
+    {
+      path: '/note/:id',
+      name: 'note',
+      component: NoteView,
       beforeEnter: authenticatedGuard,
     },
     {
