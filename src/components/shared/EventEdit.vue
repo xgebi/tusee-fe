@@ -1,57 +1,45 @@
 <template>
   <section>
-    <button @click="openDialog">Create new task</button>
+    <button @click="openDialog">Create new event</button>
     <dialog @close="createNewTask" ref="dialog">
       <form method="dialog" @submit="createNewTask">
         <div>
           <label for="task-title">Title</label>
-          <input id="task-title" v-model="task.title" />
+          <input id="task-title" v-model="event.eventName" />
         </div>
         <div>
           <label for="task-description">Description</label>
-          <textarea id="task-description" v-model="task.description"></textarea>
+          <textarea id="task-description" v-model="event.description"></textarea>
         </div>
         <div>
-          <label for="task-board">Board</label>
-          <select id="task-board" v-model="task.board">
-            <option :value="undefined"></option>
-            <option
-              v-for="board in boardsStore.getBoards"
-              :key="board.boardUuid"
-              :value="board.boardUuid"
-            >
-              {{ board.name }}
-            </option>
-          </select>
-        </div>
-        <div>
-          <label for="task-deadline">Deadline</label>
-          <div id="task-deadline">
-            <input type="date" v-model="taskDateTimes.deadlineDate" />
-            <input type="time" v-model="taskDateTimes.deadlineTime" />
+          <label for="task-start-time">Start</label>
+          <div id="task-start-time">
+            <input type="date" v-model="eventDateTimes.startTimeDate" />
+            <input type="time" v-model="eventDateTimes.startTimeTime" />
           </div>
         </div>
         <div>
-          <label for="task-start-time">Start date</label>
-          <div id="task-start-time">
-            <input type="date" v-model="taskDateTimes.startTimeDate" />
-            <input type="time" v-model="taskDateTimes.startTimeTime" />
+          <label for="task-end-time">End</label>
+          <div id="task-end-time">
+            <input type="date" v-model="eventDateTimes.endTimeDate" />
+            <input type="time" v-model="eventDateTimes.endTimeTime" />
           </div>
         </div>
         <button value="cancel">Cancel</button>
-        <button id="confirmBtn" value="create">Create task</button>
+        <button id="confirmBtn" value="create">Create event</button>
       </form>
     </dialog>
   </section>
 </template>
 
 <script setup lang="ts">
-import type { ITask } from '@/interfaces/ITask';
+import type { IEvent } from '@/interfaces/IEvent';
 import { reactive, type Ref, ref } from 'vue';
 import TaskStatuses from '@/const/TaskStatuses';
 import { useTaskStore } from '@/stores/tasks';
 import { useBoardsStore } from '@/stores/boards';
 import TaskService from '@/services/Task.service';
+import dayjs from 'dayjs';
 
 const dialog = ref(null);
 
@@ -60,30 +48,29 @@ const boardsStore = useBoardsStore();
 console.log('boards', boardsStore.getBoards);
 
 const props = defineProps<{
-  newTask?: boolean;
-  task?: ITask;
+  newEvent?: boolean;
+  event?: IEvent;
 }>();
 
 const emit = defineEmits<{
-  (e: 'created', task: ITask): void;
-  (e: 'updated', task: ITask): void;
+  (e: 'created', task: IEvent): void;
+  (e: 'updated', task: IEvent): void;
 }>();
 
-let task: ITask;
-if (props.newTask && !props.task) {
-  task = reactive({
+let event: IEvent;
+if (props.newEvent && !props.event) {
+  event = reactive({
+    eventUuid: '',
+    userUuid: '',
+    eventName: '',
     description: '',
-    title: '',
-    startTime: undefined,
-    deadline: undefined,
-    taskStatus: TaskStatuses.READY,
-  } as ITask);
+  } as IEvent);
 } else {
-  task = reactive(props.task as ITask);
+  event = reactive(props.event as IEvent);
 }
-const taskDateTimes = reactive({
-  deadlineDate: '',
-  deadlineTime: '',
+const eventDateTimes = reactive({
+  endTimeDate: '',
+  endTimeTime: '',
   startTimeDate: '',
   startTimeTime: '',
 });
@@ -97,23 +84,27 @@ const createNewTask = async (e: Event) => {
   e.preventDefault();
   dialog.value.close();
   if (e.target?.returnValue === 'create' || e.target.tagName === 'FORM') {
-    if (task.title.length === 0) {
+    if (event.eventName.length === 0) {
       return;
     }
-    if (taskDateTimes.deadlineDate) {
-      task.deadline = taskDateTimes.deadlineTime
+    if (eventDateTimes.startTimeDate) {
+      event.startTimedate = eventDateTimes.startTimeTime
         ? new Date(
-            `${taskDateTimes.deadlineDate}T${taskDateTimes.deadlineTime}`
+            `${eventDateTimes.startTimeDate}T${eventDateTimes.startTimeTime}`
           )
-        : new Date(`${taskDateTimes.deadlineDate}T23:59:59`);
-    }
-    if (taskDateTimes.startTimeDate) {
-      task.startTime = taskDateTimes.startTimeTime
+        : new Date(`${eventDateTimes.startTimeDate}T00:00:00`);
+    } else {
+			return;
+		}
+    if (eventDateTimes.endTimeDate) {
+      event.startTime = eventDateTimes.startTimeTime
         ? new Date(
-            `${taskDateTimes.startTimeDate}T${taskDateTimes.startTimeTime}`
+            `${eventDateTimes.startTimeDate}T${eventDateTimes.startTimeTime}`
           )
-        : new Date(`${taskDateTimes.startTimeDate}T23:59:59`);
-    }
+        : new Date(`${eventDateTimes.startTimeDate}T23:59:59`);
+    } else {
+			return;
+		}
     if (!task.board) {
       await taskStore.appendStandAloneTask(task);
     } else {

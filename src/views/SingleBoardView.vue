@@ -96,7 +96,7 @@ const createBoard = () => {
 
 <style scoped>
 .page-single-board {
-  grid-template-rows: 3rem auto;
+  grid-template-rows: 4.5rem auto;
 }
 
 .page-single-board > *:not(.top-bar) {

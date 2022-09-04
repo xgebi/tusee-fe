@@ -2,7 +2,7 @@
   <main class="page page-notes-list">
     <MainNavigation></MainNavigation>
     <NoteEdit :new-note="true"></NoteEdit>
-    <h1>Boards</h1>
+    <h1>Notes</h1>
     <ul>
       <li v-for="note in list" :key="note.noteUuid">
         <router-link
@@ -31,5 +31,13 @@ fetchNotesList();
 </script>
 
 <style scoped>
+.page.page-notes-list {
+	display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 4.5rem;
+}
 
+.page-notes-list *:not(.top-bar) {
+  grid-column: 2 / 3;
+}
 </style>

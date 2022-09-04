@@ -61,7 +61,7 @@ const createNewTask = async (task: ITask) => {
 .page-standalone-tasks {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 3rem;
+  grid-template-rows: 4.5rem;
 }
 
 .page-standalone-tasks *:not(.top-bar) {

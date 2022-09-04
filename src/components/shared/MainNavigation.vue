@@ -1,9 +1,6 @@
 <template>
   <section class="top-bar">
     <p class="top-bar__logo">Tusee</p>
-    <TaskEdit :new-task="true"></TaskEdit>
-    <NoteEdit :new-note="true"></NoteEdit>
-    <button>New event</button>
     <nav class="top-bar__main-navigation">
       <ul class="top-bar__main-navigation__list">
         <li>
@@ -20,6 +17,12 @@
         <li><button @click="logOut">Log out</button></li>
       </ul>
     </nav>
+		<div class="top-bar__actions">
+			<TaskEdit :new-task="true"></TaskEdit>
+			<NoteEdit :new-note="true"></NoteEdit>
+			<EventEdit :new-event="true"></EventEdit>
+			<!--GoalEdit :new-goal="true"></GoalEdit-->
+		</div>
   </section>
 </template>
 
@@ -29,6 +32,8 @@ import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import TaskEdit from '@/components/shared/TaskEdit.vue';
 import NoteEdit from '@/components/shared/NoteEdit.vue';
+import EventEdit from '@/components/shared/EventEdit.vue';
+import GoalEdit from '@/components/shared/GoalEdit.vue';
 
 const router = useRouter();
 

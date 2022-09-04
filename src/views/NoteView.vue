@@ -65,11 +65,13 @@ const updateNote = async () => {
 
 <style scoped>
 .page.page-single-note {
-	grid-template-rows: 3rem;
+	display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 4.5rem;
 }
 
-.page-single-note .note-view {
-	grid-column: 2 / 3;
+.page-single-note *:not(.top-bar) {
+  grid-column: 2 / 3;
 }
 
 .page-single-note .note-view div {
