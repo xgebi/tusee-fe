@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/user';
 import dayjs from 'dayjs';
 
 class TaskService {
-  public static async getStandAloneTasks(): Promise<ITask[]> {
+  public static async getStatistics(): Promise<ITask[]> {
     const tasks: IReceivedTask[] = await TaskRepository.getStandAloneTasks();
     const resultingTasks: ITask[] = [];
     for (const task of tasks) {
