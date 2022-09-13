@@ -7,7 +7,7 @@
         Name: {{ userStore.token.displayName }}
       </div>
       <div>
-        <button @click="downloadData">Download decrypted data</button>
+        <button class="button" @click="downloadData">Download decrypted data</button>
       </div>
       <div>
         <section>
@@ -20,7 +20,7 @@
           <input id="password" type="password" v-model="password" />
         </section>
 
-        <button @click="importFile">Upload data</button>
+        <button class="button" @click="importFile">Upload data</button>
       </div>
     </section>
   </main>

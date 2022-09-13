@@ -2,14 +2,13 @@
   <main class="page page-standalone-tasks">
     <MainNavigation></MainNavigation>
     <h1>Standalone Tasks</h1>
-    <TaskEdit :new-task="true" v-on:created="createNewTask"></TaskEdit>
     <ul v-if="!state.loading">
       <li v-for="(task, i) in taskStore.getStandaloneTasks" :key="i">
         <StandaloneTaskListItem :task="task"></StandaloneTaskListItem>
       </li>
     </ul>
     <p v-if="state.loading">Loading tasks</p>
-    <button @click="loadArchived">Load done tasks</button>
+    <button class="button" @click="loadArchived">Load done tasks</button>
     <section v-if="state.archiveLoaded">
       <h2>Done tasks</h2>
       <ul>
@@ -52,19 +51,15 @@ onBeforeMount(async () => {
   state.loading = false;
 });
 
-const createNewTask = async (task: ITask) => {
-  await taskStore.appendStandAloneTasks(task);
-};
 </script>
 
 <style scoped>
 .page-standalone-tasks {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 4.5rem;
+  grid-template-rows: 6rem;
 }
 
-.page-standalone-tasks *:not(.top-bar) {
+.page-standalone-tasks > *:not(.top-bar) {
   grid-column: 2 / 3;
 }
 

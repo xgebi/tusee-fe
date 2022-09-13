@@ -1,6 +1,6 @@
 <template>
   <section>
-    <button @click="openDialog">Create new note</button>
+    <button class="button" @click="openDialog">Create new note</button>
     <dialog @close="createNewNote" ref="dialog">
       <form method="dialog" @submit="createNewNote">
         <div>
@@ -11,8 +11,8 @@
           <label for="note-note">Note</label>
           <textarea id="note-note" v-model="note.note"></textarea>
         </div>
-        <button value="cancel">Cancel</button>
-        <button id="confirmBtn" value="create">Create note</button>
+        <button class="button button--secondary" value="cancel">Cancel</button>
+        <button class="button" id="confirmBtn" value="create">Create note</button>
       </form>
     </dialog>
   </section>

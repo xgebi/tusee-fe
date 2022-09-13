@@ -11,7 +11,7 @@
         <input type="password" id="password" v-model="state.password" />
         <label for="display-name">Display Name:</label>
         <input type="text" id="display-name" v-model="state.displayName" />
-        <button>Register</button>
+        <button class="button">Register</button>
       </form>
       <div v-if="state.registrationSuccessful && state.registrationAttempted">
         <RouterLink :to="{ name: 'login' }">Continue to login</RouterLink>

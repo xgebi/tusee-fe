@@ -1,6 +1,6 @@
 <template>
   <section>
-    <button @click="openDialog">Create new task</button>
+    <button class="button" @click="openDialog">Create new task</button>
     <dialog @close="createNewTask" ref="dialog">
       <form method="dialog" @submit="createNewTask">
         <div>
@@ -38,8 +38,8 @@
             <input type="time" v-model="taskDateTimes.startTimeTime" />
           </div>
         </div>
-        <button value="cancel">Cancel</button>
-        <button id="confirmBtn" value="create">Create task</button>
+        <button class="button button--secondary" value="cancel">Cancel</button>
+        <button class="button" id="confirmBtn" value="create">Create task</button>
       </form>
     </dialog>
   </section>

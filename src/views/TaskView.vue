@@ -41,7 +41,7 @@
       <div class="task-view__info">Updated: {{ task.updated }}</div>
       <div class="task-view__info">Created: {{ task.created }}</div>
       <div class="task-view__button">
-        <button>Save</button>
+        <button class="button">Save</button>
       </div>
     </form>
   </main>

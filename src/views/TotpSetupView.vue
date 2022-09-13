@@ -11,8 +11,8 @@
           id="confirm-code"
           v-model="confirmCode"
         />
-        <button @click="confirmTotp">Confirm</button>
-        <button @click="skip">Skip</button>
+        <button class="button" @click="confirmTotp">Confirm</button>
+        <button class="button" @click="skip">Skip</button>
       </form>
     </section>
   </main>

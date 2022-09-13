@@ -23,7 +23,7 @@
         Created: {{ note.created.toLocaleString() }}
       </div>
       <div class="note-view__button">
-        <button>Save</button>
+        <button class="button">Save</button>
       </div>
     </form>
   </main>
@@ -66,12 +66,7 @@ const updateNote = async () => {
 <style scoped>
 .page.page-single-note {
 	display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-	grid-template-rows: 4.5rem;
-}
-
-.page-single-note *:not(.top-bar) {
-  grid-column: 2 / 3;
+	grid-template-rows: 6rem;
 }
 
 .page-single-note .note-view div {

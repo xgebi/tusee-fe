@@ -9,10 +9,15 @@
     grid-row: 2 / 3;
     padding: 1rem;
 
-    form {
+    form,
+    form div{
       display: flex;
       flex-flow: column;
       gap: 1rem;
+
+      div {
+        gap: .125rem;
+      }
     }
   }
 }

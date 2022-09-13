@@ -1,7 +1,7 @@
 <template>
   <main class="page page-boards">
     <MainNavigation></MainNavigation>
-    <button @click="createBoard">Create board</button>
+    <button class="button" @click="createBoard">Create board</button>
     <h1>Boards</h1>
     <ul>
       <li v-for="board in boardsStore.getBoards" :key="board.boardUuid">
@@ -39,10 +39,6 @@ const createBoard = () => {
 
 <style scoped>
 .page-boards {
-  grid-template-rows: 3rem 2rem auto;
-}
-
-.page-boards *:not(.top-bar) {
-  grid-column: 2 / 3;
+  grid-template-rows: 6rem 2rem auto;
 }
 </style>

@@ -6,11 +6,15 @@
       </section>
       <section>
         <form v-on:submit="login">
-          <label for="username">Username:</label>
-          <input type="text" id="username" v-model="state.username" />
-          <label for="password">Password:</label>
-          <input type="password" id="password" v-model="state.password" />
-          <button>Log in</button>
+					<div>
+						<label for="username">Username:</label>
+						<input type="text" id="username" v-model="state.username" />
+					</div>
+					<div>
+						<label for="password">Password:</label>
+						<input type="password" id="password" v-model="state.password" />
+					</div>
+          <button class="button">Log in</button>
         </form>
       </section>
     </section>

@@ -96,11 +96,7 @@ const createBoard = () => {
 
 <style scoped>
 .page-single-board {
-  grid-template-rows: 4.5rem auto;
-}
-
-.page-single-board > *:not(.top-bar) {
-  grid-column: 2 / 3;
+  grid-template-rows: 6rem auto;
 }
 
 .page-single-board .board-table {

@@ -1,6 +1,5 @@
 <template>
   <section class="top-bar">
-    <p class="top-bar__logo">Tusee</p>
     <nav class="top-bar__main-navigation">
       <ul class="top-bar__main-navigation__list">
         <li>
@@ -14,7 +13,7 @@
         <li><router-link :to="{ name: 'notes' }">Notes</router-link></li>
         <li><router-link :to="{ name: 'calendar' }">Calendar</router-link></li>
         <li><router-link :to="{ name: 'profile' }">Profile</router-link></li>
-        <li><button @click="logOut">Log out</button></li>
+        <li><button class="button button--secondary" @click="logOut">Log out</button></li>
       </ul>
     </nav>
 		<div class="top-bar__actions">

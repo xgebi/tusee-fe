@@ -1,0 +1,48 @@
+/**
+ * Typography
+ */
+@font-face {
+  font-family: 'Cabin';
+  src: url('Cabin-VariableFont_wdth,wght.ttf') format("truetype-variations");
+  font-weight: 1 999;
+}
+
+@font-face {
+  font-family: 'Cabin';
+  src: url('Cabin-Italic-VariableFont_wdth,wght.ttf') format("truetype-variations");
+  font-weight: 1 999;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("Cormorant-VariableFont_wdth,wght.ttf") format("truetype-variations");
+  font-weight: 1 999;
+}
+@font-face {
+  font-family: "Cormorant";
+  src: url("Cormorant-Italic-VariableFont_wdth,wght.ttf") format("truetype-variations");
+  font-weight: 1 999;
+  font-style: italic;
+}
+
+body {
+  font-family: Cabin, sans-serif;
+  font-size: 20px;
+}
+
+.long-read {
+  font-family: Cormorant, serif;
+}
+
+.web-big {
+  font-size: 9.5rem;
+}
+
+.web-medium {
+  font-size: 6rem;
+}
+
+.web-medium {
+  font-size: 3rem;
+}

@@ -28,21 +28,21 @@
         :key="column.name"
       >
         - {{ column.name }} : {{ column.type }}
-        <button
+        <button class="button"
           :data-value="column.name"
           @click="moveColumnUp"
           v-if="index > 0"
         >
           ⬆
         </button>
-        <button
+        <button class="button"
           :data-value="column.name"
           @click="moveColumnDown"
           v-if="index < columns.length - 1"
         >
           ⬇
         </button>
-        <button :data-value="column.name" @click="deleteColumn">Delete</button>
+        <button class="button button--error" :data-value="column.name" @click="deleteColumn">Delete</button>
       </div>
       <button @click="showNewColumnForm">Add column</button>
       <div v-if="newColumnFormVisible">
@@ -66,12 +66,12 @@
             </option>
           </select>
         </div>
-        <button @click="addColumn">Add column</button>
+        <button class="button" @click="addColumn">Add column</button>
       </div>
-      <button @click="saveBoard">Save board</button>
+      <button class="button" @click="saveBoard">Save board</button>
       <div>
         <h3>Danger zone</h3>
-        <button @click="deleteBoard">Delete board</button>
+        <button class="button" @click="deleteBoard">Delete board</button>
       </div>
     </div>
   </main>

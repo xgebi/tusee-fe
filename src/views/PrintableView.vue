@@ -35,7 +35,7 @@
         />
         <label for="landscape">Landscape</label>
       </div>
-      <button @click="printPage">Print page</button>
+      <button class="button" @click="printPage">Print page</button>
     </section>
     <svg
       :class="svgClass"

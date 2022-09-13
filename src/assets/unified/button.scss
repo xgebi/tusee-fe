@@ -1,0 +1,30 @@
+/**
+ * Buttons
+ */
+.button {
+  padding: var(--button-padding-vertical) var(--button-padding-horizontal);
+  background: var(--primary);
+  color: var(--primary-color);
+  border: 0;
+  font-weight: 700;
+  border-radius: .25rem;
+  font-size: 1rem;
+  font-family: Cabin, sans-serif;
+}
+
+.button:active {
+  box-shadow: inset 0 .125rem .125rem rgba(0, 0, 0, 0.25);
+}
+
+.button--secondary {
+  background: var(--secondary);
+}
+
+.button--error {
+  background: var(--error);
+  color: var(--primary-light)
+}
+
+.button--warning {
+  background: var(--warning);
+}
