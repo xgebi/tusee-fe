@@ -1,7 +1,7 @@
 <template>
   <main class="page page-dashboard">
     <MainNavigation></MainNavigation>
-    This is Dashboard
+		<div>This is Dashboard</div>
   </main>
 </template>
 
@@ -22,4 +22,12 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.page-dashboard > *:not(.top-bar) {
+  grid-column: 2 / 3;
+
+	@media only screen and (max-width: 48rem) {
+    grid-column: 1 / 2;
+  }
+}
+</style>

@@ -15,10 +15,10 @@
       />
       Done
     </label>
-    <router-link :to="{ path: `/task/${props.task.taskUuid}` }" class="edit"
+    <router-link :to="{ path: `/task/${props.task.taskUuid}` }" class="edit button"
       >Edit</router-link
     >
-    <button class="button button--error delete" @click="deleteTask">Delete</button>
+    <button class="button button--secondary delete" @click="deleteTask">Delete</button>
   </div>
 </template>
 
@@ -56,12 +56,12 @@ const deleteTask = async (e: Event) => {
 .standalone-task-list-item {
   padding: 1rem;
   margin: 1rem;
-  border: 1px solid black;
+  border: 2px solid #76aac8;
   display: grid;
-  grid-template-columns: auto;
-  gap: 0.75rem;
+  grid-template-columns: repeat(2, calc(50% - .5rem));
+  gap: 1rem;
 	border-radius: .5rem;
-	background: #f0f0f0;
+	background: #fefefe;
 }
 
 .standalone-task-list-item h2 {

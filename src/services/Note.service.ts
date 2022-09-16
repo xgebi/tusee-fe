@@ -15,18 +15,6 @@ class NoteService {
       const normNote = this.normalizeNoteForFe(note);
       resultingNotes.push(this.decryptNote(normNote));
     }
-    resultingNotes.sort((a, b) => {
-      const aDayjs = dayjs(a.updated);
-      const bDayjs = dayjs(b.updated);
-
-      if (bDayjs.isBefore(aDayjs)) {
-        return 1;
-      }
-      if (aDayjs.isBefore(bDayjs)) {
-        return -1;
-      }
-      return 0;
-    });
     return resultingNotes;
   }
 

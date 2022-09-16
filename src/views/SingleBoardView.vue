@@ -113,7 +113,9 @@ const createBoard = () => {
 }
 
 .drop-zone {
-  background: lightslategrey;
+  background: white;
+	border: 1px solid var(--primary);
+	border-radius: .5rem;
   padding: 1rem;
   grid-row: 2 / 3;
   min-height: 50vh;

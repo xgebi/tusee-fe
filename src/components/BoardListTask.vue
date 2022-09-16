@@ -21,12 +21,20 @@ const props = defineProps<{
 
 <style scoped>
 .board-list-task {
-  background: antiquewhite;
   padding: .5rem;
+	color: var(--primary-color);
+	background: var(--background-light);
+	border-radius: .5rem;
+	border: 1px solid var(--primary);
 }
 
 .board-list-task p {
   margin: 0;
+}
+
+.board-list-task a,
+.board-list-task a:visited {
+  color: var(--primary-color);
 }
 
 .small-drop-zone {
@@ -35,10 +43,5 @@ const props = defineProps<{
 
 .small-drop-zone:hover {
   background: pink;
-}
-
-a,
-a:visited {
-
 }
 </style>
