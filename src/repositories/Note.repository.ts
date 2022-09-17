@@ -1,8 +1,6 @@
-import type dayjs from 'dayjs';
 import Fetch from '@/utils/Fetch';
-import type { IReceivedTask, ITask } from '@/interfaces/ITask';
 import { useUserStore } from '@/stores/user';
-import type { IReceivedNote } from '@/interfaces/INote';
+import type { IReceivedNote, ITransmittedNote } from '@/interfaces/INote';
 
 class NoteRepository {
   public static async getNotes(): Promise<IReceivedNote[]> {
@@ -29,7 +27,9 @@ class NoteRepository {
     throw new Error();
   }
 
-  public static async createNote(task: IReceivedNote): Promise<IReceivedNote> {
+  public static async createNote(
+    task: ITransmittedNote
+  ): Promise<IReceivedNote> {
     const response = await Fetch.post('note', task);
     if (response.ok) {
       const result = await response.json();
@@ -41,7 +41,9 @@ class NoteRepository {
     throw new Error();
   }
 
-  public static async updateNote(task: IReceivedNote): Promise<IReceivedNote> {
+  public static async updateNote(
+    task: ITransmittedNote
+  ): Promise<IReceivedNote> {
     const response = await Fetch.put('note', task);
     if (response.ok) {
       const result = await response.json();

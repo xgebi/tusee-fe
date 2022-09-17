@@ -1,11 +1,9 @@
-import TaskRepository from '@/repositories/Task.repository';
-import type { IReceivedTask, ITask } from '@/interfaces/ITask';
 import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/aes';
 import { useUserStore } from '@/stores/user';
-import dayjs from 'dayjs';
-import type { INote, IReceivedNote } from '@/interfaces/INote';
+import type { INote, IReceivedNote, ITransmittedNote } from '@/interfaces/INote';
 import NoteRepository from '@/repositories/Note.repository';
+import { Temporal } from 'temporal-polyfill';
 
 class NoteService {
   public static async getNotes(): Promise<INote[]> {
@@ -77,19 +75,27 @@ class NoteService {
       noteUuid: note.note_uuid,
       title: note.title,
       userUuid: note.user_uuid,
-      updated: note.updated,
-      created: note.created,
+      updated: note.updated
+        ? Temporal.Instant.fromEpochMilliseconds(
+            Number(note.updated)
+          ).toZonedDateTimeISO('Europe/Prague')
+        : undefined,
+      created: note.created
+        ? Temporal.Instant.fromEpochMilliseconds(
+            Number(note.created)
+          ).toZonedDateTimeISO('Europe/Prague')
+        : undefined,
     };
   }
 
-  static normalizeNoteForBe(note: INote): IReceivedNote {
+  static normalizeNoteForBe(note: INote): ITransmittedNote {
     return {
       note: note.note,
       note_uuid: note.noteUuid,
       title: note.title,
       user_uuid: note.userUuid,
-      updated: note.updated,
-      created: note.created,
+      updated: note.updated?.toString(),
+      created: note.created?.toString(),
     };
   }
 }

@@ -54,19 +54,6 @@ onBeforeMount(async () => {
 </script>
 
 <style lang="scss" scoped>
-.page-standalone-tasks {
-  display: grid;
-  grid-template-rows: 6rem;
-}
-
-.page-standalone-tasks > *:not(.top-bar) {
-  grid-column: 2 / 3;
-
-	@media only screen and (max-width: 48rem) {
-    grid-column: 1 / 2;
-  }
-}
-
 ul {
   list-style: none;
   padding: 0;

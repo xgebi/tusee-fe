@@ -2,14 +2,24 @@
 
 .page {
   display: grid;
-  grid-template-rows: 6.5rem minmax(calc(100vh - 3rem),auto);
+  grid-template-rows: 7rem 4rem;
   grid-template-columns: 1fr 48rem 1fr;
   gap: 1rem;
   background: var(--background-light);
   padding-bottom: 2rem;
+  min-height: 100vh;
 
   @media only screen and (max-width: 48rem) {
     grid-template-columns: 1fr;
+  }
+
+  h1 {
+    margin: .5rem 0;
+  }
+
+  &  > *:not(.top-bar) {
+    grid-column-start: 2;
+    grid-column-end: 3;
   }
 }
 

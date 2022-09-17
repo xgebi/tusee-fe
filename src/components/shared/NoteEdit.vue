@@ -80,4 +80,9 @@ form div {
   display: flex;
   flex-flow: column;
 }
+
+form textarea {
+	width: 50vw;
+	height: 50vh;
+}
 </style>

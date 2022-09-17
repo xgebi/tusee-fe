@@ -1,0 +1,13 @@
+textarea,
+input {
+  border-radius: .5rem;
+  padding: .5rem .75rem;
+  border: 1px solid var(--primary);
+  font-size: 1.25rem;
+  font-family: Cabin, sans-serif;
+}
+
+label {
+  font-size: 1rem;
+  margin-left: .75rem;
+}

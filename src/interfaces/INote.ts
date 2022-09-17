@@ -1,10 +1,12 @@
+import type { Temporal } from 'temporal-polyfill';
+
 export interface INote {
   noteUuid: string;
   userUuid: string;
   title: string;
   note: string;
-  updated?: Date;
-  created?: Date;
+  updated?: Temporal.ZonedDateTime;
+  created?: Temporal.ZonedDateTime;
 }
 
 export interface IReceivedNote {
@@ -12,6 +14,15 @@ export interface IReceivedNote {
   user_uuid: string;
   title: string;
   note: string;
-  updated?: Date;
-  created?: Date;
+  updated?: number;
+  created?: number;
+}
+
+export interface ITransmittedNote {
+  note_uuid: string;
+  user_uuid: string;
+  title: string;
+  note: string;
+  updated?: string;
+  created?: string;
 }

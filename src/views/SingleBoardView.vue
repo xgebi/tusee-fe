@@ -3,7 +3,7 @@
     <MainNavigation></MainNavigation>
     <template v-if="boardStore.getSelectedBoard">
       <h2>{{ boardStore.getSelectedBoard.name }}</h2>
-      <p>{{ boardStore.getSelectedBoard.description }}</p>
+      <p v-if="boardStore.getSelectedBoard.description.length > 0">{{ boardStore.getSelectedBoard.description }}</p>
       <router-link :to="{ path: `/board/${route.params.id}/settings` }">
         Board settings
       </router-link>

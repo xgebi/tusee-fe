@@ -49,6 +49,7 @@ let note = ref<INote>({
 
 const fetchNote = async () => {
   note.value = await NoteService.fetchNote(router.params.id as string);
+	console.log(note);
 }
 fetchNote();
 
@@ -64,9 +65,8 @@ const updateNote = async () => {
 </script>
 
 <style scoped>
-.page.page-single-note {
-	display: grid;
-	grid-template-rows: 6rem;
+.page-single-note {
+	grid-template-rows: 7rem;
 }
 
 .page-single-note .note-view div {
@@ -74,7 +74,13 @@ const updateNote = async () => {
 	flex-flow: column;
 }
 
+.note-view {
+	display: flex;
+	flex-flow: column;
+	gap: 1.75rem;
+}
+
 .note-view__textarea textarea {
-	height: 50vh;
+	min-height: 50vh;
 }
 </style>

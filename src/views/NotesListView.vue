@@ -30,8 +30,5 @@ fetchNotesList();
 </script>
 
 <style scoped>
-.page.page-notes-list {
-	display: grid;
-	grid-template-rows: 6rem;
-}
+
 </style>
