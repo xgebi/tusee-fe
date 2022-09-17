@@ -26,6 +26,10 @@
         <button class="button">Save</button>
       </div>
     </form>
+		<hr>
+		<div class="note-view__button">
+			<button class="button button--error" @click="deleteNote">Delete note</button>
+		</div>
   </main>
 </template>
 
@@ -34,9 +38,10 @@ import MainNavigation from '@/components/shared/MainNavigation.vue';
 import { ref } from 'vue';
 import { INote } from '@/interfaces/INote';
 import NoteService from '@/services/Note.service';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
-const router = useRoute();
+const route = useRoute();
+const router = useRouter();
 
 let note = ref<INote>({
   noteUuid: '',
@@ -48,7 +53,7 @@ let note = ref<INote>({
 });
 
 const fetchNote = async () => {
-  note.value = await NoteService.fetchNote(router.params.id as string);
+  note.value = await NoteService.fetchNote(route.params.id as string);
 	console.log(note);
 }
 fetchNote();
@@ -61,6 +66,11 @@ const formSubmitted = (e: Event) => {
 const updateNote = async () => {
   note.value = await NoteService.updateNote(note.value);
 };
+
+const deleteNote = async () => {
+	await NoteService.deleteNote(note.value);
+	router.push({ name: 'notes' });
+}
 
 </script>
 

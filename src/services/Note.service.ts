@@ -19,9 +19,7 @@ class NoteService {
   public static async fetchNote(noteUuid: string): Promise<INote> {
     const note: IReceivedNote = await NoteRepository.fetchNote(noteUuid);
     const normNote = this.normalizeNoteForFe(note);
-    const deN = this.decryptNote(normNote);
-    console.log(deN);
-    return deN;
+    return this.decryptNote(normNote);
   }
 
   public static async createNote(task: INote): Promise<INote> {
