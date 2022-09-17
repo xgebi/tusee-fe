@@ -1,14 +1,26 @@
 <template>
-  <main class="page page-dashboard">
+  <main class="page page-profile">
     <MainNavigation></MainNavigation>
     <section>
       <h1>Profile page</h1>
+			<form>
+				<div class="profile__input">
+					<label for="title">Name</label>
+					<input type="text" :value="userStore.token.displayName" id="title" />
+				</div>
+				<div class="profile__input">
+					<label for="title">Time zone</label>
+					<Typeahead :items="timezones"  selected=""/>
+				</div>
+				<button class="button">Save</button>
+			</form>
       <div>
-        Name: {{ userStore.token.displayName }}
       </div>
+			<hr />
       <div>
         <button class="button" @click="downloadData">Download decrypted data</button>
       </div>
+			<hr />
       <div>
         <section>
           <label for="import-file">Import file</label>
@@ -35,6 +47,7 @@ import { ref } from 'vue';
 import type { IExportImport } from '@/interfaces/IExportImport';
 import type { ITask } from '@/interfaces/ITask';
 import KeyService from '@/services/Key.service';
+import Typeahead from '@/components/shared/Typeahead.vue';
 
 const userStore = useUserStore();
 const fileToImport = ref<IExportImport>({
@@ -44,6 +57,7 @@ const fileToImport = ref<IExportImport>({
 });
 
 const password = ref<string>('');
+const timezones = (Intl.supportedValuesOf('timeZone') as string[]);
 
 const downloadData = async () => {
   // Get standalone tasks
